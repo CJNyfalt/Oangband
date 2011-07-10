@@ -809,12 +809,8 @@ char (*inkey_hack)(int flush_first) = NULL;
  * normal macro matching code would, allowing the direct entry of macro
  * triggers.  The "inkey_base" flag is extremely dangerous!
  *
- * If "inkey_flag" is TRUE, then we will assume that we are waiting for a
- * normal command, and we will only show the cursor if "hilite_player" is
- * TRUE (or if the player is in a store), instead of always showing the
- * cursor.  The various "main-xxx.c" files should avoid saving the game
- * in response to a "menu item" request unless "inkey_flag" is TRUE, to
- * prevent savefile corruption.
+ * If "inkey_flag" is TRUE, then we are waiting for a command in the main
+ * map interface, and we shouldn't show a cursor.
  *
  * If we are waiting for a keypress, and no keypress is ready, then we will
  * refresh (once) the window which was active when this function was called.
@@ -906,15 +902,12 @@ char inkey(void)
 	}
 
 
-	/* Access cursor state */
+	/* Get the cursor state */
 	(void)Term_get_cursor(&cursor_state);
 
 	/* Show the cursor if waiting, except sometimes in "command" mode */
-	if (!inkey_scan && (!inkey_flag || hilite_player || character_icky))
-	{
-		/* Show the cursor */
+	if (!inkey_scan && (!inkey_flag || character_icky))
 		(void)Term_set_cursor(TRUE);
-	}
 
 
 	/* Hack -- Activate main screen */
@@ -1405,12 +1398,6 @@ void message_flush(void)
 
 
 /*
- * Hack -- prevent "accidents" in "screen_save()" or "screen_load()"
- */
-static int screen_depth = 0;
-
-
-/*
  * Save the screen, and increase the "icky" depth.
  *
  * This function must match exactly one call to "screen_load()".
@@ -1421,7 +1408,7 @@ void screen_save(void)
 	message_flush();
 
 	/* Save the screen (if legal) */
-	if (screen_depth++ == 0) Term_save();
+	Term_save();
 
 	/* Increase "icky" depth */
 	character_icky++;
@@ -1439,7 +1426,7 @@ void screen_load(void)
 	message_flush();
 
 	/* Load the screen (if legal) */
-	if (--screen_depth == 0) Term_load();
+	Term_load();
 
 	/* Decrease "icky" depth */
 	character_icky--;

@@ -34,6 +34,7 @@ confusion and fear), to encourage their use.
 - Removed extra main-mac-carbon file.
 - Added more basic colors, to get the same number a V.
 - Only allow change of /lib/user with command-line option.
+- Removed hilite_player option. (Always off)
 
 Coding changes
 ==============

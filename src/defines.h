@@ -3118,7 +3118,7 @@
 #define OPT_center_running			57
 
 #define OPT_compress_savefile		58
-#define OPT_hilite_player			59
+/* xxx */
 #define OPT_view_yellow_lite		60
 #define OPT_view_bright_lite		61
 #define OPT_view_granite_lite		62
@@ -3227,7 +3227,7 @@
 #define center_running			op_ptr->opt[OPT_center_running]
 
 #define compress_savefile		op_ptr->opt[OPT_compress_savefile]
-#define hilite_player			op_ptr->opt[OPT_hilite_player]
+/* xxx */
 #define view_yellow_lite		op_ptr->opt[OPT_view_yellow_lite]
 #define view_bright_lite		op_ptr->opt[OPT_view_bright_lite]
 #define view_granite_lite		op_ptr->opt[OPT_view_granite_lite]

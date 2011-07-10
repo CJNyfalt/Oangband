@@ -1990,7 +1990,7 @@ const char * option_text[OPT_MAX] =
 	"fresh_after",				/* OPT_fresh_after */
 	"center_running",			/* OPT_center_running */
 	"compress_savefile",		/* OPT_compress_savefile */
-	"hilite_player",			/* OPT_hilite_player */
+	NULL,
 	"view_yellow_lite",			/* OPT_view_yellow_lite */  /*60*/
 	"view_bright_lite",			/* OPT_view_bright_lite */
 	"view_granite_lite",		/* OPT_view_granite_lite */
@@ -2142,7 +2142,7 @@ const char * option_desc[OPT_MAX] =
 	"Flush output after various things",		/* OPT_fresh_after */
 	"Keep player centered while running (slow)",/* OPT_center_running */
 	"Compress messages in savefiles",			/* OPT_compress_savefile */
-	"Highlight the player with the cursor",		/* OPT_hilite_player */
+	NULL,
 	"Use special colors for torch lite",		/* OPT_view_yellow_lite */ /*60*/
 	"Use special colors for field of view",		/* OPT_view_bright_lite */
 	"Use special colors for wall grids",		/* OPT_view_granite_lite */
@@ -2294,7 +2294,7 @@ bool option_norm[OPT_MAX] =
 	FALSE,		/* OPT_fresh_after */
 	FALSE,		/* OPT_center_running */
 	FALSE,		/* OPT_compress_savefile */
-	FALSE,		/* OPT_hilite_player */
+	FALSE,
 	TRUE,		/* OPT_view_yellow_lite */	 /*60*/
 	TRUE,		/* OPT_view_bright_lite */
 	FALSE,		/* OPT_view_granite_lite */
@@ -2471,7 +2471,7 @@ byte option_page[OPT_PAGE_MAX][OPT_PAGE_PER] =
 		OPT_fresh_before,
 		OPT_fresh_after,
 		OPT_compress_savefile,
-		OPT_hilite_player,
+		255,
 		OPT_view_yellow_lite,
 		OPT_view_bright_lite,
 		OPT_view_granite_lite,
