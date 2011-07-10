@@ -3743,7 +3743,7 @@ static int convert_names(void)
 	}
 	if ((a_base = mem_alloc(name_size)) == NULL)
 	{
-		msg_format("Memory allocation error");
+		msg("Memory allocation error");
 		return 1;
 	}
 

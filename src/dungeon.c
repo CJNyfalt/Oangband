@@ -201,7 +201,7 @@ static void sense_inventory(void)
 		/* Message (equipment) */
 		if (i >= INVEN_WIELD)
 		{
-			msg_format("You feel the %s (%c) you are %s %s %s...",
+			msg("You feel the %s (%c) you are %s %s %s...",
 				   o_name, index_to_label(i), describe_use(i),
 				   ((o_ptr->number == 1) ? "is" : "are"), feel_text[feel]);
 		}
@@ -209,7 +209,7 @@ static void sense_inventory(void)
 		/* Message (inventory) */
 		else
 		{
-			msg_format("You feel the %s (%c) in your pack %s %s... %s",
+			msg("You feel the %s (%c) in your pack %s %s... %s",
 				   o_name, index_to_label(i),
 				   ((o_ptr->number == 1) ? "is" : "are"),
 				   feel_text[feel],
@@ -356,8 +356,8 @@ static void recharged_notice(object_type *o_ptr)
 
 			/* Notify the player */
 			if (o_ptr->number > 1)
-				msg_format("Your %s are recharged.", o_name);
-			else msg_format("Your %s is recharged.", o_name);
+				msg("Your %s are recharged.", o_name);
+			else msg("Your %s is recharged.", o_name);
 
 			/* Done. */
 			return;
@@ -2187,7 +2187,7 @@ static void process_player(void)
 				object_desc(o_name, o_ptr, TRUE, 3);
 
 				/* Message */
-				msg_format("You drop %s (%c).", o_name, index_to_label(item));
+				msg("You drop %s (%c).", o_name, index_to_label(item));
 
 				/* Drop it (carefully) near the player */
 				drop_near(o_ptr, 0, p_ptr->py, p_ptr->px);

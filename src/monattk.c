@@ -218,7 +218,7 @@ static void make_request(int m_idx)
 		if (sanity_check > 50)
 		{
 			/* Let the player know. */
-			msg_format("%^s looks doleful.  You don't have anything of interest.", m_name);
+			msg("%^s looks doleful.  You don't have anything of interest.", m_name);
 
 			/* Nothing requested. */
 			requested_slot = 0;
@@ -238,8 +238,8 @@ static void make_request(int m_idx)
 
 
 		/* Try to make a deal for the item. */
-		msg_format("%^s looks longingly at your abundant supplies:", m_name);
-		msg_format("'Kind Sir, I desperately need %d %s.  I will gladly give %d gold in exchange.'", requested_number, o_name, offer_price);
+		msg("%^s looks longingly at your abundant supplies:", m_name);
+		msg("'Kind Sir, I desperately need %d %s.  I will gladly give %d gold in exchange.'", requested_number, o_name, offer_price);
 
 		/* Make the trade. */
 		if (get_check("Accept the offer? "))
@@ -273,7 +273,7 @@ static void make_request(int m_idx)
 	 * getting rich).
 	 */
 	teleport_away(m_idx, 50);
-	msg_format("%^s runs off.", m_name);
+	msg("%^s runs off.", m_name);
 
 	/* If the monster is a unique, it will never come back. */
 	if (r_ptr->flags1 & (RF1_UNIQUE)) r_ptr->max_num = 0;
@@ -465,7 +465,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 				}
 
 				/* Message */
-				msg_format("%^s is repelled.", m_name);
+				msg("%^s is repelled.", m_name);
 
 				/* Hack -- Next attack */
 				continue;
@@ -630,7 +630,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 			}
 
 			/* Message */
-			if (act) msg_format("%^s %s", m_name, act);
+			if (act) msg("%^s %s", m_name, act);
 
 			/* The undead can give the player the Black Breath with a
 			 * sucessful blow. Uniques have a much better chance. -LM-
@@ -882,7 +882,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 						else if (p_ptr->au)
 						{
 							msg_print("Your purse feels lighter.");
-							msg_format("%ld coins were stolen!", (long)gold);
+							msg("%ld coins were stolen!", (long)gold);
 						}
 						else
 						{
@@ -953,7 +953,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 						object_desc(o_name, o_ptr, FALSE, 3);
 
 						/* Message */
-						msg_format("%sour %s (%c) was stolen!",
+						msg("%sour %s (%c) was stolen!",
 							   ((o_ptr->number > 1) ? "One of y" : "Y"),
 							   o_name, index_to_label(i));
 
@@ -1021,7 +1021,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 						object_desc(o_name, o_ptr, FALSE, 0);
 
 						/* Message */
-						msg_format("%sour %s (%c) was eaten!",
+						msg("%sour %s (%c) was eaten!",
 							   ((o_ptr->number > 1) ? "One of y" : "Y"),
 							   o_name, index_to_label(i));
 
@@ -1605,7 +1605,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					disturb(1, 0);
 
 					/* Message */
-					msg_format("%^s misses you.", m_name);
+					msg("%^s misses you.", m_name);
 				}
 
 				break;
@@ -1893,9 +1893,9 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 96+0:
 		{
 			if (r_ptr->flags2 & (RF2_SMART))
-				msg_format("%^s shouts for help.", m_name);
+				msg("%^s shouts for help.", m_name);
 			else
-				msg_format("%^s makes a high pitched shriek.", m_name);
+				msg("%^s makes a high pitched shriek.", m_name);
 			aggravate_monsters(m_idx, FALSE);
 			break;
 		}
@@ -2064,14 +2064,14 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if ((r_ptr->flags3 & (RF3_ANIMAL)) || (typ == GF_ACID))
 			{
 				if (blind) msg_print("You hear a soft sound.");
-				else msg_format("%^s spits%s at you.",
+				else msg("%^s spits%s at you.",
 					m_name, desc);
 			}
 			/* All other creatures use a whip. */
 			else
 			{
 				if (blind) msg_print("You hear a crack.");
-				else msg_format("%^s lashes at you with a whip%s%s.",
+				else msg("%^s lashes at you with a whip%s%s.",
 					m_name, add_of, desc);
 			}
 
@@ -2085,7 +2085,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 96+2:
 		{
 			if (blind) msg_print("You hear something grunt with exertion.");
-			else msg_format("%^s hurls a boulder at you.", m_name);
+			else msg("%^s hurls a boulder at you.", m_name);
 			mon_bolt(m_idx, GF_ROCK, get_dam((spower * 10) / 3, 10));
 			break;
 		}
@@ -2094,9 +2094,9 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 96+3:
 		{
 			if (blind) msg_print("You hear something whirl towards you.");
-			else if (spower < 5) msg_format("%^s slings a pebble at you.", m_name);
-			else if (spower < 15) msg_format("%^s slings a leaden pellet at you.", m_name);
-			else msg_format("%^s slings a seeker shot at you.", m_name);
+			else if (spower < 5) msg("%^s slings a pebble at you.", m_name);
+			else if (spower < 15) msg("%^s slings a leaden pellet at you.", m_name);
+			else msg("%^s slings a seeker shot at you.", m_name);
 
 			mon_bolt(m_idx, GF_SHOT, get_dam((spower * 10) / 3, 10));
 			break;
@@ -2108,17 +2108,17 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (spower < 8)
 			{
 				if (blind) msg_print("You hear a soft twang.");
-				else msg_format("%^s fires a small arrow.", m_name);
+				else msg("%^s fires a small arrow.", m_name);
 			}
 			else if (spower < 15)
 			{
-				if (blind) msg_format("You hear a twang.");
-				else msg_format("%^s fires an arrow.", m_name);
+				if (blind) msg("You hear a twang.");
+				else msg("%^s fires an arrow.", m_name);
 			}
 			else
 			{
 				if (blind) msg_print("You hear a loud thwang.");
-				else msg_format("%^s fires a seeker arrow.", m_name);
+				else msg("%^s fires a seeker arrow.", m_name);
 			}
 
 			mon_bolt(m_idx, GF_ARROW, get_dam((spower * 10) / 3, 10));
@@ -2131,17 +2131,17 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (spower < 8)
 			{
 				if (blind) msg_print("You hear a soft twung.");
-				else msg_format("%^s fires a little bolt.", m_name);
+				else msg("%^s fires a little bolt.", m_name);
 			}
 			else if (spower < 15)
 			{
-				if (blind) msg_format("You hear a twung.");
-				else msg_format("%^s fires a crossbow bolt.", m_name);
+				if (blind) msg("You hear a twung.");
+				else msg("%^s fires a crossbow bolt.", m_name);
 			}
 			else
 			{
 				if (blind) msg_print("You hear a loud thwung.");
-				else msg_format("%^s fires a seeker bolt.", m_name);
+				else msg("%^s fires a seeker bolt.", m_name);
 			}
 
 			mon_bolt(m_idx, GF_ARROW, get_dam((spower * 10) / 3, 10));
@@ -2152,7 +2152,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 96+6:
 		{
 			if (blind) msg_print("You hear something coming at you.");
-			else msg_format("%^s fires a missile.", m_name);
+			else msg("%^s fires a missile.", m_name);
 			mon_bolt(m_idx, GF_MISSILE, get_dam(spower * 3, 10));
 			break;
 		}
@@ -2162,8 +2162,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (blind) msg_print("You hear a soft 'fftt' sound.");
 			else if (r_ptr->flags2 & (RF2_MORGUL_MAGIC))
-				msg_format("%^s hurls a black dart at you!", m_name);
-			else msg_format("%^s whips a poisoned dart at you.", m_name);
+				msg("%^s hurls a black dart at you!", m_name);
+			else msg("%^s whips a poisoned dart at you.", m_name);
 			mon_bolt(m_idx, GF_PMISSILE, get_dam(spower * 3, 10));
 			break;
 		}
@@ -2172,8 +2172,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_ACID */
 		case 96+8:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes acid.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes acid.", m_name);
 
 			/*
 			 * Breaths are 40-degree arcs for POWERFUL monsters,
@@ -2188,8 +2188,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_ELEC */
 		case 96+9:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes lightning.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes lightning.", m_name);
 			mon_arc(m_idx, GF_ELEC, TRUE,
 			       ((m_ptr->hp / 2) > 1600 ? 1600 : (m_ptr->hp / 2)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2199,8 +2199,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_FIRE */
 		case 96+10:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes fire.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes fire.", m_name);
 			mon_arc(m_idx, GF_FIRE, TRUE,
 			       ((m_ptr->hp / 2) > 1600 ? 1600 : (m_ptr->hp / 2)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2210,8 +2210,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_COLD */
 		case 96+11:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes frost.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes frost.", m_name);
 			mon_arc(m_idx, GF_COLD, TRUE,
 			       ((m_ptr->hp / 2) > 1600 ? 1600 : (m_ptr->hp / 2)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2221,8 +2221,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_POIS */
 		case 96+12:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes gas.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes gas.", m_name);
 			mon_arc(m_idx, GF_POIS, TRUE,
 			       ((m_ptr->hp / 3) > 500 ? 500 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 50 : 30));
@@ -2232,8 +2232,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_PLAS */
 		case 96+13:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes plasma.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes plasma.", m_name);
 			mon_arc(m_idx, GF_PLASMA, TRUE,
 			       ((m_ptr->hp / 2) > 1600 ? 1600 : (m_ptr->hp / 2)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2243,8 +2243,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_LITE */
 		case 96+14:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes light.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes light.", m_name);
 			mon_arc(m_idx, GF_LITE, TRUE,
 			       ((3 * m_ptr->hp / 10) > 500 ? 500 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2256,16 +2256,16 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (!(r_ptr->flags2 & (RF2_MORGUL_MAGIC)))
 			{
-				if (blind) msg_format("%^s breathes.", m_name);
-				msg_format("%^s breathes darkness.", m_name);
+				if (blind) msg("%^s breathes.", m_name);
+				msg("%^s breathes darkness.", m_name);
 				mon_arc(m_idx, GF_DARK, TRUE,
 				       ((3 * m_ptr->hp / 10) > 500 ? 500 : (3 * m_ptr->hp / 10)),
 				       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
 			}
 			else
 			{
-				if (blind) msg_format("%^s breathes.", m_name);
-				msg_format("%^s breathes Night.", m_name);
+				if (blind) msg("%^s breathes.", m_name);
+				msg("%^s breathes Night.", m_name);
 				mon_arc(m_idx, GF_MORGUL_DARK, TRUE,
 				       ((3 * m_ptr->hp / 10) > 500 ? 500 : (3 * m_ptr->hp / 10)),
 				       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2276,8 +2276,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_CONFU */
 		case 96+16:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes confusion.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes confusion.", m_name);
 			mon_arc(m_idx, GF_CONFUSION, TRUE,
 			       ((3 * m_ptr->hp / 10) > 500 ? 500 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2287,8 +2287,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_SOUND */
 		case 96+17:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes sound.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes sound.", m_name);
 			mon_arc(m_idx, GF_SOUND, TRUE,
 			       ((m_ptr->hp / 4) > 250 ? 250 : (m_ptr->hp / 4)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 50 : 30));
@@ -2298,8 +2298,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_SHARD */
 		case 96+18:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes shards.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes shards.", m_name);
 			mon_arc(m_idx, GF_SHARD, TRUE,
 			       ((3 * m_ptr->hp / 10) > 400 ? 400 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2309,8 +2309,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_INER */
 		case 96+19:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes inertia.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes inertia.", m_name);
 			mon_arc(m_idx, GF_INERTIA, TRUE,
 			       ((m_ptr->hp / 3) > 200 ? 200 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2320,8 +2320,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_GRAV */
 		case 96+20:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes gravity.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes gravity.", m_name);
 			mon_arc(m_idx, GF_GRAVITY, TRUE,
 			       ((m_ptr->hp / 3) > 200 ? 200 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2331,8 +2331,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_FORCE */
 		case 96+21:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes force.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes force.", m_name);
 			mon_arc(m_idx, GF_FORCE, TRUE,
 			       ((m_ptr->hp / 3) > 250 ? 250 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 60 : 60));
@@ -2342,8 +2342,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_NEXUS */
 		case 96+22:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes nexus.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes nexus.", m_name);
 			mon_arc(m_idx, GF_NEXUS, TRUE,
 			       ((m_ptr->hp / 3) > 300 ? 300 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2353,8 +2353,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_NETHR */
 		case 96+23:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes nether.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes nether.", m_name);
 			mon_arc(m_idx, GF_NETHER, TRUE,
 			       ((3 * m_ptr->hp / 10) > 600 ? 600 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2364,8 +2364,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_CHAOS */
 		case 96+24:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes chaos.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes chaos.", m_name);
 			mon_arc(m_idx, GF_CHAOS, TRUE,
 			       ((3 * m_ptr->hp / 10) > 600 ? 600 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2375,8 +2375,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_DISE */
 		case 96+25:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes disenchantment.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes disenchantment.", m_name);
 			mon_arc(m_idx, GF_DISENCHANT, TRUE,
 			       ((3 * m_ptr->hp / 10) > 400 ? 400 : (3 * m_ptr->hp / 10)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2386,8 +2386,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF4_BRTH_TIME */
 		case 96+26:
 		{
-			if (blind) msg_format("%^s breathes.", m_name);
-			else msg_format("%^s breathes time.", m_name);
+			if (blind) msg("%^s breathes.", m_name);
+			else msg("%^s breathes time.", m_name);
 			mon_arc(m_idx, GF_TIME, TRUE,
 			       ((m_ptr->hp / 3) > 200 ? 200 : (m_ptr->hp / 3)),
 			       0, (r_ptr->flags2 & (RF2_POWERFUL) ? 40 : 20));
@@ -2429,20 +2429,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts an acid ball.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts an acid ball.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts an acid ball.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts an acid ball.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of acid.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of acid.", m_name);
 				if (spower < 120) rad = 3;
 				else rad = 4;
 			}
@@ -2455,32 +2455,32 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a ball of electricity.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a ball of electricity.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a ball of electricity.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a ball of electricity.", m_name);
 				rad = 2;
 			}
 
 			/* Electricity is the most variable of all attacks at high level. */
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
 
 				if (rand_int(3) != 0)
 				{
-					msg_format("%^s invokes a storm of electricity.", m_name);
+					msg("%^s invokes a storm of electricity.", m_name);
 					if (spower < 120) rad = 3;
 					else rad = 4;
 					spower = 3 * spower / 4;
 				}
 				else
 				{
-					msg_format("%^s calls a massive stroke of lightning down upon you!", m_name);
+					msg("%^s calls a massive stroke of lightning down upon you!", m_name);
 					rad = 0;
 					spower = 3 * spower / 2;
 				}
@@ -2494,33 +2494,33 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a ball of %sfire.", m_name,
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a ball of %sfire.", m_name,
 					(r_ptr->flags2 & (RF2_UDUN_MAGIC) ? "hell" : ""));
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a ball of %sfire.", m_name,
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a ball of %sfire.", m_name,
 					(r_ptr->flags2 & (RF2_UDUN_MAGIC) ? "hell" : ""));
 				rad = 2;
 			}
 			else if (spower < 110)
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
 				else if (r_ptr->flags2 & (RF2_UDUN_MAGIC))
-					msg_format("%^s invokes a storm of Udun-fire.", m_name);
-				else msg_format("%^s invokes a firestorm.", m_name);
+					msg("%^s invokes a storm of Udun-fire.", m_name);
+				else msg("%^s invokes a firestorm.", m_name);
 				rad = 3;
 			}
 			else
 			{
-				if (blind) msg_format("%^s intones in rising wrath.", m_name);
+				if (blind) msg("%^s intones in rising wrath.", m_name);
 				else if (r_ptr->flags2 & (RF2_UDUN_MAGIC))
-					msg_format("%^s calls upon the fires of Udun!", m_name);
+					msg("%^s calls upon the fires of Udun!", m_name);
 
-				else msg_format("%^s conjures up a maelstrom of fire!", m_name);
+				else msg("%^s conjures up a maelstrom of fire!", m_name);
 				rad = 4;
 			}
 			if (r_ptr->flags2 & (RF2_UDUN_MAGIC)) mon_ball(m_idx,
@@ -2534,20 +2534,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a frost ball.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a frost ball.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a frost ball.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a frost ball.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of frost.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of frost.", m_name);
 				if (spower < 120) rad = 3;
 				else rad = 4;
 			}
@@ -2560,20 +2560,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 15)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a stinking cloud.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a stinking cloud.", m_name);
 				rad = 2;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a venomous cloud.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a venomous cloud.", m_name);
 				rad = 3;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of poison.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of poison.", m_name);
 				if (spower < 120) rad = 4;
 				else rad = 5;
 			}
@@ -2586,20 +2586,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a ball of light.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a ball of light.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s invokes a starburst.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s invokes a starburst.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a starburst.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a starburst.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_LITE, get_dam(3 * spower, 12), rad);
@@ -2611,26 +2611,26 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
 				else if (r_ptr->flags2 & (RF2_MORGUL_MAGIC))
-					msg_format("%^s casts a ball of Night.", m_name);
-				else msg_format("%^s casts a ball of darkness.", m_name);
+					msg("%^s casts a ball of Night.", m_name);
+				else msg("%^s casts a ball of darkness.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
 				else if (r_ptr->flags2 & (RF2_MORGUL_MAGIC))
-					msg_format("%^s casts a ball of Night.", m_name);
-				else msg_format("%^s casts a ball of darkness.", m_name);
+					msg("%^s casts a ball of Night.", m_name);
+				else msg("%^s casts a ball of darkness.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
 				else if (r_ptr->flags2 & (RF2_MORGUL_MAGIC))
-					msg_format("%^s invokes a storm of Night.", m_name);
-				else msg_format("%^s invokes a darkness storm.", m_name);
+					msg("%^s invokes a storm of Night.", m_name);
+				else msg("%^s invokes a darkness storm.", m_name);
 				if (spower < 110) rad = 3;
 				else rad = 4;
 			}
@@ -2648,20 +2648,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a ball of confusion.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a ball of confusion.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a ball of confusion.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a ball of confusion.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of confusion.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of confusion.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_CONFUSION, get_dam(3 * spower, 12), rad);
@@ -2673,20 +2673,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 15)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s calls up a blast of sound.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s calls up a blast of sound.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s invokes a thunderclap.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s invokes a thunderclap.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s unleashes a cacophony of sound.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s unleashes a cacophony of sound.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_SOUND, get_dam(2 * spower, 12), rad);
@@ -2698,20 +2698,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 15)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s calls up up a blast of shards.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s calls up up a blast of shards.", m_name);
 				rad = 1;
 			}
 			else if (spower < 90)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s calls up a whirlwind of shards.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s calls up a whirlwind of shards.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of knives!", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of knives!", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_SHARD, get_dam(3 * spower, 12), rad);
@@ -2723,22 +2723,22 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 30)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s gestures fluidly.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s gestures fluidly.", m_name);
 				msg_print("You are surrounded by a little storm.");
 				rad = 2;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s gestures fluidly.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s gestures fluidly.", m_name);
 				msg_print("You are engulfed in a whirlpool.");
 				rad = 3;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s gestures fluidly.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s gestures fluidly.", m_name);
 				msg_print("You are lost in a raging tempest of wind and water!");
 				rad = 5;
 			}
@@ -2751,20 +2751,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s whispers nastily.", m_name);
-				else msg_format("%^s casts an orb of nether.", m_name);
+				if (blind) msg("%^s whispers nastily.", m_name);
+				else msg("%^s casts an orb of nether.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs a deadly word.", m_name);
-				else msg_format("%^s casts a nether ball.", m_name);
+				if (blind) msg("%^s murmurs a deadly word.", m_name);
+				else msg("%^s casts a nether ball.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s intones with deadly menace.", m_name);
-				else msg_format("%^s calls up a storm of nether magics.", m_name);
+				if (blind) msg("%^s intones with deadly menace.", m_name);
+				else msg("%^s calls up a storm of nether magics.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_NETHER, get_dam(3 * spower, 12), rad);
@@ -2776,20 +2776,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 20)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a sphere of chaos.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a sphere of chaos.", m_name);
 				rad = 1;
 			}
 			else if (spower < 70)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a ball of raw chaos.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a ball of raw chaos.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of chaos.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of chaos.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_CHAOS, get_dam(3 * spower, 8), rad);
@@ -2801,20 +2801,20 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 40)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a mana burst.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a mana burst.", m_name);
 				rad = 1;
 			}
 			else if (spower < 90)
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a mana ball.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a mana ball.", m_name);
 				rad = 2;
 			}
 			else
 			{
-				if (blind) msg_format("%^s chants powerfully.", m_name);
-				else msg_format("%^s invokes a storm of mana.", m_name);
+				if (blind) msg("%^s chants powerfully.", m_name);
+				else msg("%^s invokes a storm of mana.", m_name);
 				rad = 3;
 			}
 			mon_ball(m_idx, GF_MANA, get_dam(2 * spower, 16), rad);
@@ -2839,13 +2839,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts an acid bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts an acid bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a bolt of acid.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a bolt of acid.", m_name);
 			}
 			mon_bolt(m_idx, GF_ACID, get_dam(4 * spower, 6));
 			break;
@@ -2856,13 +2856,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a bolt of electricity.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a bolt of electricity.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a bolt of lightning.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a bolt of lightning.", m_name);
 			}
 			mon_bolt(m_idx, GF_ELEC, get_dam(4 * spower, 6));
 			break;
@@ -2873,13 +2873,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a fire bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a fire bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s throws a fiery sphere at you.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s throws a fiery sphere at you.", m_name);
 			}
 			mon_bolt(m_idx, GF_FIRE, get_dam(4 * spower, 6));
 			break;
@@ -2890,13 +2890,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a frost bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a frost bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a frost bolt.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a frost bolt.", m_name);
 			}
 			mon_bolt(m_idx, GF_COLD, get_dam(4 * spower, 6));
 			break;
@@ -2907,13 +2907,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a poison bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a poison bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a bolt of venom.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a bolt of venom.", m_name);
 			}
 			mon_bolt(m_idx, GF_POIS, get_dam(12 * spower / 5, 8));
 			break;
@@ -2924,13 +2924,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a plasma bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a plasma bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a bolt of plasma.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a bolt of plasma.", m_name);
 			}
 			mon_bolt(m_idx, GF_PLASMA, get_dam(5 * spower, 8));
 			break;
@@ -2941,13 +2941,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts an ice bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts an ice bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a bolt of ice.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a bolt of ice.", m_name);
 			}
 			mon_bolt(m_idx, GF_ICE, get_dam(5 * spower, 6));
 			break;
@@ -2958,13 +2958,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a water bolt.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a water bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a water bolt.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a water bolt.", m_name);
 			}
 			mon_bolt(m_idx, GF_WATER, get_dam(2 * spower, 12));
 			break;
@@ -2975,13 +2975,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 80)
 			{
-				if (blind) msg_format("%^s whispers nastily.", m_name);
-				else msg_format("%^s casts a nether bolt.", m_name);
+				if (blind) msg("%^s whispers nastily.", m_name);
+				else msg("%^s casts a nether bolt.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs a deadly word.", m_name);
-				else msg_format("%^s hurls a black orb at you.", m_name);
+				if (blind) msg("%^s murmurs a deadly word.", m_name);
+				else msg("%^s hurls a black orb at you.", m_name);
 			}
 			mon_bolt(m_idx, GF_NETHER, get_dam(5 * spower / 2, 12));
 			break;
@@ -2992,13 +2992,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if ((spower < 5) || (spower <= rlev / 10))
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts a magic missile.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts a magic missile.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts a mana bolt.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts a mana bolt.", m_name);
 			}
 			mon_bolt(m_idx, GF_MANA, get_dam(2 * spower, 16));
 			break;
@@ -3013,7 +3013,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 128+27:
 		{
 			if (blind) msg_print("You feel a crackling in the air.");
-			else msg_format("%^s shoots a spark of lightning at you.", m_name);
+			else msg("%^s shoots a spark of lightning at you.", m_name);
 
 			mon_beam(m_idx, GF_ELEC, get_dam(5 * spower, 6), 6);
 			break;
@@ -3024,13 +3024,13 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 50)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s casts an icy lance.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s casts an icy lance.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s murmurs deeply.", m_name);
-				else msg_format("%^s casts an icy lance.", m_name);
+				if (blind) msg("%^s murmurs deeply.", m_name);
+				else msg("%^s casts an icy lance.", m_name);
 			}
 			mon_beam(m_idx, GF_ICE, get_dam(5 * spower, 6), 12);
 			break;
@@ -3041,18 +3041,18 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 30)
 			{
-				if (blind) msg_format("%^s whispers nastily.", m_name);
-				else msg_format("%^s casts a beam of nether.", m_name);
+				if (blind) msg("%^s whispers nastily.", m_name);
+				else msg("%^s casts a beam of nether.", m_name);
 			}
 			else if (spower < 90)
 			{
-				if (blind) msg_format("%^s murmurs a deadly word.", m_name);
-				else msg_format("%^s hurls a nether lance.", m_name);
+				if (blind) msg("%^s murmurs a deadly word.", m_name);
+				else msg("%^s hurls a nether lance.", m_name);
 			}
 			else
 			{
-				if (blind) msg_format("%^s intones with deadly menace.", m_name);
-				else msg_format("%^s unleashes a ray of death.", m_name);
+				if (blind) msg("%^s intones with deadly menace.", m_name);
+				else msg("%^s unleashes a ray of death.", m_name);
 			}
 			mon_beam(m_idx, GF_NETHER, get_dam(3 * spower, 12), 10);
 			break;
@@ -3064,8 +3064,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			/* Must be powerful and have Udun-magic to get an arc. */
 			if ((spower > 50) && (r_ptr->flags2 & (RF2_UDUN_MAGIC)))
 			{
-				if (blind) msg_format("%^s speaks a word of peril.", m_name);
-				else msg_format("%^s invokes a storm of hellfire!", m_name);
+				if (blind) msg("%^s speaks a word of peril.", m_name);
+				else msg("%^s invokes a storm of hellfire!", m_name);
 
 				/* Absolutely formidable close up, less so at range. */
 				mon_arc(m_idx, GF_HELLFIRE, FALSE, get_dam(7 * spower, 8), 6, 60);
@@ -3074,16 +3074,16 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			/* For weak Udun-magic casters, a column of hellfire. */
 			else if (r_ptr->flags2 & (RF2_UDUN_MAGIC))
 			{
-				if (blind) msg_format("%^s murmurs darkly.", m_name);
-				else msg_format("%^s gestures, and you are enveloped in hellfire.", m_name);
+				if (blind) msg("%^s murmurs darkly.", m_name);
+				else msg("%^s gestures, and you are enveloped in hellfire.", m_name);
 				mon_ball(m_idx, GF_HELLFIRE, get_dam(5 * spower, 8), 0);
 			}
 
 			/* Column of fire for everyone else. */
 			else
 			{
-				if (blind) msg_format("%^s mutters.", m_name);
-				else msg_format("%^s gestures, and you are enveloped in fire.", m_name);
+				if (blind) msg("%^s mutters.", m_name);
+				else msg("%^s gestures, and you are enveloped in fire.", m_name);
 				mon_ball(m_idx, GF_FIRE, get_dam(5 * spower, 8), 0);
 
 			}
@@ -3093,8 +3093,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF5_ARC__WALL */
 		case 128+31:
 		{
-			if (blind) msg_format("%^s mutters.", m_name);
-			else msg_format("%^s calls up a wall of force.", m_name);
+			if (blind) msg("%^s mutters.", m_name);
+			else msg("%^s calls up a wall of force.", m_name);
 			mon_arc(m_idx, GF_FORCE, FALSE, get_dam(3 * spower, 18), 8, 60);
 			break;
 		}
@@ -3106,25 +3106,25 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			{
 				if (blind)
 				{
-					msg_format("%^s mumbles.", m_name);
+					msg("%^s mumbles.", m_name);
 				}
 				else
 				{
-					msg_format("%^s concentrates on %s body.", m_name, m_poss);
+					msg("%^s concentrates on %s body.", m_name, m_poss);
 				}
 			}
 
 			/* Allow a quick speed increase if not already greatly hasted. */
 			if (m_ptr->mspeed < r_ptr->speed + 10)
 			{
-				msg_format("%^s starts moving faster.", m_name);
+				msg("%^s starts moving faster.", m_name);
 				m_ptr->mspeed += 10;
 			}
 
 			/* Allow small speed increases to base+20 */
 			else if (m_ptr->mspeed < r_ptr->speed + 20)
 			{
-				msg_format("%^s starts moving slightly faster.", m_name);
+				msg("%^s starts moving slightly faster.", m_name);
 				m_ptr->mspeed += 2;
 			}
 
@@ -3140,11 +3140,11 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			{
 				if (blind)
 				{
-					msg_format("%^s mumbles.", m_name);
+					msg("%^s mumbles.", m_name);
 				}
 				else
 				{
-					msg_format("%^s gathers %s power.", m_name, m_poss);
+					msg("%^s gathers %s power.", m_name, m_poss);
 				}
 			}
 
@@ -3174,11 +3174,11 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			{
 				if (blind)
 				{
-					msg_format("%^s mumbles.", m_name);
+					msg("%^s mumbles.", m_name);
 				}
 				else
 				{
-					msg_format("%^s concentrates on %s wounds.", m_name, m_poss);
+					msg("%^s concentrates on %s wounds.", m_name, m_poss);
 				}
 			}
 
@@ -3203,7 +3203,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			/* Black Breath slows healing */
 			if (m_ptr->black_breath)
 			{
-				msg_format("%^s is hindered by the Black Breath!", m_name);
+				msg("%^s is hindered by the Black Breath!", m_name);
 				hp_gain = 4 * hp_gain / 10;
 			}
 
@@ -3221,11 +3221,11 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				/* Message */
 				if (seen)
 				{
-					msg_format("%^s looks very healthy!", m_name);
+					msg("%^s looks very healthy!", m_name);
 				}
 				else
 				{
-					msg_format("%^s sounds very healthy!", m_name);
+					msg("%^s sounds very healthy!", m_name);
 				}
 			}
 
@@ -3235,11 +3235,11 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				/* Message */
 				if (seen)
 				{
-					msg_format("%^s looks healthier.", m_name);
+					msg("%^s looks healthier.", m_name);
 				}
 				else
 				{
-					msg_format("%^s sounds healthier.", m_name);
+					msg("%^s sounds healthier.", m_name);
 				}
 			}
 
@@ -3253,7 +3253,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				m_ptr->monfear = 0;
 
 				/* Message */
-				msg_format("%^s recovers %s courage.", m_name, m_poss);
+				msg("%^s recovers %s courage.", m_name, m_poss);
 			}
 
 			break;
@@ -3262,7 +3262,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_CURE */
 		case 160+3:
 		{
-			if (seen) msg_format("%^s concentrates on %s ailments.", m_name, m_poss);
+			if (seen) msg("%^s concentrates on %s ailments.", m_name, m_poss);
 
 			/*
 			 * Cancel Black Breath sometimes.
@@ -3274,7 +3274,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				m_ptr->black_breath = 0;
 
 				/* Message */
-				if (seen) msg_format("The hold of the Black Breath on %s is broken.", m_name);
+				if (seen) msg("The hold of the Black Breath on %s is broken.", m_name);
 			}
 
 			/* Cancel stunning */
@@ -3284,7 +3284,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				m_ptr->stunned = 0;
 
 				/* Message */
-				if (seen) msg_format("%^s is no longer stunned.", m_name);
+				if (seen) msg("%^s is no longer stunned.", m_name);
 			}
 
 			/* Cancel fear */
@@ -3294,7 +3294,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				m_ptr->monfear = 0;
 
 				/* Message */
-				if (seen) msg_format("%^s recovers %s courage.", m_name, m_poss);
+				if (seen) msg("%^s recovers %s courage.", m_name, m_poss);
 
 			}
 
@@ -3305,7 +3305,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				m_ptr->mspeed = r_ptr->speed;
 
 				/* Message */
-				if (seen) msg_format("%^s is no longer slowed.", m_name);
+				if (seen) msg("%^s is no longer slowed.", m_name);
 			}
 
 			/* Redraw (later) if needed */
@@ -3317,7 +3317,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_BLINK */
 		case 160+4:
 		{
-			if (seen) msg_format("%^s blinks away.", m_name);
+			if (seen) msg("%^s blinks away.", m_name);
 			teleport_away(m_idx, 10);
 			/*
 			 * if it comes into view from around a corner (unlikely)
@@ -3326,7 +3326,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (!seen && m_ptr->ml)
 			{
                                 monster_desc(ddesc, m_ptr, 0x08);
-				msg_format("%^s blinks.", ddesc);
+				msg("%^s blinks.", ddesc);
 				seen = TRUE;
 			}
 			break;
@@ -3335,7 +3335,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_TPORT */
 		case 160+5:
 		{
-			if (seen) msg_format("%^s teleports away.", m_name);
+			if (seen) msg("%^s teleports away.", m_name);
 			teleport_away(m_idx, MAX_SIGHT * 2 + 5);
 			/* Hack - 'teleport stress' fatigues the monster */
 			/* m_ptr->mana -= m_ptr->mana/3; */
@@ -3347,7 +3347,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (!seen && m_ptr->ml)
 			{
 				monster_desc(ddesc, m_ptr, 0x08);
-				msg_format("%^s teleports.", ddesc);
+				msg("%^s teleports.", ddesc);
 				seen = TRUE;
 			}
 			break;
@@ -3372,19 +3372,19 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				monster_desc(ddesc, m_ptr, 0x08);
 
 				/* Message */
-				msg_format("%^s suddenly appears.", ddesc);
+				msg("%^s suddenly appears.", ddesc);
 			}
 			/* Monster was visible before, but isn't now. */
 			else if ((seen) && (!m_ptr->ml))
 			{
 				/* Message */
-				msg_format("%^s blinks away.", m_name);
+				msg("%^s blinks away.", m_name);
 			}
 			/* Monster is visible both before and after. */
 			else if ((seen) && (m_ptr->ml))
 			{
 				/* Message */
-				msg_format("%^s blinks toward you.", m_name);
+				msg("%^s blinks toward you.", m_name);
 			}
 
 			/* Have we seen them at any point?  If so, we will learn about the spell. */
@@ -3395,7 +3395,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_TELE_TO */
 		case 160+8:
 		{
-			msg_format("%^s commands you to return.", m_name);
+			msg("%^s commands you to return.", m_name);
 			teleport_player_to(m_ptr->fy, m_ptr->fx, FALSE);
 			break;
 		}
@@ -3403,7 +3403,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_TELE_AWAY */
 		case 160+9:
 		{
-			msg_format("%^s teleports you away.", m_name);
+			msg("%^s teleports you away.", m_name);
 			teleport_player(100, FALSE);
 			break;
 		}
@@ -3411,8 +3411,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_TELE_LEVEL */
 		case 160+10:
 		{
-			if (blind) msg_format("%^s mumbles strangely.", m_name);
-			else msg_format("%^s gestures at your feet.", m_name);
+			if (blind) msg("%^s mumbles strangely.", m_name);
+			else msg("%^s gestures at your feet.", m_name);
 			if (p_resist_pos(P_RES_NEXUS))
 			{
 				msg_print("You are unaffected!");
@@ -3437,8 +3437,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_DARKNESS */
 		case 160+12:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s gestures in shadow.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s gestures in shadow.", m_name);
 			(void)unlite_area(0, 3);
 			break;
 		}
@@ -3446,8 +3446,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_TRAPS */
 		case 160+13:
 		{
-			if (blind) msg_format("%^s mumbles, and then cackles evilly.", m_name);
-			else msg_format("%^s casts a spell and cackles evilly.", m_name);
+			if (blind) msg("%^s mumbles, and then cackles evilly.", m_name);
+			else msg("%^s casts a spell and cackles evilly.", m_name);
 			(void)trap_creation();
 			break;
 		}
@@ -3455,7 +3455,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_FORGET */
 		case 160+14:
 		{
-			msg_format("%^s tries to blank your mind.", m_name);
+			msg("%^s tries to blank your mind.", m_name);
 
 			if (check_save(100))
 			{
@@ -3476,7 +3476,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				int r1;
 
 				/* Basic message */
-				msg_format("%^s draws psychic energy from you!", m_name);
+				msg("%^s draws psychic energy from you!", m_name);
 
 				/* Drain */
 				r1 = remove_player_mana((randint(spower) / 20) + 1);
@@ -3518,7 +3518,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 					/* Special message */
 					if (seen)
 					{
-						msg_format("%^s appears healthier.", m_name);
+						msg("%^s appears healthier.", m_name);
 					}
 				}
 			}
@@ -3530,10 +3530,10 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			int r1 = 0;
 
-			if (!blind) msg_format("%^s dispels magic.", m_name);
-			else if (spower < 40) msg_format("%^s mumbles.", m_name);
-			else if (spower < 90) msg_format("%^s murmurs deeply.", m_name);
-			else msg_format("%^s chants powerfully.", m_name);
+			if (!blind) msg("%^s dispels magic.", m_name);
+			else if (spower < 40) msg("%^s mumbles.", m_name);
+			else if (spower < 90) msg("%^s murmurs deeply.", m_name);
+			else msg("%^s chants powerfully.", m_name);
 
 			/* Strength of dispel == saving throw dieroll */
 			r1 = apply_dispel((spower) > 80 ? spower : 80);
@@ -3563,7 +3563,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			}
 			else
 			{
-				msg_format("%^s gazes deep into your eyes.", m_name);
+				msg("%^s gazes deep into your eyes.", m_name);
 			}
 
 			if (check_save(100))
@@ -3592,7 +3592,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			}
 			else
 			{
-				msg_format("%^s looks deep into your eyes.", m_name);
+				msg("%^s looks deep into your eyes.", m_name);
 			}
 			if (check_save(100))
 			{
@@ -3624,38 +3624,38 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		{
 			if (spower < 7)
 			{
-				if (blind) msg_format("%^s mumbles.", m_name);
-				else msg_format("%^s points at you and curses.", m_name);
+				if (blind) msg("%^s mumbles.", m_name);
+				else msg("%^s points at you and curses.", m_name);
 				k = 1;
 			}
 			else if (spower < 15)
 			{
-				if (blind) msg_format("%^s mumbles deeply.", m_name);
-				else msg_format("%^s points at you and curses horribly.", m_name);
+				if (blind) msg("%^s mumbles deeply.", m_name);
+				else msg("%^s points at you and curses horribly.", m_name);
 				k = 2;
 			}
 			else if (spower < 30)
 			{
-				if (blind) msg_format("%^s murmurs loudly.", m_name);
-				else msg_format("%^s points at you, incanting terribly.", m_name);
+				if (blind) msg("%^s murmurs loudly.", m_name);
+				else msg("%^s points at you, incanting terribly.", m_name);
 				k = 3;
 			}
 			else if (spower < 55)
 			{
-				if (blind) msg_format("%^s cries out wrathfully.", m_name);
-				else msg_format("%^s points at you, screaming words of peril!", m_name);
+				if (blind) msg("%^s cries out wrathfully.", m_name);
+				else msg("%^s points at you, screaming words of peril!", m_name);
 				k = 4;
 			}
 			else
 			{
-				if (blind) msg_format("%^s screams the word 'DIE!'", m_name);
-				else msg_format("%^s points at you, screaming the word DIE!", m_name);
+				if (blind) msg("%^s screams the word 'DIE!'", m_name);
+				else msg("%^s points at you, screaming the word DIE!", m_name);
 				k = 5;
 			}
 
 			if (rand_int(rlev / 2 + 70) < p_ptr->skill_sav)
 			{
-				msg_format("You resist the effects%c",
+				msg("You resist the effects%c",
 				      (spower < 30 ?  '.' : '!'));
 			}
 			else
@@ -3702,7 +3702,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		case 160+25:
 		{
 			if (blind) msg_print("You suddenly feel hungry.");
-			else msg_format("%^s gestures at you, and you suddenly feel hungry.", m_name);
+			else msg("%^s gestures at you, and you suddenly feel hungry.", m_name);
 
 			if (randint(100) > p_ptr->skill_sav)
 			{
@@ -3724,8 +3724,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_SCARE */
 		case 160+27:
 		{
-			if (blind) msg_format("%^s mumbles, and you hear scary noises.", m_name);
-			else msg_format("%^s casts a fearful illusion.", m_name);
+			if (blind) msg("%^s mumbles, and you hear scary noises.", m_name);
+			else msg("%^s casts a fearful illusion.", m_name);
 			if (p_ptr->no_fear)
 			{
 				msg_print("You refuse to be frightened.");
@@ -3744,8 +3744,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_BLIND */
 		case 160+28:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s casts a spell, burning your eyes!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s casts a spell, burning your eyes!", m_name);
 			if (p_ptr->no_blind)
 			{
 				msg_print("You are unaffected!");
@@ -3764,8 +3764,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_CONF */
 		case 160+29:
 		{
-			if (blind) msg_format("%^s mumbles, and you hear puzzling noises.", m_name);
-			else msg_format("%^s creates a mesmerising illusion.", m_name);
+			if (blind) msg("%^s mumbles, and you hear puzzling noises.", m_name);
+			else msg("%^s creates a mesmerising illusion.", m_name);
 			if (p_resist_pos(P_RES_CONFU))
 			{
 				msg_print("You disbelieve the feeble spell.");
@@ -3784,7 +3784,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_SLOW */
 		case 160+30:
 		{
-			msg_format("%^s drains power from your muscles!", m_name);
+			msg("%^s drains power from your muscles!", m_name);
 			if (p_ptr->free_act)
 			{
 				msg_print("You are unaffected!");
@@ -3803,15 +3803,15 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF6_HOLD */
 		case 160+31:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s stares deep into your eyes!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s stares deep into your eyes!", m_name);
 			if (p_ptr->free_act)
 			{
 					msg_print("You are unaffected!");
 			}
 			else if (check_save(100))
 			{
-					msg_format("You resist the effects!");
+					msg("You resist the effects!");
 			}
 				else
 			{
@@ -3824,8 +3824,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_KIN */
 		case 192 + 0:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons %s %s.", m_name,
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons %s %s.", m_name,
 				m_poss, ((r_ptr->flags1) & RF1_UNIQUE ?
 				"minions" : "kin"));
 
@@ -3850,8 +3850,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_MONSTER */
 		case 192 + 3:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons help!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons help!", m_name);
 			count = summon_specific(y, x, FALSE, rlev, 0, 1);
 
 			if (blind && count) msg_print("You hear something appear nearby.");
@@ -3861,8 +3861,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_MONSTERS */
 		case 192 + 4:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons monsters!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons monsters!", m_name);
 			count = summon_specific(y, x, FALSE, rlev, 0, 4);
 
 			if (blind && count) msg_print("You hear many things appear nearby.");
@@ -3877,8 +3877,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_ANT */
 		case 192 + 8:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons ants.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons ants.", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_ANT, 6);
 
@@ -3889,8 +3889,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_SPIDER */
 		case 192 + 9:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons spiders.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons spiders.", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_SPIDER, 6);
 
@@ -3901,8 +3901,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_HOUND */
 		case 192 + 10:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons hounds.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons hounds.", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_HOUND, 6);
 
@@ -3913,8 +3913,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_ANIMAL */
 		case 192 + 11:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons natural creatures.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons natural creatures.", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_ANIMAL, 6);
 
@@ -3929,8 +3929,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_THIEF */
 		case 192 + 14:
 		{
-			if (blind) msg_format("%^s whistles.", m_name);
-			else msg_format("%^s whistles up a den of thieves!", m_name);
+			if (blind) msg("%^s whistles.", m_name);
+			else msg("%^s whistles up a den of thieves!", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_THIEF, 4);
 
@@ -3949,7 +3949,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (blind && count)
 				msg_print("You hear heavy footsteps approaching.");
 			else if (count)
-				msg_format("%^s calls up his friends!", m_name);
+				msg("%^s calls up his friends!", m_name);
 			break;
 		}
 
@@ -3962,8 +3962,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_DRAGON */
 		case 192 + 20:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons a dragon!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons a dragon!", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_DRAGON, 1);
 
@@ -3974,8 +3974,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_HI_DRAGON */
 		case 192 + 21:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons ancient dragons!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons ancient dragons!", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_HI_DRAGON, 4);
 
@@ -3993,9 +3993,9 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_DEMON */
 		case 192 + 24:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
 			{
-				if (!(blind)) msg_format
+				if (!(blind)) msg
 					("%^s magically summons a hellish adversary!", m_name);
 				count = summon_specific(y, x, FALSE, rlev, SUMMON_DEMON, 1);
 
@@ -4008,8 +4008,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_HI_DEMON */
 		case 192 + 25:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons greater demons!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons greater demons!", m_name);
 			count = summon_specific(y, x, FALSE, rlev, SUMMON_HI_DEMON, 6);
 
 			if (blind && count)
@@ -4026,8 +4026,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_UNDEAD */
 		case 192 + 28:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons an undead adversary!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons an undead adversary!", m_name);
 			count = summon_specific(y, x, FALSE,
 						rlev, SUMMON_UNDEAD, 1);
 
@@ -4038,8 +4038,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_HI_UNDEAD */
 		case 192 + 29:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons greater undead!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons greater undead!", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_HI_UNDEAD, 4);
 
@@ -4054,8 +4054,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_WRAITH */
 		case 192 + 30:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons mighty undead opponents!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons mighty undead opponents!", m_name);
 			count = summon_specific(y, x, FALSE, rlev, SUMMON_WRAITH, 6);
 			count += summon_specific(y, x, FALSE, rlev, SUMMON_HI_UNDEAD, (6-count));
 
@@ -4070,8 +4070,8 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 		/* RF7_S_UNIQUE */
 		case 192 + 31:
 		{
-			if (blind) msg_format("%^s mumbles.", m_name);
-			else msg_format("%^s magically summons special opponents!", m_name);
+			if (blind) msg("%^s mumbles.", m_name);
+			else msg("%^s magically summons special opponents!", m_name);
 			count = summon_specific(y, x, FALSE,
 					rlev, SUMMON_UNIQUE, 3);
 			count += summon_specific(y, x, FALSE, rlev, SUMMON_HI_UNDEAD, (6-count));
@@ -4107,7 +4107,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			/* Gain some mana */
 			p_ptr->mana_gain += drain;
 
-			msg_format("%^s is drained.", m_name);
+			msg("%^s is drained.", m_name);
 		}
 	}
 
@@ -4171,7 +4171,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 	}
 
 	if (seen && p_ptr->wizard)
-		msg_format("%^s has %i mana remaining.", m_name, m_ptr->mana);
+		msg("%^s has %i mana remaining.", m_name, m_ptr->mana);
 
 	/* Always take note of monsters that kill you */
 	if (p_ptr->is_dead && (l_ptr->deaths < MAX_SHORT))

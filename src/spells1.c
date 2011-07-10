@@ -1302,7 +1302,7 @@ static int inven_damage(inven_func typ, int perc)
 				object_desc(o_name, o_ptr, FALSE, 3);
 
 				/* Message */
-				msg_format("%sour %s (%c) %s destroyed!",
+				msg("%sour %s (%c) %s destroyed!",
 					   ((o_ptr->number > 1) ?
 					    ((amt == o_ptr->number) ? "All of y" :
 					     (amt > 1 ? "Some of y" : "One of y")) : "Y"),
@@ -1399,13 +1399,13 @@ static int minus_ac(int dam)
 	/* Object resists */
 	if (f3 & (TR3_IGNORE_ACID))
 	{
-		msg_format("Your %s is unaffected!", o_name);
+		msg("Your %s is unaffected!", o_name);
 
 		return (TRUE);
 	}
 
 	/* Message */
-	msg_format("Your %s is damaged!", o_name);
+	msg("Your %s is damaged!", o_name);
 
 	/* Damage the item */
 	o_ptr->to_a--;
@@ -2084,7 +2084,7 @@ bool apply_disenchant(int dam)
 	if (artifact_p(o_ptr) && (rand_int(100) < 70))
 	{
 		/* Message */
-		msg_format("Your %s (%c) resist%s disenchantment!",
+		msg("Your %s (%c) resist%s disenchantment!",
 			   o_name, index_to_label(t),
 			   ((o_ptr->number != 1) ? "" : "s"));
 
@@ -2106,7 +2106,7 @@ bool apply_disenchant(int dam)
 	if ((o_ptr->to_a > 5) && (rand_int(100) < 20)) o_ptr->to_a--;
 
 	/* Message */
-	msg_format("Your %s (%c) %s disenchanted!",
+	msg("Your %s (%c) %s disenchanted!",
 		   o_name, index_to_label(t),
 		   ((o_ptr->number != 1) ? "were" : "was"));
 
@@ -2802,7 +2802,7 @@ static bool project_o(int who, int y, int x, int dam, int typ)
 				/* Observe the resist */
 				if (o_ptr->marked)
 				{
-					msg_format("The %s %s unaffected!",
+					msg("The %s %s unaffected!",
 						   o_name, (plural ? "are" : "is"));
 				}
 			}
@@ -2813,7 +2813,7 @@ static bool project_o(int who, int y, int x, int dam, int typ)
 				/* Describe if needed */
 				if (o_ptr->marked && note_kill)
 				{
-					msg_format("The %s%s", o_name, note_kill);
+					msg("The %s%s", o_name, note_kill);
 				}
 
 				/* Delete the object */
@@ -2966,7 +2966,7 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 	/* Monsters in stasis are invulnerable. -LM- */
 	if (m_ptr->stasis)
 	{
-		msg_format("%^s is in stasis, and cannot be harmed.", m_name);
+		msg("%^s is in stasis, and cannot be harmed.", m_name);
 		return (FALSE);
 	}
 
@@ -3004,7 +3004,7 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 		{
 			if ((rand_int(4) == 0) && (!((r_ptr->flags1) & RF1_NEVER_MOVE)))
 			{
-				msg_format("%^s ducks behind a boulder!", m_name);
+				msg("%^s ducks behind a boulder!", m_name);
 				return (FALSE);
 			}
 			else terrain_adjustment -= dam / 4;
@@ -3037,7 +3037,7 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 		{
 			if ((rand_int(4) == 0) && (!((r_ptr->flags1) & RF1_NEVER_MOVE)))
 			{
-				msg_format("%^s hides behind a tree!", m_name);
+				msg("%^s hides behind a tree!", m_name);
 				return(FALSE);
 			}
 			else terrain_adjustment -= dam / 4;
@@ -4605,14 +4605,14 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 			delete_monster_idx(cave_m_idx[y][x]);
 
 			/* Give detailed messages if destroyed */
-			if (note) msg_format("%^s%s", m_name, note);
+			if (note) msg("%^s%s", m_name, note);
 		}
 
 		/* Damaged monster */
 		else
 		{
 			/* Give detailed messages if visible or destroyed */
-			if (note && seen) msg_format("%^s%s", m_name, note);
+			if (note && seen) msg("%^s%s", m_name, note);
 
 			/* Hack -- Pain message */
 			else if (dam > 0) message_pain(cave_m_idx[y][x], dam);
@@ -4644,7 +4644,7 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 		else
 		{
 			/* Give detailed messages if visible or destroyed */
-			if (note && seen) msg_format("%^s%s", m_name, note);
+			if (note && seen) msg("%^s%s", m_name, note);
 
 			/* Hack -- Pain message */
 			else if (dam > 0) message_pain(cave_m_idx[y][x], dam);
@@ -4656,7 +4656,7 @@ static bool project_m(int who, int y, int x, int dam, int typ, int flg)
 				sound(SOUND_FLEE);
 
 				/* Message */
-				msg_format("%^s flees in terror!", m_name);
+				msg("%^s flees in terror!", m_name);
 			}
 
 			/* Hack -- handle sleep */
@@ -5967,7 +5967,7 @@ static bool project_p(int who, int d, int y, int x, int dam, int typ)
 						case 6: k = A_CHR; act = "beautiful"; break;
 					}
 
-					msg_format("You're not as %s as you used to be...", act);
+					msg("You're not as %s as you used to be...", act);
 
 					p_ptr->stat_cur[k] = (p_ptr->stat_cur[k] * 3) / 4;
 					if (p_ptr->stat_cur[k] < 3) p_ptr->stat_cur[k] = 3;
@@ -6432,7 +6432,7 @@ static bool project_t(int who, int y, int x, int dam, int typ, int flg)
 		/* Give detailed messages if visible */
 		if (note && seen)
 		{
-			msg_format("%^s%s", m_name, note);
+			msg("%^s%s", m_name, note);
 		}
 
 		/* Update the monster */

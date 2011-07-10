@@ -88,9 +88,9 @@ static void pseudo_probe(void)
 
 		/* Describe the monster */
 		if (!(r_ptr->mana))
-			msg_format("%^s has about %d hit points.", m_name, approx_hp);
+			msg("%^s has about %d hit points.", m_name, approx_hp);
 		else
-			msg_format("%^s has about %d hit points and about %d mana.", m_name, approx_hp, approx_mana);
+			msg("%^s has about %d hit points and about %d mana.", m_name, approx_hp, approx_mana);
 
 		/* Learn some flags.  Chance of omissions. */
 		if ((r_ptr->flags3 & (RF3_ANIMAL)) && (rand_int(20) != 1))
@@ -187,7 +187,7 @@ void shapechange(s16b shape)
 
 	if (shape)
 	{
-		msg_format("You assume the form of a %s.", shapedesc);
+		msg("You assume the form of a %s.", shapedesc);
 		msg_print("Your equipment merges into your body.");
 	}
 
@@ -367,7 +367,7 @@ static void rebalance_weapon(void)
 		o_ptr->to_d -= (s16b) (2 + rand_int(4));
 
 		/* Describe */
-		msg_format("Oh no!  A dreadful black aura surrounds your %s!", o_name);
+		msg("Oh no!  A dreadful black aura surrounds your %s!", o_name);
 
 		/* Recalculate bonuses */
 		p_ptr->update |= (PU_BONUS);
@@ -384,7 +384,7 @@ static void rebalance_weapon(void)
 		object_desc(o_name, o_ptr, FALSE, 0);
 
 		/* Describe */
-		msg_format("Your %s gleams steel blue!", o_name);
+		msg("Your %s gleams steel blue!", o_name);
 
 		/* Prevent money-making. */
 		o_ptr->discount = 80;
@@ -592,7 +592,7 @@ static int get_spell(int *sn, const char * prompt, int tval, int sval)
 		if (!spell_okay(spell))
 		{
 			bell("Illegal spell choice!");
-			msg_format("You may not %s that %s.", prompt, p);
+			msg("You may not %s that %s.", prompt, p);
 			continue;
 		}
 
@@ -911,7 +911,7 @@ void do_cmd_cast_or_pray(void)
 	{
 		if (spell == -2)
 		{
-			msg_format("You don't know any %s%s in that %s.", p,
+			msg("You don't know any %s%s in that %s.", p,
 				(mp_ptr->spell_book == TV_DRUID_BOOK) ? "" : "s", r);
 		}
 		return;
@@ -926,7 +926,7 @@ void do_cmd_cast_or_pray(void)
 	if (s_ptr->smana > p_ptr->csp)
 	{
 		/* Warning */
-		msg_format("You do not have enough mana to %s this %s.",
+		msg("You do not have enough mana to %s this %s.",
 			t, p);
 
 		/* Verify */
@@ -1373,7 +1373,7 @@ void do_cmd_cast_or_pray(void)
 			case 60:	/* Rogue Spell: Day of Misrule */
 			{
 				const char * p = (p_ptr->psex == SEX_FEMALE ? "Daughters" : "Sons");
-				msg_format("%s of Night rejoice!  It's the Day of Misrule!", p);
+				msg("%s of Night rejoice!  It's the Day of Misrule!", p);
 				(void)set_fast(randint(30) + 30);
 				(void)set_shero(p_ptr->shero + randint(30) + 30);
 				break;

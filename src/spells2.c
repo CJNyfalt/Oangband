@@ -237,7 +237,7 @@ bool do_dec_stat(int stat)
 	if (sust)
 	{
 		/* Message */
-		msg_format("You feel very %s for a moment, but the feeling passes.",
+		msg("You feel very %s for a moment, but the feeling passes.",
 			   desc_stat_neg[stat]);
 
 		/* Notice effect */
@@ -248,7 +248,7 @@ bool do_dec_stat(int stat)
 	if (dec_stat(stat, 10, FALSE))
 	{
 		/* Message */
-		msg_format("You feel very %s.", desc_stat_neg[stat]);
+		msg("You feel very %s.", desc_stat_neg[stat]);
 
 		/* Notice effect */
 		return (TRUE);
@@ -268,7 +268,7 @@ bool do_res_stat(int stat)
 	if (res_stat(stat))
 	{
 		/* Message */
-		msg_format("You feel less %s.", desc_stat_neg[stat]);
+		msg("You feel less %s.", desc_stat_neg[stat]);
 
 		/* Notice */
 		return (TRUE);
@@ -293,7 +293,7 @@ bool do_inc_stat(int stat)
 	if (inc_stat(stat))
 	{
 		/* Message */
-		msg_format("You feel very %s!", desc_stat_pos[stat]);
+		msg("You feel very %s!", desc_stat_pos[stat]);
 
 		/* Notice */
 		return (TRUE);
@@ -303,7 +303,7 @@ bool do_inc_stat(int stat)
 	if (res)
 	{
 		/* Message */
-		msg_format("You feel less %s.", desc_stat_neg[stat]);
+		msg("You feel less %s.", desc_stat_neg[stat]);
 
 		/* Notice */
 		return (TRUE);
@@ -1263,7 +1263,7 @@ bool detect_monsters_normal(int range, bool show)
 		flag = TRUE;
 
 		/* Print success message */
-		if (num_off > 0) msg_format("You detect monsters (%i offscreen).",
+		if (num_off > 0) msg("You detect monsters (%i offscreen).",
 					    num_off);
 		else msg_print("You detect monsters.");
 	}
@@ -1347,7 +1347,7 @@ bool detect_monsters_invis(int range, bool show)
 		flag = TRUE;
 
 		/* Print success message */
-		if (num_off > 0) msg_format("You detect invisible creatures (%i offscreen).",
+		if (num_off > 0) msg("You detect invisible creatures (%i offscreen).",
 					    num_off);
 		else msg_print("You detect invisible creatures.");
 	}
@@ -1432,7 +1432,7 @@ bool detect_monsters_evil(int range, bool show)
 		flag = TRUE;
 
 		/* Print success message */
-		if (num_off > 0) msg_format("You detect evil creatures (%i offscreen).",
+		if (num_off > 0) msg("You detect evil creatures (%i offscreen).",
 					    num_off);
 		else msg_print("You detect evil creatures.");
 
@@ -1508,7 +1508,7 @@ bool detect_monsters_living(int range, bool show)
 		flag = TRUE;
 
 		/* Print success message */
-		if (num_off > 0) msg_format("You detect living creatures (%i offscreen).",
+		if (num_off > 0) msg("You detect living creatures (%i offscreen).",
 					   num_off);
 		else msg_print("You detect living creatures.");
 
@@ -1867,7 +1867,7 @@ bool enchant_spell(int num_hit, int num_dam, int num_ac)
 	object_desc(o_name, o_ptr, FALSE, 0);
 
 	/* Describe */
-	msg_format("%s %s glow%s brightly!",
+	msg("%s %s glow%s brightly!",
 		   ((item >= 0) ? "Your" : "The"), o_name,
 		   ((o_ptr->number > 1) ? "" : "s"));
 
@@ -2058,7 +2058,7 @@ void set_ele_attack(u32b attack_type, int duration)
 		p_ptr->ele_attack = duration;
 
 		/* Message. */
-		msg_format("For a while, the blows you deal will %s",
+		msg("For a while, the blows you deal will %s",
 			     ((attack_type == ATTACK_ACID) ? "melt with acid!" :
 			      ((attack_type == ATTACK_ELEC) ? "shock your foes!" :
 			       ((attack_type == ATTACK_FIRE) ? "burn with fire!" :
@@ -2099,7 +2099,7 @@ bool curse_armor(void)
 	if (artifact_p(o_ptr) && (rand_int(100) < 50))
 	{
 		/* Cool */
-		msg_format("A %s tries to %s, but your %s resists the effects!",
+		msg("A %s tries to %s, but your %s resists the effects!",
 			   "terrible black aura", "surround your armor", o_name);
 	}
 
@@ -2107,7 +2107,7 @@ bool curse_armor(void)
 	else
 	{
 		/* Oops */
-		msg_format("A terrible black aura blasts your %s!", o_name);
+		msg("A terrible black aura blasts your %s!", o_name);
 
 		/* Blast the armor */
 		o_ptr->name1 = 0;
@@ -2163,7 +2163,7 @@ bool curse_weapon(void)
 	if (artifact_p(o_ptr) && (rand_int(100) < 50))
 	{
 		/* Cool */
-		msg_format("A %s tries to %s, but your %s resists the effects!",
+		msg("A %s tries to %s, but your %s resists the effects!",
 			   "terrible black aura", "surround your weapon", o_name);
 	}
 
@@ -2171,7 +2171,7 @@ bool curse_weapon(void)
 	else
 	{
 		/* Oops */
-		msg_format("A terrible black aura blasts your %s!", o_name);
+		msg("A terrible black aura blasts your %s!", o_name);
 
 		/* Shatter the weapon */
 		o_ptr->name1 = 0;
@@ -2267,19 +2267,19 @@ bool ident_spell(void)
 	/* Describe */
 	if (item >= INVEN_WIELD)
 	{
-		msg_format("%^s: %s (%c).",
+		msg("%^s: %s (%c).",
 			   describe_use(item), o_name, index_to_label(item));
 	}
 	else if (item >= 0)
 	{
-		msg_format("In your pack: %s (%c).  %s",
+		msg("In your pack: %s (%c).  %s",
 			   o_name, index_to_label(item),
 			   ((squelch==1) ? "(Squelch)" :
 			    ((squelch==-1) ? "(Squelch Failed)" : "")));
 	}
 	else
 	{
-		msg_format("On the ground: %s. %s",
+		msg("On the ground: %s. %s",
 			   o_name,
 			   ((squelch==1) ? "(Squelch)" :
 			    ((squelch==-1) ? "(Squelch Failed)" : "")));
@@ -2387,19 +2387,19 @@ bool identify_fully(void)
 	/* Describe */
 	if (item >= INVEN_WIELD)
 	{
-		msg_format("%^s: %s (%c).",
+		msg("%^s: %s (%c).",
 			   describe_use(item), o_name, index_to_label(item));
 	}
 	else if (item >= 0)
 	{
-		msg_format("In your pack: %s (%c).  %s",
+		msg("In your pack: %s (%c).  %s",
 			   o_name, index_to_label(item),
 			   ((squelch==1) ? "(Squelch)" :
 			    ((squelch==-1) ? "(Squelch Failed)" : "")));
 	}
 	else
 	{
-		msg_format("On the ground: %s. %s",
+		msg("On the ground: %s. %s",
 			   o_name,
 			   ((squelch==1) ? "(Squelch)" :
 			    ((squelch==-1) ? "(Squelch Failed)" : "")));
@@ -2606,7 +2606,7 @@ bool recharge(int power)
 		if (artifact_p(o_ptr))
 		{
 			object_desc(o_name, o_ptr, TRUE, 0);
-			msg_format("The recharging backfires - %s is completely drained!", o_name);
+			msg("The recharging backfires - %s is completely drained!", o_name);
 
 			/* Artifact rods. */
 			if ((o_ptr->tval == TV_ROD) && (o_ptr->timeout < 10000))
@@ -2681,7 +2681,7 @@ bool recharge(int power)
 				}
 				else if (o_ptr->tval == TV_WAND)
 				{
-					msg_format("You save your %s from destruction, but all charges are lost.", o_name);
+					msg("You save your %s from destruction, but all charges are lost.", o_name);
 					o_ptr->pval = 0;
 				}
 				/* Staffs aren't drained. */
@@ -2691,9 +2691,9 @@ bool recharge(int power)
 			if (fail_type == 2)
 			{
 				if (o_ptr->number > 1)
-					msg_format("Wild magic consumes one of your %s!", o_name);
+					msg("Wild magic consumes one of your %s!", o_name);
 				else
-					msg_format("Wild magic consumes your %s!", o_name);
+					msg("Wild magic consumes your %s!", o_name);
 
 				/* Reduce rod stack maximum timeout, drain wands. */
 				if (o_ptr->tval == TV_ROD) o_ptr->pval -= k_ptr->pval;
@@ -2720,9 +2720,9 @@ bool recharge(int power)
 			if (fail_type == 3)
 			{
 				if (o_ptr->number > 1)
-					msg_format("Wild magic consumes all your %s!", o_name);
+					msg("Wild magic consumes all your %s!", o_name);
 				else
-					msg_format("Wild magic consumes your %s!", o_name);
+					msg("Wild magic consumes your %s!", o_name);
 
 
 				/* Reduce and describe inventory */
@@ -2827,7 +2827,7 @@ bool tap_magical_energy(void)
 	if (energy < 36)
 	{
 		/* Notify of failure. */
-		msg_format("That %s had no useable energy", item_name);
+		msg("That %s had no useable energy", item_name);
 	}
 	else
 	{
@@ -2857,7 +2857,7 @@ bool tap_magical_energy(void)
 		}
 
 		/* Player is a smart cookie. */
-		else msg_format("Your mana was already at its maximum.  %^s not drained.", item_name);
+		else msg("Your mana was already at its maximum.  %^s not drained.", item_name);
 	}
 
 	return(TRUE);
@@ -3538,9 +3538,9 @@ bool probing(void)
 
 			/* Describe the monster */
 			if (!(r_ptr->mana))
-				 msg_format("%^s has %d hit points.", m_name, m_ptr->hp);
+				 msg("%^s has %d hit points.", m_name, m_ptr->hp);
 			else
-				 msg_format("%^s has %d hit points and %d mana.", m_name, m_ptr->hp, m_ptr->mana);
+				 msg("%^s has %d hit points and %d mana.", m_name, m_ptr->hp, m_ptr->mana);
 
 			/* Learn all of the non-spell, non-treasure flags */
 			lore_do_probe(i);
@@ -3917,7 +3917,7 @@ void earthquake(int cy, int cx, int r, bool volcano)
 					monster_desc(m_name, m_ptr, 0);
 
 					/* Scream in pain */
-					msg_format("%^s wails out in pain!", m_name);
+					msg("%^s wails out in pain!", m_name);
 
 					/* Take damage from the quake */
 					damage = (sn ? damroll(4, 8) : damroll(5, 80));
@@ -3935,7 +3935,7 @@ void earthquake(int cy, int cx, int r, bool volcano)
 					if (m_ptr->hp < 0)
 					{
 						/* Message */
-						msg_format("%^s is embedded in the rock!", m_name);
+						msg("%^s is embedded in the rock!", m_name);
 
 						/* Delete the monster */
 						delete_monster(yy, xx);
@@ -4151,7 +4151,7 @@ static void cave_temp_room_lite(void)
 					monster_desc(m_name, m_ptr, 0);
 
 					/* Dump a message */
-					msg_format("%^s wakes up.", m_name);
+					msg("%^s wakes up.", m_name);
 				}
 			}
 		}

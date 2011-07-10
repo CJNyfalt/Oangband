@@ -779,8 +779,8 @@ static errr process_pref_file_aux(const char * name)
 	if (err)
 	{
 		/* Useful error message */
-		msg_format("Error %d in line %d of file '%s'.", err, num, name);
-		msg_format("Parsing '%s'", old);
+		msg("Error %d in line %d of file '%s'.", err, num, name);
+		msg("Parsing '%s'", old);
 		msg_print(NULL);
 	}
 
@@ -2195,7 +2195,7 @@ errr file_character(const char * name, bool full)
 	if (!fff)
 	{
 		/* Message */
-		msg_format("Character dump failed!");
+		msg("Character dump failed!");
 		msg_print(NULL);
 
 		/* Error */
@@ -2496,7 +2496,7 @@ bool show_file(const char * name, const char * what, int line, int mode)
 	if (!fff)
 	{
 		/* Message */
-		msg_format("Cannot open '%s'.", name);
+		msg("Cannot open '%s'.", name);
 		msg_print(NULL);
 
 		/* Oops */
@@ -3678,7 +3678,7 @@ static void death_examine(void)
 	object_desc(o_name, o_ptr, TRUE, 3);
 
 	/* Describe */
-	msg_format("Examining %s...", o_name);
+	msg("Examining %s...", o_name);
 
 	/* Describe it fully */
 	do_cmd_observe(o_ptr, FALSE);

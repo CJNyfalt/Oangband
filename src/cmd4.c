@@ -663,12 +663,12 @@ static bool do_cmd_pref_file_hack(int row)
 	if (process_pref_file(ftmp))
 	{
 		/* Mention failure */
-		msg_format("Failed to load '%s'!", ftmp);
+		msg("Failed to load '%s'!", ftmp);
 	}
 	else
 	{
 		/* Mention success */
-		msg_format("Loaded '%s'.", ftmp);
+		msg("Loaded '%s'.", ftmp);
 	}
 
 	return (TRUE);
@@ -2662,7 +2662,7 @@ void do_cmd_note(void)
 	if (!tmp[0] || (tmp[0] == ' ')) return;
 
 	/* Add the note to the message recall */
-	msg_format("Note: %s", tmp);
+	msg("Note: %s", tmp);
 }
 
 
@@ -2672,7 +2672,7 @@ void do_cmd_note(void)
 void do_cmd_version(void)
 {
 	/* Silly message */
-	msg_format("You are playing Oangband %d.%d.%d.  Type '?' for more info.",
+	msg("You are playing Oangband %d.%d.%d.  Type '?' for more info.",
 		   O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH);
 }
 
@@ -2715,7 +2715,7 @@ void do_cmd_feeling(void)
 	}
 
 	/* Display the feeling */
-	if (p_ptr->themed_level) msg_format("%s", themed_feeling);
+	if (p_ptr->themed_level) msg("%s", themed_feeling);
 	else msg_print(do_cmd_feeling_text[feeling]);
 }
 
@@ -2753,7 +2753,7 @@ void ghost_challenge(void)
 {
 	monster_race *r_ptr = &r_info[r_ghost];
 
-	msg_format("%^s, the %^s %s", ghost_name, r_name + r_ptr->name,
+	msg("%^s, the %^s %s", ghost_name, r_name + r_ptr->name,
 		do_cmd_challenge_text[rand_int(14)]);
 }
 
@@ -4317,7 +4317,7 @@ void do_cmd_time(void)
 
 
 	/* Message */
-	msg_format("This is day %d. The time is %d:%02d %s.", day,
+	msg("This is day %d. The time is %d:%02d %s.", day,
 		(hour % 12 == 0) ? 12 : (hour % 12), min,
 		(hour < 12) ? "AM" : "PM");
 }

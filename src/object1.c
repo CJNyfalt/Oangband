@@ -4360,7 +4360,7 @@ extern bool destroy_squelched_items(void)
 	item_tester_hook = NULL;
 
 	/* message */
-	if (count > 0) msg_format("You destroy %i SQUELCH-ed item%s.",
+	if (count > 0) msg("You destroy %i SQUELCH-ed item%s.",
 				    count, ((count > 1) ? "s" : ""));
 	else msg_print("No SQUELCH-ed items to destroy.");
 

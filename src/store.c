@@ -151,14 +151,14 @@ static void say_comment_2(s32b value, int annoyed)
 	if (annoyed > 0)
 	{
 		/* Formatted message */
-		msg_format(comment_2a[rand_int(MAX_COMMENT_2A)], tmp_val);
+		msg(comment_2a[rand_int(MAX_COMMENT_2A)], tmp_val);
 	}
 
 	/* Normal offer */
 	else
 	{
 		/* Formatted message */
-		msg_format(comment_2b[rand_int(MAX_COMMENT_2B)], tmp_val);
+		msg(comment_2b[rand_int(MAX_COMMENT_2B)], tmp_val);
 	}
 }
 
@@ -177,14 +177,14 @@ static void say_comment_3(s32b value, int annoyed)
 	if (annoyed > 0)
 	{
 		/* Formatted message */
-		msg_format(comment_3a[rand_int(MAX_COMMENT_3A)], tmp_val);
+		msg(comment_3a[rand_int(MAX_COMMENT_3A)], tmp_val);
 	}
 
 	/* Normal offer */
 	else
 	{
 		/* Formatted message */
-		msg_format(comment_3b[rand_int(MAX_COMMENT_3B)], tmp_val);
+		msg(comment_3b[rand_int(MAX_COMMENT_3B)], tmp_val);
 	}
 }
 
@@ -2573,7 +2573,7 @@ static void store_purchase(void)
 		object_desc_store(o_name, i_ptr, TRUE, 3);
 
 		/* Message */
-		msg_format("Buying %s (%c).",
+		msg("Buying %s (%c).",
 			   o_name, store_to_label(item));
 		msg_print(NULL);
 
@@ -2621,7 +2621,7 @@ static void store_purchase(void)
 				object_desc(o_name, i_ptr, TRUE, 3);
 
 				/* Message */
-				msg_format("You bought %s (%c) for %ld gold.",
+				msg("You bought %s (%c) for %ld gold.",
 					   o_name, store_to_label(item),
 					   (long)price);
 
@@ -2638,7 +2638,7 @@ static void store_purchase(void)
 				object_desc(o_name, &inventory[item_new], TRUE, 3);
 
 				/* Message */
-				msg_format("You have %s (%c).",
+				msg("You have %s (%c).",
 					   o_name, index_to_label(item_new));
 
 				/* Now, reduce the original stack's pval. */
@@ -2737,7 +2737,7 @@ static void store_purchase(void)
 		object_desc(o_name, &inventory[item_new], TRUE, 3);
 
 		/* Message */
-		msg_format("You have %s (%c).", o_name, index_to_label(item_new));
+		msg("You have %s (%c).", o_name, index_to_label(item_new));
 
 		/* Handle stuff */
 		handle_stuff();
@@ -2884,7 +2884,7 @@ static void store_sell(void)
 	if (store_num != STORE_HOME)
 	{
 		/* Describe the transaction */
-		msg_format("Selling %s (%c).", o_name, index_to_label(item));
+		msg("Selling %s (%c).", o_name, index_to_label(item));
 		msg_print(NULL);
 
 		/* Haggle for it */
@@ -2951,7 +2951,7 @@ static void store_sell(void)
 			object_desc(o_name, i_ptr, TRUE, 3);
 
 			/* Describe the result (in message buffer) */
-			msg_format("You sold %s (%c) for %ld gold.",
+			msg("You sold %s (%c) for %ld gold.",
 				   o_name, index_to_label(item), (long)price);
 
 			/* Analyze the prices (and comment verbally) */
@@ -2999,7 +2999,7 @@ static void store_sell(void)
 		distribute_charges(o_ptr, i_ptr, amt);
 
 		/* Describe */
-		msg_format("You drop %s (%c).", o_name, index_to_label(item));
+		msg("You drop %s (%c).", o_name, index_to_label(item));
 
 
 		/* Take it from the players inventory */
@@ -3556,7 +3556,7 @@ void do_cmd_store(void)
 				object_desc(o_name, i_ptr, TRUE, 3);
 
 				/* Message */
-				msg_format("You drop %s (%c).", o_name, index_to_label(item));
+				msg("You drop %s (%c).", o_name, index_to_label(item));
 
 				/* Remove it from the players inventory */
 				inven_item_increase(item, -255);

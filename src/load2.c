@@ -3093,9 +3093,9 @@ static errr rd_savefile_new_aux(void)
 	if (o_older_than(O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH))
 	{
 		if ((o_sf_major == 0) && (o_sf_minor == 2))
-			msg_format("Loading an Angband %d.%d.%d savefile.",
+			msg("Loading an Angband %d.%d.%d savefile.",
 			sf_major, sf_minor, sf_patch);
-		else msg_format("Loading an Oangband %d.%d.%d savefile.",
+		else msg("Loading an Oangband %d.%d.%d savefile.",
 			o_sf_major, o_sf_minor, o_sf_patch);
 		msg_print(NULL);
 	}

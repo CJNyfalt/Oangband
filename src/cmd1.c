@@ -281,7 +281,7 @@ bool quiver_carry(object_type *o_ptr, int o_idx)
 			else       object_desc(o_name, o_ptr, TRUE, 3);
 
 			/* Message */
-			msg_format("You have %s (%c).", o_name, index_to_label(i));
+			msg("You have %s (%c).", o_name, index_to_label(i));
 
 			/* Delete the object */
 			delete_object_idx(o_idx);
@@ -332,7 +332,7 @@ static void py_pickup_aux(int o_idx)
 	object_desc(o_name, o_ptr, TRUE, 3);
 
 	/* Message */
-	msg_format("You have %s (%c).", o_name, index_to_label(slot));
+	msg("You have %s (%c).", o_name, index_to_label(slot));
 
 	/* Delete the object */
 	delete_object_idx(o_idx);
@@ -491,7 +491,7 @@ byte py_pickup(int pickup)
 		}
 
 		/* Display the message */
-		msg_format("%s", buf);
+		msg("%s", buf);
 
 		/* Add gold to purse */
 		p_ptr->au += total_gold;
@@ -612,7 +612,7 @@ byte py_pickup(int pickup)
 				msg_print(NULL);
 
 				/* Message */
-				msg_format("You %s %s.", (blind ? "feel" : "see"),
+				msg("You %s %s.", (blind ? "feel" : "see"),
 					o_name);
 			}
 
@@ -622,7 +622,7 @@ byte py_pickup(int pickup)
 				msg_print(NULL);
 
 				/* Message */
-				msg_format("You %s a pile of %d items.",
+				msg("You %s a pile of %d items.",
 					(blind ? "feel" : "see"), floor_num);
 			}
 		}
@@ -650,7 +650,7 @@ byte py_pickup(int pickup)
 
 			/* Message */
 			msg_print(NULL);
-			msg_format("You have no room for %s.", o_name);
+			msg("You have no room for %s.", o_name);
 		}
 
 		/* Several items */
@@ -1687,7 +1687,7 @@ void hit_trap(int y, int x)
 			/* determine if the missile hits. */
 			if (check_trap_hit(75 + p_ptr->depth))
 			{
-				msg_format("A %s hits you from above.", missile_name);
+				msg("A %s hits you from above.", missile_name);
 
 				Rand_quick = FALSE;
 
@@ -1712,7 +1712,7 @@ void hit_trap(int y, int x)
 			}
 
 			/* Explain what just happened. */
-			else msg_format("A %s wizzes by your head.", missile_name);
+			else msg("A %s wizzes by your head.", missile_name);
 
 			/* Get local object */
 			o_ptr = &object_type_body;

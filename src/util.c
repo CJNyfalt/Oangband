@@ -1078,7 +1078,7 @@ char inkey(void)
 /*
  * Flush the screen, make a noise
  */
-void bell(const char * reason)
+void bell(const char *reason)
 {
 	/* Mega-Hack -- Flush the output */
 	Term_fresh();
@@ -1340,9 +1340,9 @@ void msg_print(const char *msg)
 
 
 /*
- * Display a formatted message, using "vstrnfmt()" and "msg_print()".
+ * Display a formatted message, using "vstrnfmt()" and "msg("%s", )".
  */
-void msg_format(const char *fmt, ...)
+void msg(const char *fmt, ...)
 {
 	va_list vp;
 

@@ -1565,7 +1565,7 @@ s16b lookup_kind(int tval, int sval)
 	}
 
 	/* Oops */
-	msg_format("No object (%d,%d)", tval, sval);
+	msg("No object (%d,%d)", tval, sval);
 
 	/* Oops */
 	return (0);
@@ -1734,21 +1734,21 @@ static void object_mention(object_type *o_ptr)
 	if (artifact_p(o_ptr))
 	{
 		/* Silly message */
-		msg_format("Artifact (%s)", o_name);
+		msg("Artifact (%s)", o_name);
 	}
 
 	/* Ego-item */
 	else if (ego_item_p(o_ptr))
 	{
 		/* Silly message */
-		msg_format("Ego-item (%s)", o_name);
+		msg("Ego-item (%s)", o_name);
 	}
 
 	/* Normal item */
 	else
 	{
 		/* Silly message */
-		msg_format("Object (%s)", o_name);
+		msg("Object (%s)", o_name);
 	}
 }
 
@@ -3691,7 +3691,7 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 	if (!artifact_p(j_ptr) && (rand_int(100) < chance))
 	{
 		/* Message */
-		msg_format("The %s disappear%s.",
+		msg("The %s disappear%s.",
 			   o_name, (plural ? "" : "s"));
 
 		/* Debug */
@@ -3805,7 +3805,7 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 	if (!flag && !artifact_p(j_ptr))
 	{
 		/* Message */
-		msg_format("The %s disappear%s.",
+		msg("The %s disappear%s.",
 			   o_name, (plural ? "" : "s"));
 
 		/* Debug */
@@ -3852,7 +3852,7 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 	if (!floor_carry(by, bx, j_ptr))
 	{
 		/* Message */
-		msg_format("The %s disappear%s.",
+		msg("The %s disappear%s.",
 			   o_name, (plural ? "" : "s"));
 
 		/* Debug */
@@ -4238,14 +4238,14 @@ void inven_item_charges(int item)
 	if (o_ptr->pval != 1)
 	{
 		/* Print a message */
-		msg_format("You have %d charges remaining.", o_ptr->pval);
+		msg("You have %d charges remaining.", o_ptr->pval);
 	}
 
 	/* Single charge */
 	else
 	{
 		/* Print a message */
-		msg_format("You have %d charge remaining.", o_ptr->pval);
+		msg("You have %d charge remaining.", o_ptr->pval);
 	}
 }
 
@@ -4266,7 +4266,7 @@ void inven_item_describe(int item)
 		object_desc(o_name, o_ptr, FALSE, 3);
 
 		/* Print a message */
-		msg_format("You no longer have the %s (%c).", o_name, index_to_label(item));
+		msg("You no longer have the %s (%c).", o_name, index_to_label(item));
 	}
 	else
 	{
@@ -4274,7 +4274,7 @@ void inven_item_describe(int item)
 		object_desc(o_name, o_ptr, TRUE, 3);
 
 		/* Print a message */
-		msg_format("You have %s (%c).", o_name, index_to_label(item));
+		msg("You have %s (%c).", o_name, index_to_label(item));
 	}
 }
 
@@ -4396,14 +4396,14 @@ void floor_item_charges(int item)
 	if (o_ptr->pval != 1)
 	{
 		/* Print a message */
-		msg_format("There are %d charges remaining.", o_ptr->pval);
+		msg("There are %d charges remaining.", o_ptr->pval);
 	}
 
 	/* Single charge */
 	else
 	{
 		/* Print a message */
-		msg_format("There is %d charge remaining.", o_ptr->pval);
+		msg("There is %d charge remaining.", o_ptr->pval);
 	}
 }
 
@@ -4422,7 +4422,7 @@ void floor_item_describe(int item)
 	object_desc(o_name, o_ptr, TRUE, 3);
 
 	/* Print a message */
-	msg_format("You see %s.", o_name);
+	msg("You see %s.", o_name);
 }
 
 
@@ -4771,7 +4771,7 @@ s16b inven_takeoff(int item, int amt)
 	slot = inven_carry(i_ptr);
 
 	/* Message */
-	msg_format("%s %s (%c)%s.", act, o_name, index_to_label(slot), act2);
+	msg("%s %s (%c)%s.", act, o_name, index_to_label(slot), act2);
 
 	/* Return slot */
 	return (slot);
@@ -4835,7 +4835,7 @@ void inven_drop(int item, int amt)
 	object_desc(o_name, i_ptr, TRUE, 3);
 
 	/* Message */
-	msg_format("You drop %s (%c).", o_name, index_to_label(item));
+	msg("You drop %s (%c).", o_name, index_to_label(item));
 
 	/* Drop it near the player */
 	drop_near(i_ptr, 0, py, px);

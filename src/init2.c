@@ -400,9 +400,9 @@ static errr init_f_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'terrain.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'terrain.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -652,9 +652,9 @@ static errr init_k_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'object.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'object.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -882,9 +882,9 @@ static errr init_h_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'p_hist.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'p_hist.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -1110,9 +1110,9 @@ static errr init_b_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'shop_own.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'shop_own.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -1327,9 +1327,9 @@ static errr init_g_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'cost_adj.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'cost_adj.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -1652,9 +1652,9 @@ static errr init_a_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'artifact.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'artifact.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -1904,9 +1904,9 @@ static errr init_s_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'set_item.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'set_item.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -2156,9 +2156,9 @@ static errr init_e_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'ego_item.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'ego_item.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -2408,9 +2408,9 @@ static errr init_r_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'monster.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'monster.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -2659,9 +2659,9 @@ static errr init_v_info(void)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Error %d at line %d of 'vault.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Error %d at line %d of 'vault.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Quit */
@@ -2905,9 +2905,9 @@ static errr init_rp_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'p_race.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'p_race.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -3152,9 +3152,9 @@ static errr init_cp_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'p_class.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'p_class.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -3376,9 +3376,9 @@ static errr init_ch_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'p_chest.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'p_chest.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -3589,9 +3589,9 @@ static errr init_mp_info(void)
 	      oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 	      /* Oops */
-	      msg_format("Error %d at line %d of 'p_magic.txt'.", err, error_line);
-	      msg_format("Record %d contains a '%s' error.", error_idx, oops);
-	      msg_format("Parsing '%s'.", buf);
+	      msg("Error %d at line %d of 'p_magic.txt'.", err, error_line);
+	      msg("Record %d contains a '%s' error.", error_idx, oops);
+	      msg("Parsing '%s'.", buf);
 	      msg_print(NULL);
 
 	      /* Quit */
@@ -3738,10 +3738,10 @@ errr init_t_info(byte chosen_level)
 		oops = (((err > 0) && (err < 8)) ? err_str[err] : "unknown");
 
 		/* Oops */
-		msg_format("Non-critical error: themed.txt is unusable.");
-		msg_format("Error %d at line %d of 'themed.txt'.", err, error_line);
-		msg_format("Record %d contains a '%s' error.", error_idx, oops);
-		msg_format("Parsing '%s'.", buf);
+		msg("Non-critical error: themed.txt is unusable.");
+		msg("Error %d at line %d of 'themed.txt'.", err, error_line);
+		msg("Record %d contains a '%s' error.", error_idx, oops);
+		msg("Parsing '%s'.", buf);
 		msg_print(NULL);
 
 		/* Failure */

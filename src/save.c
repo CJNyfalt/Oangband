@@ -2032,9 +2032,9 @@ bool load_player(bool silent)
 		{
 			/* Message */
 			if ((o_sf_major == 0) && (o_sf_minor == 2))
-				msg_format("Converted an Angband %d.%d.%d savefile.",
+				msg("Converted an Angband %d.%d.%d savefile.",
 				sf_major, sf_minor, sf_patch);
-			else msg_format("Converted an Oangband %d.%d.%d savefile.",
+			else msg("Converted an Oangband %d.%d.%d savefile.",
 				o_sf_major, o_sf_minor, o_sf_patch);
 			msg_print(NULL);
 		}
@@ -2106,9 +2106,9 @@ bool load_player(bool silent)
 
 	/* Message */
 	if ((o_sf_major == 0) && (o_sf_minor == 2))
-		msg_format("Error (%s) reading an Angband %d.%d.%d savefile.",
+		msg("Error (%s) reading an Angband %d.%d.%d savefile.",
 		what, sf_major, sf_minor, sf_patch);
-	else msg_format("Error (%s) reading an Oangband %d.%d.%d savefile.",
+	else msg("Error (%s) reading an Oangband %d.%d.%d savefile.",
 		what, o_sf_major, o_sf_minor, o_sf_patch);
 
 	msg_print(NULL);
@@ -2716,7 +2716,7 @@ void savefile_load(bool force_menu)
 				/* Oops */
 				if (error > 0)
 				{
-					msg_format("Sorry, this savefile cannot be read by %s %s.",
+					msg("Sorry, this savefile cannot be read by %s %s.",
 					VERSION_NAME, VERSION_STRING);
 				}
 

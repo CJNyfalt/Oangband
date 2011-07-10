@@ -2426,7 +2426,7 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, const char * note)
 	 */
 	if (p_ptr->wizard)
 	{
-		msg_format("You do %d (out of %d) damage.", dam, m_ptr->hp);
+		msg("You do %d (out of %d) damage.", dam, m_ptr->hp);
 	}
 
 	/* Hurt it */

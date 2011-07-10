@@ -1186,7 +1186,7 @@ static errr grab_one_kind_flag(object_kind *k_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown object flag '%s'.", what);
+	msg("Unknown object flag '%s'.", what);
 
 	/* Error */
 	return (1);
@@ -1535,7 +1535,7 @@ static errr grab_one_artifact_flag(artifact_type *a_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown artifact flag '%s'.", what);
+	msg("Unknown artifact flag '%s'.", what);
 
 	/* Error */
 	return (1);
@@ -1828,7 +1828,7 @@ static errr grab_one_set_element_flag(set_element *selement_ptr, const char * wh
 	}
 
 	/* Oops */
-	msg_format("Unknown set element flag '%s'.", what);
+	msg("Unknown set element flag '%s'.", what);
 
 	/* Error */
 	return (1);
@@ -2108,7 +2108,7 @@ static bool grab_one_ego_item_flag(ego_item_type *e_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown ego-item flag '%s'.", what);
+	msg("Unknown ego-item flag '%s'.", what);
 
 	/* Error */
 	return (1);
@@ -2435,7 +2435,7 @@ static errr grab_one_basic_flag(monster_race *r_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown monster flag '%s'.", what);
+	msg("Unknown monster flag '%s'.", what);
 
 	/* Failure */
 	return (1);
@@ -2490,7 +2490,7 @@ static errr grab_one_spell_flag(monster_race *r_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown monster flag '%s'.", what);
+	msg("Unknown monster flag '%s'.", what);
 
 	/* Failure */
 	return (1);
@@ -2899,7 +2899,7 @@ static errr grab_one_racial_flag(player_race *rp_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown player flag '%s'.", what);
+	msg("Unknown player flag '%s'.", what);
 
 	/* Error */
 	return (PARSE_ERROR_GENERIC);
@@ -2925,7 +2925,7 @@ static errr grab_one_special_racial_flag(player_race *rp_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown player special flag '%s'.", what);
+	msg("Unknown player special flag '%s'.", what);
 
 	/* Error */
 	return (PARSE_ERROR_GENERIC);
@@ -3334,7 +3334,7 @@ static errr grab_one_special_class_flag(player_class *cp_ptr, const char * what)
 	}
 
 	/* Oops */
-	msg_format("Unknown player special flag '%s'.", what);
+	msg("Unknown player special flag '%s'.", what);
 
 	/* Error */
 	return (PARSE_ERROR_GENERIC);
@@ -3358,7 +3358,7 @@ static errr grab_one_specialty(player_class *cp_ptr, const char * what, int cur_
 	}
 
 	/* Oops */
-	msg_format("Unknown player special flag '%s'.", what);
+	msg("Unknown player special flag '%s'.", what);
 
 	/* Error */
 	return (PARSE_ERROR_GENERIC);

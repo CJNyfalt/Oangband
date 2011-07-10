@@ -1539,7 +1539,7 @@ void do_attune(object_type *o_ptr)
 		p_ptr->attune_tval = o_ptr->tval;
 		p_ptr->attune_sval = o_ptr->sval;
 		object_desc(buf, o_ptr, FALSE, 0);
-		msg_format("You become attuned to the %s.", buf);
+		msg("You become attuned to the %s.", buf);
 	}
 
 }
@@ -2161,10 +2161,10 @@ void do_cmd_use_staff(void)
 		if (strlen(obj_special_info[3][o_ptr->sval]))
 		{
 			if (artifact_p(o_ptr))
-				msg_format("You feel you know more about the Staff %s.",
+				msg("You feel you know more about the Staff %s.",
 					a_name + a_info[o_ptr->name1].name);
 
-			else msg_format("You feel you know more about staffs of %s.",
+			else msg("You feel you know more about staffs of %s.",
 				k_name + k_ptr->name);
 		}
 	}
@@ -2747,10 +2747,10 @@ void do_cmd_aim_wand(void)
 		if (strlen(obj_special_info[4][o_ptr->sval]))
 		{
 			if (artifact_p(o_ptr))
-				msg_format("You feel you know more about the Wand %s.",
+				msg("You feel you know more about the Wand %s.",
 					a_name + a_info[o_ptr->name1].name);
 
-			else msg_format("You feel you know more about wands of %s.",
+			else msg("You feel you know more about wands of %s.",
 				k_name + k_ptr->name);
 		}
 	}
@@ -3322,10 +3322,10 @@ void do_cmd_zap_rod(void)
 		if (strlen(obj_special_info[5][o_ptr->sval]))
 		{
 			if (artifact_p(o_ptr))
-				msg_format("You feel you know more about the Rod %s.",
+				msg("You feel you know more about the Rod %s.",
 					a_name + a_info[o_ptr->name1].name);
 
-			else msg_format("You feel you know more about rods of %s.",
+			else msg("You feel you know more about rods of %s.",
 				k_name + k_ptr->name);
 		}
 	}
@@ -4606,7 +4606,7 @@ void do_cmd_activate(void)
 				missile_name = "arrow";
 			if (o_ptr->sval == SV_SLING) missile_name = "shot";
 
-			msg_format("The %s you have ready to hand gleams with deadly power.", missile_name);
+			msg("The %s you have ready to hand gleams with deadly power.", missile_name);
 			p_ptr->special_attack |= (ATTACK_SUPERSHOT);
 			o_ptr->timeout = 200 + randint(200);
 
@@ -4832,7 +4832,7 @@ void do_cmd_activate(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				chance = rand_int(5);
-				msg_format("You breathe %s.",
+				msg("You breathe %s.",
 				      ((chance == 1) ? "lightning" :
 				      ((chance == 2) ? "frost" :
 				      ((chance == 3) ? "acid" :
@@ -4857,7 +4857,7 @@ void do_cmd_activate(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				chance = rand_int(2);
-				msg_format("You breathe %s.",
+				msg("You breathe %s.",
 				      ((chance == 0 ? "light" : "darkness")));
 				fire_arc((chance == 0 ? GF_LITE : GF_DARK), dir,
 				      160, 10, 40);
@@ -4876,7 +4876,7 @@ void do_cmd_activate(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				chance = rand_int(2);
-				msg_format("You breathe %s.",
+				msg("You breathe %s.",
 				      ((chance == 1 ? "sound" : "shards")));
 				fire_arc((chance == 1 ? GF_SOUND : GF_SHARD),
 				      dir, 190, 10, 40);
@@ -4927,7 +4927,7 @@ void do_cmd_activate(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				chance = rand_int(2);
-				msg_format("You breathe %s.",
+				msg("You breathe %s.",
 				      ((chance == 1 ? "chaos" : "disenchantment")));
 				fire_arc((chance == 1 ? GF_CHAOS : GF_DISENCHANT),
 				      dir, 180, 10, 40);
@@ -4946,7 +4946,7 @@ void do_cmd_activate(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				chance = rand_int(4);
-				msg_format("You breathe %s.",
+				msg("You breathe %s.",
 				      ((chance == 1) ? "chaos" :
 				      ((chance == 2) ? "disenchantment" :
 				      ((chance == 3) ? "sound" : "shards"))));
@@ -5076,7 +5076,7 @@ void do_cmd_activate(void)
 			char o_name[120];
 			object_desc(o_name, o_ptr, TRUE, 0);
 
-			msg_format("You feel you know more about the effects of %s.",
+			msg("You feel you know more about the effects of %s.",
 				   o_name);
 		}
 	}

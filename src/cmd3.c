@@ -244,7 +244,7 @@ void do_cmd_wield(void)
 		object_desc(o_name, &inventory[slot], FALSE, 0);
 
 		/* Message */
-		msg_format("The %s you are %s appears to be cursed.",
+		msg("The %s you are %s appears to be cursed.",
 			   o_name, describe_use(slot));
 
 		/* Cancel the command */
@@ -429,7 +429,7 @@ void do_cmd_wield(void)
 	object_desc(o_name, o_ptr, TRUE, 3);
 
 	/* Message */
-	msg_format("%s %s (%c).", act, o_name, index_to_label(slot));
+	msg("%s %s (%c).", act, o_name, index_to_label(slot));
 
 	/* Set item handling -GS- */
 	if (o_ptr->name1)
@@ -668,7 +668,7 @@ void do_cmd_destroy(void)
 		int feel = FEEL_SPECIAL;
 
 		/* Message */
-		msg_format("You cannot destroy %s.", o_name);
+		msg("You cannot destroy %s.", o_name);
 
 		/* Hack -- Handle icky artifacts */
 		if (cursed_p(o_ptr) || broken_p(o_ptr)) feel = FEEL_TERRIBLE;
@@ -690,7 +690,7 @@ void do_cmd_destroy(void)
 	}
 
 	/* Message */
-	msg_format("You destroy %s.", o_name);
+	msg("You destroy %s.", o_name);
 
 	/* Reduce the charges of rods/wands */
 	reduce_charges(o_ptr, amt);
@@ -786,7 +786,7 @@ void do_cmd_observe(object_type *o_ptr, bool in_store)
 	if (!in_store)
 	{
 		object_desc(o_name, o_ptr, TRUE, 3);
-		msg_format("Examining %s...", o_name);
+		msg("Examining %s...", o_name);
 	}
 
 
@@ -1016,7 +1016,7 @@ void do_cmd_inscribe(void)
 	object_desc(o_name, o_ptr, TRUE, 3);
 
 	/* Message */
-	msg_format("Inscribing %s.", o_name);
+	msg("Inscribing %s.", o_name);
 	msg_print(NULL);
 
 	/* Start with nothing */
@@ -2061,7 +2061,7 @@ void py_steal(int y, int x)
 		p_ptr->redraw |= (PR_GOLD);
 
 		/* Announce the good news. */
-		if (purse) msg_format("You burgle %d gold.", purse);
+		if (purse) msg("You burgle %d gold.", purse);
 
 		/* Pockets are empty. */
 		else msg_print("You burgle only dust.");
@@ -2080,13 +2080,13 @@ void py_steal(int y, int x)
 		{
 			monster_desc(m_name, m_ptr, 0);
 			act = desc_victim_outcry[rand_int(20)];
-			msg_format("%^s cries out %s", m_name, act);
+			msg("%^s cries out %s", m_name, act);
 		}
 		/* Otherwise, simply explain what happened. */
 		else
 		{
 			monster_desc(m_name, m_ptr, 0);
-			msg_format("You have aroused %s.", m_name);
+			msg("You have aroused %s.", m_name);
 		}
 	}
 

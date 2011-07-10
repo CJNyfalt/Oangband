@@ -3582,7 +3582,7 @@ static bool build_type5(void)
 	if (cheat_room)
 	{
 		/* Room type */
-		msg_format("Monster pit (%s)", name);
+		msg("Monster pit (%s)", name);
 	}
 
 	/* Increase the level rating */
@@ -4135,7 +4135,7 @@ static bool build_type6(void)
 	if (cheat_room)
 	{
 		/* Room type */
-		msg_format("Room of chambers (%s)", name);
+		msg("Room of chambers (%s)", name);
 	}
 
 	/* Increase the level rating */
@@ -7179,7 +7179,7 @@ void generate_cave(void)
 
 		/* Message */
 		if ((cheat_room) && (why))
-			msg_format("Generation restarted (%s)", why);
+			msg("Generation restarted (%s)", why);
 
 		/* Accept */
 		if (okay) break;

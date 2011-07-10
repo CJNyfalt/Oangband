@@ -998,7 +998,7 @@ static void wiz_statistics(object_type *o_ptr)
 		}
 
 		/* Let us know what we are doing */
-		msg_format("Creating a lot of %s items. Base level = %d.",
+		msg("Creating a lot of %s items. Base level = %d.",
 			   quality, p_ptr->depth);
 		msg_print(NULL);
 
@@ -1083,7 +1083,7 @@ static void wiz_statistics(object_type *o_ptr)
 		}
 
 		/* Final dump */
-		msg_format(q, i, matches, better, worse, other);
+		msg(q, i, matches, better, worse, other);
 		msg_print(NULL);
 	}
 
@@ -1404,7 +1404,7 @@ static void do_cmd_wiz_jump(void)
 	if (p_ptr->command_arg > MAX_DEPTH - 1) p_ptr->command_arg = MAX_DEPTH - 1;
 
 	/* Accept request */
-	msg_format("You jump to dungeon level %d.", p_ptr->command_arg);
+	msg("You jump to dungeon level %d.", p_ptr->command_arg);
 
 	/* New depth */
 	p_ptr->depth = p_ptr->command_arg;
@@ -1489,7 +1489,7 @@ static void do_cmd_rerate(void)
 	handle_stuff();
 
 	/* Message */
-	msg_format("Current Life Rating is %d/100.", percent);
+	msg("Current Life Rating is %d/100.", percent);
 }
 
 

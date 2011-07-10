@@ -1735,10 +1735,10 @@ static bool do_cmd_disarm_aux(int y, int x)
 	{
 		/* Special message for glyphs. */
 		if (cave_feat[y][x] == FEAT_GLYPH)
-			msg_format("You have desanctified the %s.", name);
+			msg("You have desanctified the %s.", name);
 
 		/* Normal message otherwise */
-		else msg_format("You have disarmed the %s.", name);
+		else msg("You have disarmed the %s.", name);
 
 		/* If a Rogue's monster trap, decrement the trap count. */
 		if ((cave_feat[y][x] >= FEAT_MTRAP_HEAD) && (cave_feat[y][x] <= FEAT_MTRAP_TAIL))
@@ -1764,7 +1764,7 @@ static bool do_cmd_disarm_aux(int y, int x)
 		if (flush_failure) flush();
 
 		/* Message */
-		msg_format("You failed to disarm the %s.", name);
+		msg("You failed to disarm the %s.", name);
 
 		/* We may keep trying */
 		more = TRUE;
@@ -1774,7 +1774,7 @@ static bool do_cmd_disarm_aux(int y, int x)
 	else
 	{
 		/* Message */
-		msg_format("You set off the %s!", name);
+		msg("You set off the %s!", name);
 
 		/* Hit the trap */
 		hit_trap(y, x);

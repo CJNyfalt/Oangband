@@ -69,12 +69,12 @@ void hit_monster_black_breath(int power, monster_type *m_ptr)
 			l_ptr->flags2 |= (RF2_MORGUL_MAGIC);
 		}
 
-		msg_format("%^s is immune!", m_name);
+		msg("%^s is immune!", m_name);
 	}
 	/* All other monsters get a saving throw. */
 	else if (rand_int(power) < r_ptr->level + randint(10))
 	{
-		msg_format("%^s wards off your deadly attack.", m_name);
+		msg("%^s wards off your deadly attack.", m_name);
 	}
 	/* Tasting some of their own medicine... */
 	else
@@ -109,11 +109,11 @@ void hit_monster_confuse(int power, monster_type *m_ptr)
 			l_ptr->flags3 |= (RF3_NO_CONF);
 		}
 
-		msg_format("%^s is unaffected.", m_name);
+		msg("%^s is unaffected.", m_name);
 	}
 	else if (rand_int(power) < r_ptr->level + randint(10))
 	{
-		msg_format("%^s is unaffected.", m_name);
+		msg("%^s is unaffected.", m_name);
 	}
 	else if (m_ptr->confused > 0)
 	{
@@ -146,7 +146,7 @@ void hit_monster_slow(int power, monster_type *m_ptr)
 	/* Check for slow */
 	if (rand_int(power) < r_ptr->level + randint(10))
 	{
-		msg_format("%^s is unaffected.", m_name);
+		msg("%^s is unaffected.", m_name);
 	}
 	else if (m_ptr->mspeed > 60)
 	{
@@ -1093,7 +1093,7 @@ void py_attack(int y, int x)
 		if (m_ptr->ml)
 		{
 			/* Message */
-			msg_format("You are too afraid to attack %s!", m_name);
+			msg("You are too afraid to attack %s!", m_name);
 		}
 		else
 		{
@@ -1760,8 +1760,8 @@ bool do_cmd_fire(int mode)
 		special_dam = TRUE;
 
 		/* Give a hint to the player. */
-		if (!object_known_p(o_ptr)) msg_format("You feel a strange aura of power around your %s.", o_name);
-		else msg_format("Your %s feels very powerful.", o_name);
+		if (!object_known_p(o_ptr)) msg("You feel a strange aura of power around your %s.", o_name);
+		else msg("Your %s feels very powerful.", o_name);
 	}
 
 	/* Missile launchers of Accuracy sometimes "supercharge" */
@@ -1773,8 +1773,8 @@ bool do_cmd_fire(int mode)
 		special_hit = TRUE;
 
 		/* Give a hint to the player. */
-		if (!object_known_p(o_ptr)) msg_format("You feel a strange aura of power around your %s.", o_name);
-		else msg_format("Your %s feels very accurate.", o_name);
+		if (!object_known_p(o_ptr)) msg("You feel a strange aura of power around your %s.", o_name);
+		else msg("Your %s feels very accurate.", o_name);
 	}
 
 	/* Fire ammo of backbiting, and it will turn on you.  -LM- */
@@ -2536,7 +2536,7 @@ bool do_cmd_throw(int mode)
 					sound(SOUND_FLEE);
 
 					/* Message */
-					msg_format("%^s flees in terror!", m_name);
+					msg("%^s flees in terror!", m_name);
 				}
 			}
 
