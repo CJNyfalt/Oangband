@@ -3097,7 +3097,7 @@ static errr rd_savefile_new_aux(void)
 			sf_major, sf_minor, sf_patch);
 		else msg("Loading an Oangband %d.%d.%d savefile.",
 			o_sf_major, o_sf_minor, o_sf_patch);
-		msg_print(NULL);
+		message_flush();
 	}
 
 

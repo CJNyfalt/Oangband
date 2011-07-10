@@ -920,7 +920,7 @@ void do_cmd_quaff_potion(void)
 			/* Hack - 'show' effected region only with
 			 * the first detect */
 			msg_print("You begin to feel more enlightened...");
-			msg_print(NULL);
+			message_flush();
 			wiz_lite(TRUE);
 			(void)do_inc_stat(A_INT);
 			(void)do_inc_stat(A_WIS);
@@ -939,7 +939,7 @@ void do_cmd_quaff_potion(void)
 		case SV_POTION_SELF_KNOWLEDGE:
 		{
 			msg_print("You begin to know yourself a little better...");
-			msg_print(NULL);
+			message_flush();
 			self_knowledge();
 			ident = TRUE;
 			break;
@@ -3279,7 +3279,7 @@ void do_cmd_zap_rod(void)
 		case SV_ROD_PORTALS:
 		{
 			msg_print("Choose a location to teleport to.");
-			msg_print(NULL);
+			message_flush();
 			if (!dimen_door()) use_charge = FALSE;
 			ident = TRUE;
 			break;

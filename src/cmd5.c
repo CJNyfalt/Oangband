@@ -1237,7 +1237,7 @@ void do_cmd_cast_or_pray(void)
 			case 42: /* Dimension Door. */
 			{
 				msg_print("Choose a location to teleport to.");
-				msg_print(NULL);
+				message_flush();
 				if (!dimen_door()) return;
 				break;
 			}

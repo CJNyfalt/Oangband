@@ -1957,7 +1957,7 @@ static int get_haggle(const char * pmt, s32b *poffer, s32b price, int final)
 
 
 	/* Paranoia XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Ask until done */
@@ -2028,7 +2028,7 @@ static int get_haggle(const char * pmt, s32b *poffer, s32b price, int final)
 
 		/* Warning */
 		msg_print("Invalid response.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 	/* Success */
@@ -2107,7 +2107,7 @@ static bool purchase_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message summary */
 			msg_print("You instantly agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 		}
 
 		/* No need to haggle */
@@ -2115,7 +2115,7 @@ static bool purchase_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message summary */
 			msg_print("You eventually agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 		}
 
 		/* Auto-haggle */
@@ -2123,7 +2123,7 @@ static bool purchase_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message summary */
 			msg_print("You quickly agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 
 			/* Ignore haggling */
 			ignore = TRUE;
@@ -2320,7 +2320,7 @@ static bool sell_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message */
 			msg_print("You instantly agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 
 			/* Ignore haggling */
 			ignore = TRUE;
@@ -2334,7 +2334,7 @@ static bool sell_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message */
 			msg_print("You eventually agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 		}
 
 		/* No haggle option */
@@ -2342,7 +2342,7 @@ static bool sell_haggle(object_type *o_ptr, s32b *price)
 		{
 			/* Message summary */
 			msg_print("You quickly agree upon the price.");
-			msg_print(NULL);
+			message_flush();
 
 			/* Ignore haggling */
 			ignore = TRUE;
@@ -2575,7 +2575,7 @@ static void store_purchase(void)
 		/* Message */
 		msg("Buying %s (%c).",
 			   o_name, store_to_label(item));
-		msg_print(NULL);
+		message_flush();
 
 		/* Haggle for a final price */
 		choice = purchase_haggle(i_ptr, &price);
@@ -2885,7 +2885,7 @@ static void store_sell(void)
 	{
 		/* Describe the transaction */
 		msg("Selling %s (%c).", o_name, index_to_label(item));
-		msg_print(NULL);
+		message_flush();
 
 		/* Haggle for it */
 		choice = sell_haggle(i_ptr, &price);
@@ -3606,7 +3606,7 @@ void do_cmd_store(void)
 
 
 	/* Flush messages XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Hack -- Decrease "icky" depth */

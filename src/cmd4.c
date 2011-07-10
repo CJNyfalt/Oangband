@@ -237,7 +237,7 @@ void do_cmd_change_name(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 	/* Load screen */
@@ -1287,7 +1287,7 @@ void do_cmd_options(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -1940,7 +1940,7 @@ void do_cmd_macros(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2393,7 +2393,7 @@ void do_cmd_visuals(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2635,7 +2635,7 @@ void do_cmd_colors(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2889,7 +2889,7 @@ void do_cmd_load_screen(void)
 
 	/* Message */
 	msg_print("Screen dump loaded.");
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Load screen */
@@ -3001,7 +3001,7 @@ void do_cmd_save_screen(void)
 
 	/* Message */
 	msg_print("Screen dump saved.");
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Load screen */
@@ -4294,7 +4294,7 @@ void do_cmd_knowledge(void)
 		}
 
 		/* Flush messages */
-		msg_print(NULL);
+		message_flush();
 	}
 
 

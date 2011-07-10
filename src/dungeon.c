@@ -1197,7 +1197,7 @@ static bool enter_wizard_mode(void)
 		/* Mention effects */
 		msg_print("You are about to enter 'wizard' mode for the very first time!");
 		msg_print("This is a form of cheating, and your game will not be scored!");
-		msg_print(NULL);
+		message_flush();
 
 		/* Verify request */
 		if (!get_check("Are you sure you want to enter wizard mode? "))
@@ -1231,7 +1231,7 @@ static bool verify_debug_mode(void)
 		msg_print("You are about to use the dangerous, unsupported, debug commands!");
 		msg_print("Your machine may crash, and your savefile may become corrupted!");
 		msg_print("Using the debug commands will also mark your savefile.");
-		msg_print(NULL);
+		message_flush();
 
 		/* Verify request */
 		if (!get_check("Are you sure you want to use the debug commands? "))
@@ -1275,7 +1275,7 @@ static bool verify_borg_mode(void)
 		/* Mention effects */
 		msg_print("You are about to use the dangerous, unsupported, borg commands!");
 		msg_print("Your machine may crash, and your savefile may become corrupted!");
-		msg_print(NULL);
+		message_flush();
 
 		/* Verify request */
 		if (!get_check("Are you sure you want to use the borg commands? "))
@@ -2595,7 +2595,7 @@ static void dungeon(void)
 
 
 	/* Flush messages */
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Hack -- Increase "xtra" depth */
@@ -3074,7 +3074,7 @@ void play_game(bool new_game)
 		wipe_m_list();
 
 		/* XXX XXX XXX */
-		msg_print(NULL);
+		message_flush();
 
 		/* Accidental Death */
 		if (p_ptr->playing && p_ptr->is_dead)
@@ -3093,7 +3093,7 @@ void play_game(bool new_game)
 
 				/* Message */
 				msg_print("You invoke wizard mode and cheat death.");
-				msg_print(NULL);
+				message_flush();
 
 				/* Cheat death */
 				p_ptr->is_dead = FALSE;
@@ -3125,7 +3125,7 @@ void play_game(bool new_game)
 				{
 					/* Message */
 					msg_print("A tension leaves the air around you...");
-					msg_print(NULL);
+					message_flush();
 
 					/* Hack -- Prevent recall */
 					p_ptr->word_recall = 0;

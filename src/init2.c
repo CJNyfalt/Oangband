@@ -360,7 +360,7 @@ static errr init_f_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'terrain.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -403,7 +403,7 @@ static errr init_f_info(void)
 		msg("Error %d at line %d of 'terrain.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'terrain.txt' file.");
@@ -612,7 +612,7 @@ static errr init_k_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'object.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -655,7 +655,7 @@ static errr init_k_info(void)
 		msg("Error %d at line %d of 'object.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'object.txt' file.");
@@ -885,7 +885,7 @@ static errr init_h_info(void)
 	      msg("Error %d at line %d of 'p_hist.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'p_hist.txt' file.");
@@ -1113,7 +1113,7 @@ static errr init_b_info(void)
 	      msg("Error %d at line %d of 'shop_own.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'shop_own.txt' file.");
@@ -1330,7 +1330,7 @@ static errr init_g_info(void)
 	      msg("Error %d at line %d of 'cost_adj.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'cost_adj.txt' file.");
@@ -1612,7 +1612,7 @@ static errr init_a_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'artifact.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -1655,7 +1655,7 @@ static errr init_a_info(void)
 		msg("Error %d at line %d of 'artifact.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'artifact.txt' file.");
@@ -1864,7 +1864,7 @@ static errr init_s_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'set_item.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -1907,7 +1907,7 @@ static errr init_s_info(void)
 		msg("Error %d at line %d of 'set_item.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'set_item.txt' file.");
@@ -2116,7 +2116,7 @@ static errr init_e_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'ego_item.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2159,7 +2159,7 @@ static errr init_e_info(void)
 		msg("Error %d at line %d of 'ego_item.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'ego_item.txt' file.");
@@ -2368,7 +2368,7 @@ static errr init_r_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'monster.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2411,7 +2411,7 @@ static errr init_r_info(void)
 		msg("Error %d at line %d of 'monster.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'monster.txt' file.");
@@ -2619,7 +2619,7 @@ static errr init_v_info(void)
 
 		/* Information */
 		msg_print("Ignoring obsolete/defective 'vault.raw' file.");
-		msg_print(NULL);
+		message_flush();
 	}
 
 
@@ -2662,7 +2662,7 @@ static errr init_v_info(void)
 		msg("Error %d at line %d of 'vault.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Quit */
 		quit("Error in 'vault.txt' file.");
@@ -2908,7 +2908,7 @@ static errr init_rp_info(void)
 	      msg("Error %d at line %d of 'p_race.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'p_race.txt' file.");
@@ -3155,7 +3155,7 @@ static errr init_cp_info(void)
 	      msg("Error %d at line %d of 'p_class.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'p_class.txt' file.");
@@ -3379,7 +3379,7 @@ static errr init_ch_info(void)
 	      msg("Error %d at line %d of 'p_chest.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'p_chest.txt' file.");
@@ -3592,7 +3592,7 @@ static errr init_mp_info(void)
 	      msg("Error %d at line %d of 'p_magic.txt'.", err, error_line);
 	      msg("Record %d contains a '%s' error.", error_idx, oops);
 	      msg("Parsing '%s'.", buf);
-	      msg_print(NULL);
+	      message_flush();
 
 	      /* Quit */
 	      quit("Error in 'p_magic.txt' file.");
@@ -3742,7 +3742,7 @@ errr init_t_info(byte chosen_level)
 		msg("Error %d at line %d of 'themed.txt'.", err, error_line);
 		msg("Record %d contains a '%s' error.", error_idx, oops);
 		msg("Parsing '%s'.", buf);
-		msg_print(NULL);
+		message_flush();
 
 		/* Failure */
 		return(TRUE);

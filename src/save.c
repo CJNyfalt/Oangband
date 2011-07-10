@@ -1860,7 +1860,7 @@ bool load_player(bool silent)
 		if (!silent)
 		{
 			msg_print("Savefile does not exist.");
-			msg_print(NULL);
+			message_flush();
 		}
 
 		/* Allow this */
@@ -1894,7 +1894,7 @@ bool load_player(bool silent)
 
 			/* Message */
 			msg_print("Savefile is currently in use.");
-			msg_print(NULL);
+			message_flush();
 
 			/* Oops */
 			return (FALSE);
@@ -2036,7 +2036,7 @@ bool load_player(bool silent)
 				sf_major, sf_minor, sf_patch);
 			else msg("Converted an Oangband %d.%d.%d savefile.",
 				o_sf_major, o_sf_minor, o_sf_patch);
-			msg_print(NULL);
+			message_flush();
 		}
 
 		/* Player is dead */
@@ -2111,7 +2111,7 @@ bool load_player(bool silent)
 	else msg("Error (%s) reading an Oangband %d.%d.%d savefile.",
 		what, o_sf_major, o_sf_minor, o_sf_patch);
 
-	msg_print(NULL);
+	message_flush();
 
 	/* Oops */
 	return (FALSE);

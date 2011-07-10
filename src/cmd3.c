@@ -1017,7 +1017,7 @@ void do_cmd_inscribe(void)
 
 	/* Message */
 	msg("Inscribing %s.", o_name);
-	msg_print(NULL);
+	message_flush();
 
 	/* Start with nothing */
 	strcpy(tmp, "");

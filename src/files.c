@@ -781,7 +781,7 @@ static errr process_pref_file_aux(const char * name)
 		/* Useful error message */
 		msg("Error %d in line %d of file '%s'.", err, num, name);
 		msg("Parsing '%s'", old);
-		msg_print(NULL);
+		message_flush();
 	}
 
 	/* Close the file */
@@ -2196,7 +2196,7 @@ errr file_character(const char * name, bool full)
 	{
 		/* Message */
 		msg("Character dump failed!");
-		msg_print(NULL);
+		message_flush();
 
 		/* Error */
 		return (-1);
@@ -2355,7 +2355,7 @@ errr file_character(const char * name, bool full)
 
 	/* Message */
 	msg_print("Character dump successful.");
-	msg_print(NULL);
+	message_flush();
 
 	/* Success */
 	return (0);
@@ -2497,7 +2497,7 @@ bool show_file(const char * name, const char * what, int line, int mode)
 	{
 		/* Message */
 		msg("Cannot open '%s'.", name);
-		msg_print(NULL);
+		message_flush();
 
 		/* Oops */
 		return (TRUE);
@@ -3109,7 +3109,7 @@ void do_cmd_save_game(bool autosave)
 	if (!autosave) disturb(1, 0);
 
 	/* Clear messages */
-	msg_print(NULL);
+	message_flush();
 
 	/* Handle stuff */
 	handle_stuff();
@@ -4031,7 +4031,7 @@ static errr enter_score(void)
 	if (p_ptr->noscore & 0x000F)
 	{
 	      msg_print("Score not registered for wizards.");
-	      msg_print(NULL);
+	      message_flush();
 	      score_idx = -1;
 	      return (0);
 	}
@@ -4044,7 +4044,7 @@ static errr enter_score(void)
 	if (p_ptr->noscore & 0x00F0)
 	{
 	      msg_print("Score not registered for borgs.");
-	      msg_print(NULL);
+	      message_flush();
 	      score_idx = -1;
 	      return (0);
 	}
@@ -4058,7 +4058,7 @@ static errr enter_score(void)
 	      if (!op_ptr->opt[j]) continue;
 
 	      msg_print("Score not registered for cheaters.");
-	      msg_print(NULL);
+	      message_flush();
 	      score_idx = -1;
 	      return (0);
 	}
@@ -4069,7 +4069,7 @@ static errr enter_score(void)
 	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Interrupting"))
 	{
 	      msg_print("Score not registered due to interruption.");
-	      msg_print(NULL);
+	      message_flush();
 	      score_idx = -1;
 	      return (0);
 	}
@@ -4078,7 +4078,7 @@ static errr enter_score(void)
 	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Quitting"))
 	{
 	      msg_print("Score not registered due to quitting.");
-	      msg_print(NULL);
+	      message_flush();
 	      score_idx = -1;
 	      return (0);
 	}
@@ -4162,7 +4162,7 @@ static void top_twenty(void)
 	if (highscore_fd < 0)
 	{
 		msg_print("Score file unavailable.");
-		msg_print(NULL);
+		message_flush();
 		return;
 	}
 
@@ -4207,7 +4207,7 @@ errr predict_score(void)
 	if (highscore_fd < 0)
 	{
 		msg_print("Score file unavailable.");
-		msg_print(NULL);
+		message_flush();
 		return (0);
 	}
 
@@ -4362,7 +4362,7 @@ static void close_game_aux(void)
   flush();
 
   /* Flush messages */
-  msg_print(NULL);
+  message_flush();
 
   /* Forever */
   while (1)
@@ -4412,7 +4412,7 @@ static void close_game_aux(void)
 					  }
 
 		  /* Flush messages */
-		  msg_print(NULL);
+		  message_flush();
 		}
 	    }
 	}
@@ -4456,7 +4456,7 @@ static void close_game_aux(void)
   if (!save_player())
     {
       msg_print("death save failed!");
-      msg_print(NULL);
+      message_flush();
     }
 
 }
@@ -4480,7 +4480,7 @@ void close_game(void)
 	handle_stuff();
 
 	/* Flush the messages */
-	msg_print(NULL);
+	message_flush();
 
 	/* Flush the input */
 	flush();

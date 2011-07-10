@@ -609,7 +609,7 @@ byte py_pickup(int pickup)
 				if (blind) object_desc(o_name, o_ptr, TRUE, 0);
 				else       object_desc(o_name, o_ptr, TRUE, 3);
 
-				msg_print(NULL);
+				message_flush();
 
 				/* Message */
 				msg("You %s %s.", (blind ? "feel" : "see"),
@@ -619,7 +619,7 @@ byte py_pickup(int pickup)
 			/* Several objects */
 			else
 			{
-				msg_print(NULL);
+				message_flush();
 
 				/* Message */
 				msg("You %s a pile of %d items.",
@@ -649,7 +649,7 @@ byte py_pickup(int pickup)
 			else       object_desc(o_name, o_ptr, TRUE, 3);
 
 			/* Message */
-			msg_print(NULL);
+			message_flush();
 			msg("You have no room for %s.", o_name);
 		}
 
@@ -683,7 +683,7 @@ byte py_pickup(int pickup)
 			else
 			{
 				/* Message -- not very informative */
-				msg_print(NULL);
+				message_flush();
 				msg_print("You have no room for any of the items on the floor.");
 			}
 		}

@@ -3517,7 +3517,7 @@ bool get_item(int *cp, const char * pmt, const char * str, int mode)
 #endif /* ALLOW_REPEAT */
 
 	/* Paranoia XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 
 	/* Not done */

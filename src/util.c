@@ -1214,12 +1214,12 @@ static int message_column = 0;
  * "pending" messages still on the screen, instead of using "msg_flush()".
  * This should only be done when the user is known to have read the message.
  *
- * We must be very careful about using the "msg_print()" functions without
- * explicitly calling the special "msg_print(NULL)" function, since this may
+ * We must be very careful about using the "msg("%s", )" functions without
+ * explicitly calling the special "msg("%s", NULL)" function, since this may
  * result in the loss of information if the screen is cleared, or if anything
  * is displayed on the top line.
  *
- * Hack -- Note that "msg_print(NULL)" will clear the top line even if no
+ * Hack -- Note that "msg("%s", NULL)" will clear the top line even if no
  * messages are pending.
  */
 static void msg_print_aux(u16b type, const char *msg)
@@ -1418,7 +1418,7 @@ static int screen_depth = 0;
 void screen_save(void)
 {
 	/* Hack -- Flush messages */
-	msg_print(NULL);
+	message_flush();
 
 	/* Save the screen (if legal) */
 	if (screen_depth++ == 0) Term_save();
@@ -1436,7 +1436,7 @@ void screen_save(void)
 void screen_load(void)
 {
 	/* Hack -- Flush messages */
-	msg_print(NULL);
+	message_flush();
 
 	/* Load the screen (if legal) */
 	if (--screen_depth == 0) Term_load();
@@ -1803,7 +1803,7 @@ bool get_string(const char * prompt, char *buf, int len)
 	bool res;
 
 	/* Paranoia XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 	/* Display prompt */
 	prt(prompt, 0, 0);
@@ -1909,7 +1909,7 @@ bool get_check(const char *prompt)
 	char buf[80];
 
 	/* Paranoia XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 	/* Hack -- Build a "useful" prompt */
 	strnfmt(buf, 78, "%.70s[y/n] ", prompt);
@@ -1948,7 +1948,7 @@ bool get_check(const char *prompt)
 bool get_com(const char * prompt, char *command)
 {
 	/* Paranoia XXX XXX XXX */
-	msg_print(NULL);
+	message_flush();
 
 	/* Display a prompt */
 	prt(prompt, 0, 0);
@@ -2050,7 +2050,7 @@ void request_command(bool shopping)
 		if (p_ptr->command_new)
 		{
 			/* Flush messages */
-			msg_print(NULL);
+			message_flush();
 
 			/* Use auto-command */
 			cmd = (char)p_ptr->command_new;

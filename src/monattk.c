@@ -245,7 +245,7 @@ static void make_request(int m_idx)
 		if (get_check("Accept the offer? "))
 		{
 			/* Be friendly. */
-			msg_print(NULL);
+			message_flush();
 			msg_print("May you have all your heart's desire!");
 
 			/* Take the item. */
@@ -264,7 +264,7 @@ static void make_request(int m_idx)
 		else
 		{
 			/* Complain bitterly. */
-			msg_print(NULL);
+			message_flush();
 			msg_print("You scummy excuse for a kobold crook!  May jackals gnaw your bones!");
 		}
 	}
