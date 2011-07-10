@@ -835,6 +835,7 @@ extern void move_cursor(int row, int col);
 extern void msg_print(const char *msg);
 extern void msg(const char *fmt, ...);
 extern void msgt(unsigned int type, const char *fmt, ...);
+extern void message_flush(void);
 extern void screen_save(void);
 extern void screen_load(void);
 extern void c_put_str(byte attr, const char * str, int row, int col);

@@ -1194,6 +1194,9 @@ static void msg_flush(int x)
 }
 
 
+static int message_column = 0;
+
+
 /*
  * Output a message to the top line of the screen.
  *
@@ -1221,7 +1224,6 @@ static void msg_flush(int x)
  */
 static void msg_print_aux(u16b type, const char *msg)
 {
-	static int p = 0;
 	int n;
 	char *t;
 	char buf[1024];
@@ -1235,22 +1237,22 @@ static void msg_print_aux(u16b type, const char *msg)
 	(void)Term_get_size(&w, &h);
 
 	/* Hack -- Reset */
-	if (!msg_flag) p = 0;
+	if (!msg_flag) message_column = 0;
 
 	/* Message Length */
 	n = (msg ? strlen(msg) : 0);
 
 	/* Hack -- flush when requested or needed */
-	if (p && (!msg || ((p + n) > (w - 8))))
+	if (message_column && (!msg || ((message_column + n) > (w - 8))))
 	{
 		/* Flush */
-		msg_flush(p);
+		msg_flush(message_column);
 
 		/* Forget it */
 		msg_flag = FALSE;
 
 		/* Reset */
-		p = 0;
+		message_column = 0;
 	}
 
 
@@ -1317,13 +1319,13 @@ static void msg_print_aux(u16b type, const char *msg)
 	}
 
 	/* Display the tail of the message */
-	Term_putstr(p, 0, n, color, t);
+	Term_putstr(message_column, 0, n, color, t);
 
 	/* Remember the message */
 	msg_flag = TRUE;
 
 	/* Remember the position */
-	p += n + 1;
+	message_column += n + 1;
 
 	/* Optional refresh */
 	if (fresh_after) Term_fresh();
@@ -1378,6 +1380,31 @@ void msgt(unsigned int type, const char *fmt, ...)
 }
 
 /*
+ * Print the queued messages.
+ */
+void message_flush(void)
+{
+	/* Hack -- Reset */
+	if (!msg_flag) message_column = 0;
+
+	/* Flush when needed */
+	if (message_column)
+	{
+		/* Print pending messages */
+		if (Term)
+			msg_flush(message_column);
+
+		/* Forget it */
+		msg_flag = FALSE;
+
+		/* Reset */
+		message_column = 0;
+	}
+}
+
+
+
+/*
  * Hack -- prevent "accidents" in "screen_save()" or "screen_load()"
  */
 static int screen_depth = 0;
@@ -1417,6 +1444,9 @@ void screen_load(void)
 	/* Decrease "icky" depth */
 	character_icky--;
 
+	/* Mega hack -redraw big graphics - sorry NRM */
+	if (character_icky == 0 && (tile_width > 1 || tile_height > 1))
+		Term_redraw();
 }
 
 
