@@ -4,7 +4,7 @@
 
 #############################################################################
 # Please take a look at config.h for *critical* configuration steps needed. #
-# Also look at "h-config.h" (and this "Makefile") for other such steps.     #
+# Also look at this "Makefile" for other such steps.#
 # And note that this "Makefile" is probably very out of date                #
 #############################################################################
 
@@ -141,7 +141,7 @@ SUFFIXES = .o .c .h
 HDRS = \
   angband.h externs.h defines.h types.h config.h \
   z-term.h z-rand.h z-form.h z-virt.h z-util.h \
-  h-basic.h h-config.h
+  h-basic.h
   
 SRCS = \
   z-util.c z-virt.c z-form.c z-rand.c z-term.c \

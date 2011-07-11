@@ -70,7 +70,6 @@ angband.exe:	$(OBJS) Makefile.lcc
 Z-VIRT_C=\
 	z-virt.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 
 z-virt.obj: $(Z-VIRT_C) z-virt.c
@@ -80,7 +79,6 @@ z-virt.obj: $(Z-VIRT_C) z-virt.c
 Z-UTIL_C=\
 	z-util.h\
 	h-basic.h\
-	h-config.h\
 
 z-util.obj: $(Z-UTIL_C) z-util.c
 	$(CC) -c $(CFLAGS) z-util.c
@@ -89,7 +87,6 @@ z-util.obj: $(Z-UTIL_C) z-util.c
 Z-TERM_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -107,7 +104,6 @@ z-term.obj: $(Z-TERM_C) z-term.c
 Z-RAND_C=\
 	z-rand.h\
 	h-basic.h\
-	h-config.h\
 
 z-rand.obj: $(Z-RAND_C) z-rand.c
 	$(CC) -c $(CFLAGS) z-rand.c
@@ -116,7 +112,6 @@ z-rand.obj: $(Z-RAND_C) z-rand.c
 Z-FORM_C=\
 	z-form.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 
@@ -127,7 +122,6 @@ z-form.obj: $(Z-FORM_C) z-form.c
 INFO_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -145,7 +139,6 @@ info.obj: $(INFO_C) info.c
 SQUELCH_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -163,7 +156,6 @@ squelch.obj: $(SQUELCH_C) squelch.c
 XTRA2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -181,7 +173,6 @@ xtra2.obj: $(XTRA2_C) xtra2.c
 XTRA1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -199,7 +190,6 @@ xtra1.obj: $(XTRA1_C) xtra1.c
 WIZARD2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -217,7 +207,6 @@ wizard2.obj: $(WIZARD2_C) wizard2.c
 WIZARD1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -235,7 +224,6 @@ wizard1.obj: $(WIZARD1_C) wizard1.c
 VARIABLE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -253,7 +241,6 @@ variable.obj: $(VARIABLE_C) variable.c
 UTIL_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -271,7 +258,6 @@ util.obj: $(UTIL_C) util.c
 TABLES_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -289,7 +275,6 @@ tables.obj: $(TABLES_C) tables.c
 STORE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -307,7 +292,6 @@ store.obj: $(STORE_C) store.c
 SPELLS2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -325,7 +309,6 @@ spells2.obj: $(SPELLS2_C) spells2.c
 SPELLS1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -343,7 +326,6 @@ spells1.obj: $(SPELLS1_C) spells1.c
 SAVE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -368,7 +350,6 @@ readdib.obj: $(READDIB_C) readdib.c
 OBJECT2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -386,7 +367,6 @@ object2.obj: $(OBJECT2_C) object2.c
 OBJECT1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -404,7 +384,6 @@ object1.obj: $(OBJECT1_C) object1.c
 MONSTER2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -422,7 +401,6 @@ monster2.obj: $(MONSTER2_C) monster2.c
 MONSTER1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -440,7 +418,6 @@ monster1.obj: $(MONSTER1_C) monster1.c
 MONATTK_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -458,7 +435,6 @@ monattk.obj: $(MONATTK_C) monattk.c
 MONMOVE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -476,7 +452,6 @@ monmove.obj: $(MONMOVE_C) monmove.c
 MAIN-WIN_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -495,7 +470,6 @@ main-win.obj: $(MAIN-WIN_C) main-win.c
 LOAD2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -513,7 +487,6 @@ load2.obj: $(LOAD2_C) load2.c
 INIT2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -531,7 +504,6 @@ init2.obj: $(INIT2_C) init2.c
 INIT1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -549,7 +521,6 @@ init1.obj: $(INIT1_C) init1.c
 GENERATE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -567,7 +538,6 @@ generate.obj: $(GENERATE_C) generate.c
 FILES_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -585,7 +555,6 @@ files.obj: $(FILES_C) files.c
 DUNGEON_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -603,7 +572,6 @@ dungeon.obj: $(DUNGEON_C) dungeon.c
 CMD6_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -621,7 +589,6 @@ cmd6.obj: $(CMD6_C) cmd6.c
 CMD5_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -639,7 +606,6 @@ cmd5.obj: $(CMD5_C) cmd5.c
 CMD4_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -657,7 +623,6 @@ cmd4.obj: $(CMD4_C) cmd4.c
 CMD3_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -675,7 +640,6 @@ cmd3.obj: $(CMD3_C) cmd3.c
 CMD2_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -693,7 +657,6 @@ cmd2.obj: $(CMD2_C) cmd2.c
 CMD1_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -711,7 +674,6 @@ cmd1.obj: $(CMD1_C) cmd1.c
 CAVE_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -729,7 +691,6 @@ cave.obj: $(CAVE_C) cave.c
 BIRTH_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\
@@ -747,7 +708,6 @@ birth.obj: $(BIRTH_C) birth.c
 RANDART_C=\
 	angband.h\
 	h-basic.h\
-	h-config.h\
 	z-util.h\
 	z-virt.h\
 	z-form.h\

@@ -4,16 +4,34 @@
 #define INCLUDED_H_BASIC_H
 
 /*
- * The most basic "include" file.
- *
- * This file simply includes other low level header files.
+ * Include autoconf autodetections, otherwise try to autodetect ourselves
  */
-
-/* Autoconf Support */
 #ifdef HAVE_CONFIG_H
-#include "autoconf.h"
+
+# include "autoconf.h"
 
 #else /* HAVE_CONFIG_H */
+
+/*
+ * Extract the "WINDOWS" flag from the compiler
+ */
+# if defined(_Windows) || defined(__WINDOWS__) || \
+     defined(__WIN32__) || defined(WIN32) || \
+     defined(__WINNT__) || defined(__NT__)
+#  ifndef WINDOWS
+#   define WINDOWS
+#  endif
+# endif
+
+/*
+ * Using C99, assume we have stdint and stdbool
+ */
+# if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#  define HAVE_STDINT_H
+#  define HAVE_STDBOOL_H
+# endif
+
+
 
 /*
  * Everyone except RISC OS has fcntl.h and sys/stat.h
@@ -23,8 +41,87 @@
 
 #endif /* HAVE_CONFIG_H */
 
-/* System Configuration */
-#include "h-config.h"
+
+
+
+/*
+ * OPTION: set "SET_UID" if the machine is a "multi-user" machine.
+ *
+ * This option is used to verify the use of "uids" and "gids" for
+ * various "Unix" calls, and of "pids" for getting a random seed,
+ * and of the "umask()" call for various reasons, and to guess if
+ * the "kill()" function is available, and for permission to use
+ * functions to extract user names and expand "tildes" in filenames.
+ * It is also used for "locking" and "unlocking" the score file.
+ * Basically, SET_UID should *only* be set for "Unix" machines.
+ */
+#if !defined(MACH_O_CARBON) && !defined(WINDOWS)
+# define SET_UID
+
+/* Without autoconf, turn on some things */
+# ifndef HAVE_CONFIG_H
+#  define HAVE_DIRENT_H
+#  define HAVE_SETEGID
+#  if defined(linux)
+#   define HAVE_SETRESGID
+#  endif
+# endif
+#endif
+
+
+/*
+ * OPTION: Define "HAVE_USLEEP" only if "usleep()" exists.
+ *
+ * Note that this is only relevant for "SET_UID" machines.
+ * Note that new "SOLARIS" and "SGI" machines have "usleep()".
+ */
+#if defined(SET_UID) && !defined(HAVE_CONFIG_H)
+# if !defined(HPUX) && !defined(ULTRIX) && !defined(ISC)
+#  define HAVE_USLEEP
+# endif
+#endif
+
+
+
+
+
+/*
+ * Every system seems to use its own symbol as a path separator.
+ *
+ * Default to the standard Unix slash, but attempt to change this
+ * for various other systems.  Note that any system that uses the
+ * "period" as a separator (i.e. RISCOS) will have to pretend that
+ * it uses the slash, and do its own mapping of period <-> slash.
+ *
+ * It is most definitely wrong to have such things here.  Platform-specific
+ * code should handle shifting Angband filenames to platform ones. XXX
+ */
+#undef PATH_SEP
+#define PATH_SEP "/"
+#define PATH_SEPC '/'
+
+#ifdef WINDOWS
+# undef PATH_SEP
+# undef PATH_SEPC
+# define PATH_SEP "\\"
+# define PATH_SEPC '\\'
+#endif
+
+
+/*
+ * The Macintosh allows the use of a "file type" when creating a file
+ */
+#if defined(MACINTOSH) || defined(MACH_O_CARBON)
+# define FILE_TYPE_TEXT 'TEXT'
+# define FILE_TYPE_DATA 'DATA'
+# define FILE_TYPE_SAVE 'SAVE'
+# define FILE_TYPE(X) (_ftype = (X))
+#else
+# define FILE_TYPE(X) ((void)0)
+#endif
+
+
+
 
 /*** Include the library header files ***/
 
@@ -51,6 +148,7 @@
 # include <sys/stat.h>
 # include <unistd.h>
 #endif /* SET_UID */
+
 
 /** Other headers **/
 #include <fcntl.h>

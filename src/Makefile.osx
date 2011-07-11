@@ -163,7 +163,7 @@ depend:
 #
 
 HDRS = \
-  h-basic.h h-config.h
+  h-basic.h
 
 INCS = \
   angband.h \
