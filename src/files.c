@@ -3906,13 +3906,6 @@ void close_game(void)
 	character_icky = TRUE;
 
 
-	/* Build the filename */
-	path_build(buf, 1024, ANGBAND_DIR_APEX, "scores.raw");
-
-	/* Open the high score file, for reading/writing */
-	highscore_fd = fd_open(buf, O_RDWR);
-
-
 	/* Handle death */
 	if (p_ptr->is_dead)
 	{
@@ -3932,14 +3925,6 @@ void close_game(void)
 		/* Predict score (or ESCAPE) */
 		if (inkey() != ESCAPE) predict_score();
 	}
-
-
-	/* Shut the high score file */
-	fd_close(highscore_fd);
-
-	/* Forget the high score fd */
-	highscore_fd = -1;
-
 
 	/* Allow suspending now */
 	signals_handle_tstp();

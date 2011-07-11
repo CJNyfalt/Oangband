@@ -253,11 +253,6 @@
  */
 #define MAX_Q_IDX	4
 
-/*
- * Maximum number of high scores in the high score file
- */
-#define MAX_HISCORES	100
-
 
 /*
  * Maximum number of lingering spell effects

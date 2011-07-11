@@ -308,7 +308,6 @@ extern bool (*ang_sort_comp)(void * u, void * v, int a, int b);
 extern void (*ang_sort_swap)(void * u, void * v, int a, int b);
 extern bool (*get_mon_num_hook)(int r_idx);
 extern bool (*get_obj_num_hook)(int k_idx);
-extern int highscore_fd;
 extern char themed_feeling[80];
 extern byte required_tval;
 extern byte bones_selector;

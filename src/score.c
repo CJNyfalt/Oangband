@@ -1,8 +1,28 @@
 /*
  * File: score.c
  * Purpose: Highscore handling for Angband
+ *
+ * Copyright (c) 1997 Ben Harrison, James E. Wilson, Robert A. Koeneke
+ *
+ * This work is free software; you can redistribute it and/or modify it
+ * under the terms of either:
+ *
+ * a) the GNU General Public License as published by the Free Software
+ *    Foundation, version 2, or
+ *
+ * b) the "Angband licence":
+ *    This software may be copied and distributed for educational, research,
+ *    and not for profit purposes provided that this copyright and statement
+ *    are included in all such copies.  Other copyrights may also apply.
  */
 #include "angband.h"
+
+
+/*
+ * Maximum number of high scores in the high score file
+ */
+#define MAX_HISCORES    100
+
 
 /*
  * Semi-Portable High Score List Entry (128 bytes)
@@ -209,8 +229,6 @@ static void highscore_write(const high_score scores[], size_t sz)
  * Display the scores in a given range.
  * Assumes the high score list is already open.
  * Only five entries per line, too much info.
- *
- * Mega-Hack -- allow "fake" entry at the given position.
  */
 static void display_scores_aux(const high_score scores[], int from, int to, int note)
 {
@@ -348,12 +366,6 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 }
 
 
-/*
- * Hack - save index of player's high score
- */
-static int score_idx = -1;
-
-
 static void build_score(high_score *entry, const char *died_from, time_t *death_time)
 {
 	/* Clear the record */
@@ -415,10 +427,9 @@ void enter_score(time_t *death_time)
 	/* Wizard-mode pre-empts scoring */
 	if (p_ptr->noscore & 0x000F)
 	{
-	      msg_print("Score not registered for wizards.");
-	      message_flush();
-	      score_idx = -1;
-	      return;
+		msg_print("Score not registered for wizards.");
+		message_flush();
+		return;
 	}
 
 #ifndef SCORE_BORGS
@@ -426,40 +437,36 @@ void enter_score(time_t *death_time)
 	/* Borg-mode pre-empts scoring */
 	if (p_ptr->noscore & 0x00F0)
 	{
-	      msg_print("Score not registered for borgs.");
-	      message_flush();
-	      score_idx = -1;
-	      return;
+		msg_print("Score not registered for borgs.");
+		message_flush();
+		return;
 	}
 #endif
 
 	/* Cheaters are not scored */
 	for (j = OPT_cheat_start; j < OPT_cheat_end+1; ++j)
 	{
-	      if (!op_ptr->opt[j]) continue;
+		if (!op_ptr->opt[j]) continue;
 
-	      msg_print("Score not registered for cheaters.");
-	      message_flush();
-	      score_idx = -1;
-	      return;
+		msg_print("Score not registered for cheaters.");
+		message_flush();
+		return;
 	}
 
 	/* Hack -- Interupted */
 	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Interrupting"))
 	{
-	      msg_print("Score not registered due to interruption.");
-	      message_flush();
-	      score_idx = -1;
-	      return;
+		msg_print("Score not registered due to interruption.");
+		message_flush();
+		return;
 	}
 
 	/* Hack -- Quitter */
 	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Quitting"))
 	{
-	      msg_print("Score not registered due to quitting.");
-	      message_flush();
-	      score_idx = -1;
-	      return;
+		msg_print("Score not registered due to quitting.");
+		message_flush();
+		return;
 	}
 
 	/* Add a new entry to the score list, see where it went */
@@ -478,7 +485,6 @@ void enter_score(time_t *death_time)
 	/* Success */
 	return;
 }
-
 
 
 /*
