@@ -2023,13 +2023,13 @@ void py_steal(int y, int x)
 	theft_protection += number_of_thefts_on_level * 15;
 
 	/* Did the theft succeed?  */
-	if (randint(theft_protection) < filching_power) success = TRUE;
+	if (randint1(theft_protection) < filching_power) success = TRUE;
 
 
 	/* If the theft succeeded, determine the value of the purse. */
 	if (success)
 	{
-		purse = (r_ptr->level + 1) + randint(3 * (r_ptr->level + 1) / 2);
+		purse = (r_ptr->level + 1) + randint1(3 * (r_ptr->level + 1) / 2);
 
 		/* Uniques are juicy targets. */
 		if (r_ptr->flags1 & (RF1_UNIQUE)) purse *= 3;
@@ -2043,13 +2043,13 @@ void py_steal(int y, int x)
 		/* Some monster races are far better to steal from than others. */
 		if ((r_ptr->d_char == 'D') || (r_ptr->d_char == 'd') ||
 			(r_ptr->d_char == 'p') || (r_ptr->d_char == 'h'))
-			purse *= 2 + randint(3) + randint(r_ptr->level / 20);
+			purse *= 2 + randint1(3) + randint1(r_ptr->level / 20);
 		else if ((r_ptr->d_char == 'P') || (r_ptr->d_char == 'o') ||
 			(r_ptr->d_char == 'O') || (r_ptr->d_char == 'T') ||
 			(r_ptr->d_char == 'n') || (r_ptr->d_char == 'W') ||
 			(r_ptr->d_char == 'k') || (r_ptr->d_char == 'L') ||
 			(r_ptr->d_char == 'V') || (r_ptr->d_char == 'y'))
-			purse *= 1 + randint(3) + randint(r_ptr->level / 30);
+			purse *= 1 + randint1(3) + randint1(r_ptr->level / 30);
 
 		/* Pickings are scarce in a land of many thieves. */
 		purse = purse * (p_ptr->depth + 5) / (p_ptr->max_depth + 5);
@@ -2068,7 +2068,7 @@ void py_steal(int y, int x)
 	}
 
 	/* The victim normally, but not always, wakes up and is aggravated. */
-	if (randint(4) != 1)
+	if (randint1(4) != 1)
 	{
 		m_ptr->csleep = 0;
 		m_ptr->mflag |= (MFLAG_ACTV);
@@ -2076,7 +2076,7 @@ void py_steal(int y, int x)
 
 
 		/* Occasionally, amuse the player with a message. */
-		if ((randint(5) == 1) && (purse) && (r_ptr->flags2 & (RF2_SMART)))
+		if ((randint1(5) == 1) && (purse) && (r_ptr->flags2 & (RF2_SMART)))
 		{
 			monster_desc(m_name, m_ptr, 0);
 			act = desc_victim_outcry[randint0(20)];
@@ -2112,7 +2112,7 @@ void py_steal(int y, int x)
 		aggravate_monsters(1, TRUE);
 	}
 
-	else if ((number_of_thefts_on_level > 2) || (randint(8) == 1))
+	else if ((number_of_thefts_on_level > 2) || (randint1(8) == 1))
 	{
 		msg_print("You hear hunting parties scouring the area for a notorious burgler.");
 

@@ -309,7 +309,7 @@ bool set_image(int v)
 	{
 		if (!p_ptr->image)
 		{
-			image_count = randint(511);
+			image_count = randint1(511);
 			msg_print("You feel drugged!");
 			notice = TRUE;
 		}
@@ -320,7 +320,7 @@ bool set_image(int v)
 	{
 		if (p_ptr->image)
 		{
-			image_count = randint(0);
+			image_count = randint1(0);
 			msg_print("You can see clearly again.");
 			notice = TRUE;
 		}
@@ -2518,7 +2518,7 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, const char * note)
 		 */
 		if (r_ptr->flags2 & (RF2_PLAYER_GHOST))
 		{
-			if (randint(3) != 1)
+			if (randint1(3) != 1)
 			{
 				sprintf(path, "%s/bone.%03d", ANGBAND_DIR_BONE,
 					bones_selector);
@@ -2553,7 +2553,7 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, const char * note)
 	/* Mega-Hack -- Pain cancels fear */
 	if (m_ptr->monfear && (dam > 0))
 	{
-		int tmp = randint(dam);
+		int tmp = randint1(dam);
 
 		/* Cure a little fear */
 		if (tmp < m_ptr->monfear)
@@ -2588,14 +2588,14 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, const char * note)
 		 * Run (sometimes) if at 10% or less of max hit points,
 		 * or (usually) when hit for half its current hit points
 		 */
-		if ((dam > 0) && ((randint(10) >= percentage) ||
+		if ((dam > 0) && ((randint1(10) >= percentage) ||
 		    ((dam >= m_ptr->hp) && (randint0(100) < 80))))
 		{
 			/* Hack -- note fear */
 			(*fear) = TRUE;
 
 			/* Hack -- Add some timed fear */
-			m_ptr->monfear = (randint(10) +
+			m_ptr->monfear = (randint1(10) +
 					  (((dam >= m_ptr->hp) && (percentage > 7)) ?
 					   20 : ((11 - percentage) * 5)));
 

@@ -3267,13 +3267,6 @@
 #define term_screen	(angband_term[0])
 
 /*
- * Hack -- random number generation
- */
-#define randint(M) \
-	(randint0(M) + 1)
-
-
-/*
  * Determine if a given inventory item is "aware"
  */
 #define object_aware_p(T) \

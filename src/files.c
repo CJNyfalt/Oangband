@@ -3255,7 +3255,7 @@ static void make_bones(void)
 				/* Ghost hovers near level of death. */
 				if (i == 0) level = p_ptr->depth;
 				else level = p_ptr->depth + 5 - damroll(2, 4);
-				if (level < 1) level = randint(4);
+				if (level < 1) level = randint1(4);
 
 				/* XXX XXX XXX "Bones" name */
 				sprintf(tmp, "bone.%03d", level);
@@ -4599,7 +4599,7 @@ errr get_rnd_line(char *file_name, char *output)
 	else return (1);
 
 	/* choose a random line */
-	line = randint(lines);
+	line = randint1(lines);
 
 	for (counter = 0; counter <= line; counter++)
 	{

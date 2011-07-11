@@ -2496,7 +2496,7 @@ bool prepare_ghost(int r_idx, monster_type *m_ptr, bool from_savefile)
 		}
 		else
 		{
-			backup_file_selector = randint(MAX_DEPTH - 1);
+			backup_file_selector = randint1(MAX_DEPTH - 1);
 			sprintf(path, "%s/bone.%03d", ANGBAND_DIR_BONE, backup_file_selector);
 			bones_selector = backup_file_selector;
 		}

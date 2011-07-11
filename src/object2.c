@@ -621,7 +621,7 @@ s16b get_obj_num(int level)
 	if (level > 0)
 	{
 		/* Occasional boost to allowed level.  Less generous in Oangband. */
-		if (randint0(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
+		if (randint0(GREAT_OBJ) == 0) level += randint1(20) + randint1(level / 2);
 	}
 
 
@@ -1786,12 +1786,12 @@ static int make_ego_item(object_type *o_ptr, int power)
 	/* Boost level (like with object base types) */
 	if (level > 0)
 	{
-	  //		if (randint0(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
+	  //		if (randint0(GREAT_OBJ) == 0) level += randint1(20) + randint1(level / 2);
 		/* Occasional "boost" */
 		if (randint0(GREAT_EGO) == 0)
 		{
 			/* The bizarre calculation again */
-			level = 1 + (level * MAX_DEPTH / randint(MAX_DEPTH));
+			level = 1 + (level * MAX_DEPTH / randint1(MAX_DEPTH));
 		}
 	}
 
@@ -2010,8 +2010,8 @@ static bool make_artifact(object_type *o_ptr)
  */
 static void a_m_aux_1(object_type *o_ptr, int level, int power)
 {
-	int tohit1 = randint(5) + m_bonus(5, level);
-	int todam1 = randint(5) + m_bonus(5, level);
+	int tohit1 = randint1(5) + m_bonus(5, level);
+	int todam1 = randint1(5) + m_bonus(5, level);
 
 	int tohit2 = m_bonus(10, level);
 	int todam2 = m_bonus(10, level);
@@ -2061,7 +2061,7 @@ static void a_m_aux_1(object_type *o_ptr, int level, int power)
 			if (power < -1)
 			{
 				/* Hack -- Horrible digging bonus */
-				o_ptr->pval = 0 - (5 + randint(5));
+				o_ptr->pval = 0 - (5 + randint1(5));
 			}
 
 			/* Bad */
@@ -2119,12 +2119,12 @@ static void a_m_aux_2(object_type *o_ptr, int level, int power)
 	/* Boots and handgear aren't as important to total AC. */
 	if ((o_ptr->tval == TV_BOOTS) || (o_ptr->tval == TV_GLOVES))
 	{
-		toac1 = randint(3) + m_bonus(4, level);
+		toac1 = randint1(3) + m_bonus(4, level);
 		toac2 = m_bonus(8, level);
 	}
 	else
 	{
-		toac1 = randint(5) + m_bonus(5, level);
+		toac1 = randint1(5) + m_bonus(5, level);
 		toac2 = m_bonus(10, level);
 	}
 
@@ -2238,7 +2238,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_SPEED:
 				{
 					/* Base speed (1 to 10) */
-					o_ptr->pval = randint(5) + m_bonus(5, level);
+					o_ptr->pval = randint1(5) + m_bonus(5, level);
 
 					/* Super-charge the ring */
 					while (randint0(100) < 50) o_ptr->pval++;
@@ -2271,10 +2271,10 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_EREGION:
 				{
 					/* Speed (1 to 7) */
-					o_ptr->pval = randint(3) + m_bonus(4, level);
+					o_ptr->pval = randint1(3) + m_bonus(4, level);
 
 					/* Maybe Extra Power */
-					if (randint(2) == 1)
+					if (randint1(2) == 1)
 					{
 						o_ptr->xtra1 = OBJECT_XTRA_TYPE_POWER;
 						o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_POWER);
@@ -2300,11 +2300,11 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_WARFARE:
 				{
 					/* Speed (1 to 7) */
-					o_ptr->pval = randint(3) + m_bonus(4, level);
+					o_ptr->pval = randint1(3) + m_bonus(4, level);
 
 					/* Bonus to both Deadliness and to Skill */
-					o_ptr->to_d = 3 + randint(2) + m_bonus(5, level);
-					o_ptr->to_h = 3 + randint(2) + m_bonus(5, level);
+					o_ptr->to_d = 3 + randint1(2) + m_bonus(5, level);
+					o_ptr->to_h = 3 + randint1(2) + m_bonus(5, level);
 
 					/* Rating boost */
 					rating += 25;
@@ -2345,7 +2345,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->xtra2 = ACT_RING_FIRE;
 
 					/* Bonus to armor class. */
-					o_ptr->to_a = 5 + randint(5) + m_bonus(10, level);
+					o_ptr->to_a = 5 + randint1(5) + m_bonus(10, level);
 					break;
 				}
 				case SV_RING_ACID:
@@ -2355,7 +2355,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->xtra2 = ACT_RING_ACID;
 
 					/* Bonus to armor class. */
-					o_ptr->to_a = 5 + randint(5) + m_bonus(10, level);
+					o_ptr->to_a = 5 + randint1(5) + m_bonus(10, level);
 					break;
 				}
 				case SV_RING_ICE:
@@ -2365,7 +2365,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->xtra2 = ACT_RING_COLD;
 
 					/* Bonus to armor class. */
-					o_ptr->to_a = 5 + randint(5) + m_bonus(10, level);
+					o_ptr->to_a = 5 + randint1(5) + m_bonus(10, level);
 					break;
 				}
 				case SV_RING_ELEC:
@@ -2375,7 +2375,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->xtra2 = ACT_RING_ELEC;
 
 					/* Bonus to armor class. */
-					o_ptr->to_a = 5 + randint(5) + m_bonus(10, level);
+					o_ptr->to_a = 5 + randint1(5) + m_bonus(10, level);
 					break;
 				}
 
@@ -2415,7 +2415,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_DEADLINESS:
 				{
 					/* Bonus to Deadliness */
-					o_ptr->to_d = 6 + randint(5) + m_bonus(10, level);
+					o_ptr->to_d = 6 + randint1(5) + m_bonus(10, level);
 
 					/* Cursed */
 					if (power < 0)
@@ -2437,7 +2437,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_SKILL:
 				{
 					/* Bonus to Skill */
-					o_ptr->to_h = 6 + randint(5) + m_bonus(10, level);
+					o_ptr->to_h = 6 + randint1(5) + m_bonus(10, level);
 
 					/* Cursed */
 					if (power < 0)
@@ -2459,7 +2459,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_PROTECTION:
 				{
 					/* Bonus to armor class */
-					o_ptr->to_a = 5 + randint(5) + m_bonus(10, level);
+					o_ptr->to_a = 5 + randint1(5) + m_bonus(10, level);
 
 					/* Cursed */
 					if (power < 0)
@@ -2481,8 +2481,8 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				case SV_RING_COMBAT:
 				{
 					/* Bonus to both Deadliness and to Skill */
-					o_ptr->to_d = 4 + randint(3) + m_bonus(7, level);
-					o_ptr->to_h = 4 + randint(3) + m_bonus(7, level);
+					o_ptr->to_d = 4 + randint1(3) + m_bonus(7, level);
+					o_ptr->to_h = 4 + randint1(3) + m_bonus(7, level);
 
 					/* Cursed */
 					if (power < 0)
@@ -2536,8 +2536,8 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 				/* Amulet of the Magi -- never cursed */
 				case SV_AMULET_THE_MAGI:
 				{
-					o_ptr->pval = randint(5) + m_bonus(5, level);
-					o_ptr->to_a = randint(5) + m_bonus(5, level);
+					o_ptr->pval = randint1(5) + m_bonus(5, level);
+					o_ptr->to_a = randint1(5) + m_bonus(5, level);
 
 					/* Boost the rating */
 					rating += 20;
@@ -2578,8 +2578,8 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->ident |= (IDENT_CURSED);
 
 					/* Penalize */
-					o_ptr->pval = 0 - (randint(5) + m_bonus(5, level));
-					o_ptr->to_a = 0 - (randint(5) + m_bonus(5, level));
+					o_ptr->pval = 0 - (randint1(5) + m_bonus(5, level));
+					o_ptr->to_a = 0 - (randint1(5) + m_bonus(5, level));
 
 					break;
 				}
@@ -2629,13 +2629,13 @@ static void a_m_aux_4(object_type *o_ptr, int level, int power)
 			/* Hack -- Torches -- random fuel */
 			if (o_ptr->sval == SV_LITE_TORCH)
 			{
-				if (o_ptr->pval > 0) o_ptr->pval = randint(o_ptr->pval);
+				if (o_ptr->pval > 0) o_ptr->pval = randint1(o_ptr->pval);
 			}
 
 			/* Hack -- Lanterns -- random fuel */
 			if (o_ptr->sval == SV_LITE_LANTERN)
 			{
-				if (o_ptr->pval > 0) o_ptr->pval = randint(o_ptr->pval);
+				if (o_ptr->pval > 0) o_ptr->pval = randint1(o_ptr->pval);
 			}
 
 			break;
@@ -2647,7 +2647,7 @@ static void a_m_aux_4(object_type *o_ptr, int level, int power)
 			/* The wand or staff gets a number of initial charges equal
 			 * to between 1/2 (+1) and the full object kind's pval.
 			 */
-			o_ptr->pval = k_ptr->pval / 2 + randint((k_ptr->pval + 1) / 2);
+			o_ptr->pval = k_ptr->pval / 2 + randint1((k_ptr->pval + 1) / 2);
 			break;
 		}
 
@@ -2666,7 +2666,7 @@ static void a_m_aux_4(object_type *o_ptr, int level, int power)
 
 			/* ...and never exceeding chest level + 4. */
 			if (o_ptr->pval > k_info[o_ptr->k_idx].level)
-				 o_ptr->pval = k_info[o_ptr->k_idx].level + randint(4);
+				 o_ptr->pval = k_info[o_ptr->k_idx].level + randint1(4);
 
 			/* Value/difficulty cannot be less than 5. */
 			if (o_ptr->pval < 5) o_ptr->pval = 5;
@@ -2863,13 +2863,13 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 		case TV_BOLT:
 		{
 			/* Up to three chances to enhance damage dice. */
-			if (randint(8) == 1)
+			if (randint1(8) == 1)
 			{
 				o_ptr->ds += 1;
-				if (randint(6) == 1)
+				if (randint1(6) == 1)
 				{
 					o_ptr->ds += 1;
-					if (randint(6) == 1)
+					if (randint1(6) == 1)
 					{
 						 o_ptr->ds += 1;
 					}
@@ -3104,32 +3104,32 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 
 		/* Apply extra bonuses or penalties. */
 		if ((e_ptr->max_to_h > 0) && (e_ptr->max_to_h < 129))
-			o_ptr->to_h += randint(e_ptr->max_to_h);
+			o_ptr->to_h += randint1(e_ptr->max_to_h);
 		else if (e_ptr->max_to_h > 128)
-			o_ptr->to_h -= randint(e_ptr->max_to_h - 128);
+			o_ptr->to_h -= randint1(e_ptr->max_to_h - 128);
 
 		if ((e_ptr->max_to_d > 0) && (e_ptr->max_to_d < 129))
-			o_ptr->to_d += randint(e_ptr->max_to_d);
+			o_ptr->to_d += randint1(e_ptr->max_to_d);
 		else if (e_ptr->max_to_d > 128)
-			o_ptr->to_d -= randint(e_ptr->max_to_d - 128);
+			o_ptr->to_d -= randint1(e_ptr->max_to_d - 128);
 
 		if ((e_ptr->max_to_a > 0) && (e_ptr->max_to_a < 129))
-			o_ptr->to_a += randint(e_ptr->max_to_a);
+			o_ptr->to_a += randint1(e_ptr->max_to_a);
 		else if (e_ptr->max_to_a > 128)
-			o_ptr->to_a -= randint(e_ptr->max_to_a - 128);
+			o_ptr->to_a -= randint1(e_ptr->max_to_a - 128);
 
 		if ((e_ptr->max_pval > 0) && (e_ptr->max_pval < 129))
-			o_ptr->pval += randint(e_ptr->max_pval);
+			o_ptr->pval += randint1(e_ptr->max_pval);
 		else if (e_ptr->max_pval > 128)
-			o_ptr->pval -= randint(e_ptr->max_pval - 128);
+			o_ptr->pval -= randint1(e_ptr->max_pval - 128);
 
 
 		/* Hack -- Frequently neaten missile to_h and to_d, for improved
 		 * stacking qualities.
 		 */
 		{
-			if ((o_ptr->to_h % 2 == 1) && (randint(4) != 1)) o_ptr->to_h++;
-			if ((o_ptr->to_d % 2 == 1) && (randint(4) != 1)) o_ptr->to_d++;
+			if ((o_ptr->to_h % 2 == 1) && (randint1(4) != 1)) o_ptr->to_h++;
+			if ((o_ptr->to_d % 2 == 1) && (randint1(4) != 1)) o_ptr->to_d++;
 		}
 
 
@@ -3419,14 +3419,14 @@ bool make_object(object_type *j_ptr, bool good, bool great, bool exact_kind)
 		 */
 		if ((k_ptr->level < object_level / 4) &&
 			(k_ptr->cost < 1) &&
-			(randint(3) != 1)) goto try_again;
+			(randint1(3) != 1)) goto try_again;
 
 		/* Sometimes (33% chance) forbid very low-level objects that aren't
 		 * worth very much.
 		 */
 		else if ((k_ptr->level < object_level / 4) &&
 			(k_ptr->cost < object_level - 20) &&
-			(randint(3) == 1)) goto try_again;
+			(randint1(3) == 1)) goto try_again;
 
 		/* Hack -- If a chest is specifically asked for, almost always
 		 * winnow out any not sufficiently high-level.
@@ -3436,8 +3436,8 @@ bool make_object(object_type *j_ptr, bool good, bool great, bool exact_kind)
 			/* Need to avoid asking for the impossible. */
 			int tmp = object_level > 100 ? 100 : object_level;
 
-			if ((k_ptr->level < 2 * (tmp + 3) / 4 + randint(tmp / 4)) &&
-				(randint(10) != 1)) goto try_again;
+			if ((k_ptr->level < 2 * (tmp + 3) / 4 + randint1(tmp / 4)) &&
+				(randint1(10) != 1)) goto try_again;
 		}
 
 		/* Clear any special object restriction, and prepare the standard
@@ -3479,7 +3479,7 @@ bool make_object(object_type *j_ptr, bool good, bool great, bool exact_kind)
 		}
 		case TV_FOOD:
 		{
-			if ((k_ptr->cost < 150) && (randint(2) == 1))
+			if ((k_ptr->cost < 150) && (randint1(2) == 1))
 				j_ptr->number = damroll(2, 3);
 			break;
 		}
@@ -3488,7 +3488,7 @@ bool make_object(object_type *j_ptr, bool good, bool great, bool exact_kind)
 		case TV_POLEARM:
 		{
 			if ((k_ptr->flags1 & (TR1_THROWING)) && (!j_ptr->name1) &&
-				(randint(2) == 1)) j_ptr->number = damroll(2, 2);
+				(randint1(2) == 1)) j_ptr->number = damroll(2, 2);
 			break;
 		}
 		default:
@@ -3534,10 +3534,10 @@ bool make_gold(object_type *j_ptr)
 		first_gold_idx = lookup_kind(TV_GOLD, SV_COPPER);
 
 		/* Normal treasure level is between 1/2 and the full object level. */
-		gold_depth = (object_level / 2) + randint((object_level + 1) / 2);
+		gold_depth = (object_level / 2) + randint1((object_level + 1) / 2);
 
 		/* Apply "extra" magic. */
-		if (randint0(GREAT_OBJ) == 0) gold_depth += randint(gold_depth);
+		if (randint0(GREAT_OBJ) == 0) gold_depth += randint1(gold_depth);
 
 		/* Find the highest-level legal gold object. */
 		for (i = first_gold_idx; i < first_gold_idx + SV_GOLD_MAX; i++)
@@ -3562,7 +3562,7 @@ bool make_gold(object_type *j_ptr)
 
 	/* Treasure can be worth between 1/2 and the full maximal value. */
 	j_ptr->pval = k_info[treasure].cost / 2 +
-			randint((k_info[treasure].cost + 1) / 2);
+			randint1((k_info[treasure].cost + 1) / 2);
 
 	/* Success */
 	return (TRUE);
@@ -4170,7 +4170,7 @@ void place_closed_door(int y, int x)
 	else if (tmp < 399)
 	{
 		/* Create locked door */
-		cave_set_feat(y, x, FEAT_DOOR_HEAD + randint(7));
+		cave_set_feat(y, x, FEAT_DOOR_HEAD + randint1(7));
 	}
 
 	/* Stuck doors (1/400) */

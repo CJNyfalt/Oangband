@@ -1729,7 +1729,7 @@ bool enchant(object_type *o_ptr, int n, int eflag)
 
 			/* Attempt to enchant */
 
-			if ((randint(1000) > chance) && (!a || (randint0(100) < 50)))
+			if ((randint1(1000) > chance) && (!a || (randint0(100) < 50)))
 			{
 				res = TRUE;
 
@@ -1756,7 +1756,7 @@ bool enchant(object_type *o_ptr, int n, int eflag)
 			else if (o_ptr->to_d > 15) chance = 1000;
 			else chance = enchant_table[o_ptr->to_d];
 
-			if ((randint(1000) > chance) && (!a || (randint0(100) < 50)))
+			if ((randint1(1000) > chance) && (!a || (randint0(100) < 50)))
 			{
 				res = TRUE;
 
@@ -1783,7 +1783,7 @@ bool enchant(object_type *o_ptr, int n, int eflag)
 			else if (o_ptr->to_a > 15) chance = 1000;
 			else chance = enchant_table[o_ptr->to_a];
 
-			if ((randint(1000) > chance) && (!a || (randint0(100) < 50)))
+			if ((randint1(1000) > chance) && (!a || (randint0(100) < 50)))
 			{
 				res = TRUE;
 
@@ -2112,7 +2112,7 @@ bool curse_armor(void)
 		/* Blast the armor */
 		o_ptr->name1 = 0;
 		o_ptr->name2 = EGO_BLASTED;
-		o_ptr->to_a = 0 - randint(5) - randint(5);
+		o_ptr->to_a = 0 - randint1(5) - randint1(5);
 		o_ptr->to_h = 0;
 		o_ptr->to_d = 0;
 		o_ptr->ac = 0;
@@ -2176,8 +2176,8 @@ bool curse_weapon(void)
 		/* Shatter the weapon */
 		o_ptr->name1 = 0;
 		o_ptr->name2 = EGO_SHATTERED;
-		o_ptr->to_h = 0 - randint(5) - randint(5);
-		o_ptr->to_d = 0 - randint(5) - randint(5);
+		o_ptr->to_h = 0 - randint1(5) - randint1(5);
+		o_ptr->to_d = 0 - randint1(5) - randint1(5);
 		o_ptr->to_a = 0;
 		o_ptr->ac = 0;
 		o_ptr->dd = 0;
@@ -2563,13 +2563,13 @@ bool recharge(int power)
 		else
 		{
 			/* Recharge based on the standard number of charges. */
-			recharge_amount = randint(1 + k_ptr->pval / 2);
+			recharge_amount = randint1(1 + k_ptr->pval / 2);
 
 			/* Multiple wands in a stack increase recharging somewhat. */
 			if ((o_ptr->tval == TV_WAND) && (o_ptr->number > 1))
 			{
 				recharge_amount +=
-					(randint(recharge_amount * (o_ptr->number - 1))) / 2;
+					(randint1(recharge_amount * (o_ptr->number - 1))) / 2;
 				if (recharge_amount < 1) recharge_amount = 1;
 				if (recharge_amount > 12) recharge_amount = 12;
 			}
@@ -2629,19 +2629,19 @@ bool recharge(int power)
 				/* 10% chance to blow up one rod, otherwise draining. */
 				if (o_ptr->tval == TV_ROD)
 				{
-					if (randint(10) == 1) fail_type = 2;
+					if (randint1(10) == 1) fail_type = 2;
 					else fail_type = 1;
 				}
 				/* 67% chance to blow up one wand, otherwise draining. */
 				else if (o_ptr->tval == TV_WAND)
 				{
-					if (randint(3) != 1) fail_type = 2;
+					if (randint1(3) != 1) fail_type = 2;
 					else fail_type = 1;
 				}
 				/* 50% chance to blow up one staff, otherwise no effect. */
 				else if (o_ptr->tval == TV_STAFF)
 				{
-					if (randint(2) == 1) fail_type = 2;
+					if (randint1(2) == 1) fail_type = 2;
 					else fail_type = 0;
 				}
 			}
@@ -2652,13 +2652,13 @@ bool recharge(int power)
 				/* 33% chance to blow up one rod, otherwise draining. */
 				if (o_ptr->tval == TV_ROD)
 				{
-					if (randint(3) == 1) fail_type = 2;
+					if (randint1(3) == 1) fail_type = 2;
 					else fail_type = 1;
 				}
 				/* 20% chance of the entire stack, else destroy one wand. */
 				else if (o_ptr->tval == TV_WAND)
 				{
-					if (randint(5) == 1) fail_type = 3;
+					if (randint1(5) == 1) fail_type = 3;
 					else fail_type = 2;
 				}
 				/* Blow up one staff. */
@@ -3017,31 +3017,31 @@ void unmake(int dir)
 			/* Massive chaos bolt. */
 			case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
 			{
-				fire_bolt(GF_CHAOS, dir, randint(500));
+				fire_bolt(GF_CHAOS, dir, randint1(500));
 				break;
 			}
 			/* Chaos balls in every directioon */
 			case 8: case 9:
 			{
-				for (i = 0; i < 8; i++) fire_ball(GF_CHAOS, ddd[i], randint(400), 2, FALSE);
+				for (i = 0; i < 8; i++) fire_ball(GF_CHAOS, ddd[i], randint1(400), 2, FALSE);
 				break;
 			}
 			/* Tear up the dungeon. */
 			case 10:
 			{
-				destroy_area(p_ptr->py, p_ptr->px, 5 + randint(20), TRUE);
+				destroy_area(p_ptr->py, p_ptr->px, 5 + randint1(20), TRUE);
 				break;
 			}
 			/* Chaos cloud right on top of the poor caster. */
 			case 11:
 			{
-				fire_cloud(GF_CHAOS, 0, randint(400), 6);
+				fire_cloud(GF_CHAOS, 0, randint1(400), 6);
 				break;
 			}
 			/* Chaos spray. */
 			case 12: case 13: case 14: case 15: case 16:
 			{
-				fire_arc(GF_CHAOS, dir, randint(600), 8, 90);
+				fire_arc(GF_CHAOS, dir, randint1(600), 8, 90);
 				break;
 			}
 			/* Unmake the caster. */
@@ -3082,7 +3082,7 @@ void ele_air_smite(void)
 		for (j = 0; j < 20; j++)
 		{
 			/* Pick a (short) distance. */
-			int d = randint(3);
+			int d = randint1(3);
 
 			/* Admit failure.  Switch to Plan B. */
 			if (j == 19)
@@ -3450,7 +3450,7 @@ bool genocide(void)
 		delete_monster_idx(i);
 
 		/* Take some damage */
-		take_hit(randint(4), "the strain of casting Genocide");
+		take_hit(randint1(4), "the strain of casting Genocide");
 
 		/* Take note */
 		result = TRUE;
@@ -3492,7 +3492,7 @@ bool mass_genocide(void)
 		delete_monster_idx(i);
 
 		/* Take some damage */
-		take_hit(randint(3), "the strain of casting Mass Genocide");
+		take_hit(randint1(3), "the strain of casting Mass Genocide");
 
 		/* Note effect */
 		result = TRUE;
@@ -3675,7 +3675,7 @@ void destroy_area(int y1, int x1, int r, bool full)
 		if (!p_ptr->no_blind && !p_resist_pos(P_RES_LITE))
 		{
 			/* Become blind */
-			(void)set_blind(p_ptr->blind + 10 + randint(10));
+			(void)set_blind(p_ptr->blind + 10 + randint1(10));
 		}
 	}
 
@@ -3793,7 +3793,7 @@ void earthquake(int cy, int cx, int r, bool volcano)
 		}
 
 		/* Random message */
-		switch (randint(3))
+		switch (randint1(3))
 		{
 			case 1:
 			{
@@ -3825,7 +3825,7 @@ void earthquake(int cy, int cx, int r, bool volcano)
 		else
 		{
 			/* Calculate results */
-			switch (randint(3))
+			switch (randint1(3))
 			{
 				case 1:
 				{
@@ -3837,14 +3837,14 @@ void earthquake(int cy, int cx, int r, bool volcano)
 				{
 					msg_print("You are bashed by rubble!");
 					damage = damroll(10, 4);
-					(void)set_stun(p_ptr->stun + randint(50));
+					(void)set_stun(p_ptr->stun + randint1(50));
 					break;
 				}
 				case 3:
 				{
 					msg_print("You are crushed between the floor and ceiling!");
 					damage = damroll(10, 8);
-					(void)set_stun(p_ptr->stun + randint(50));
+					(void)set_stun(p_ptr->stun + randint1(50));
 					break;
 				}
 			}
@@ -4645,7 +4645,7 @@ bool drain_life(int dir, int dam)
 bool wall_to_mud(int dir)
 {
 	int flg = PROJECT_STOP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
-	return (project_hook(GF_KILL_WALL, dir, 20 + randint(30), flg));
+	return (project_hook(GF_KILL_WALL, dir, 20 + randint1(30), flg));
 }
 
 bool wall_to_mud_hack(int dir, int dam)

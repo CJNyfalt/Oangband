@@ -34,7 +34,7 @@ static int monster_critical(int dice, int sides, int dam)
 	if (randint0(3) == 0) return (0);
 
 	/* Weak blows rarely work */
-	if ((dam < 20) && (dam < randint(100))) return (0);
+	if ((dam < 20) && (dam < randint1(100))) return (0);
 
 	/* Perfect damage */
 	if (dam == total) max++;
@@ -83,7 +83,7 @@ static int check_hit(int power, int level, int terrain_bonus, int m_idx)
 	ac = p_ptr->ac + p_ptr->to_a + terrain_bonus;
 
 	/* Power and Level compete against Armor */
-	if ((i > 0) && (randint(i) > ((ac * 3) / 4)))
+	if ((i > 0) && (randint1(i) > ((ac * 3) / 4)))
 	{
 		return (TRUE);
 	}
@@ -208,7 +208,7 @@ static void make_request(int m_idx)
 
 			/* I must offer a fair price, plus some (I'm desperate). */
 			offer_price = (k_ptr->cost * requested_number) +
-				((5 + randint(5)) * 100L);
+				((5 + randint1(5)) * 100L);
 
 			/* Done. */
 			break;
@@ -429,7 +429,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 		}
 
 		/* Try for Evasion */
-		if (check_ability(SP_EVASION) & (randint(100) <= p_ptr->evasion_chance))
+		if (check_ability(SP_EVASION) & (randint1(100) <= p_ptr->evasion_chance))
 		{
 			/* Message */
 			msg_print("You Evade the attack!");
@@ -637,7 +637,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 			 */
 			if ((r_ptr->level >= 40) && (r_ptr->flags3 & (RF3_UNDEAD)) &&
 				(r_ptr->flags1 & (RF1_UNIQUE)) &&
-					(randint(250 - r_ptr->level) == 1))
+					(randint1(250 - r_ptr->level) == 1))
 
 			{
 				msg_print("Your foe calls upon your soul!");
@@ -646,7 +646,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 			}
 
 			else if ((r_ptr->level >= 50) && (r_ptr->flags3 & (RF3_UNDEAD)) &&
-				(randint(500 - r_ptr->level) == 1))
+				(randint1(500 - r_ptr->level) == 1))
 			{
 				msg_print("Your foe calls upon your soul!");
 				msg_print("You feel the Black Breath slowly draining you of life...");
@@ -870,9 +870,9 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					/* Eat gold */
 					else
 					{
-						gold = (p_ptr->au / 12) + randint(25);
+						gold = (p_ptr->au / 12) + randint1(25);
 						if (gold < 2) gold = 2;
-						if (gold > 5000) gold = (p_ptr->au / 20) + randint(2000);
+						if (gold > 5000) gold = (p_ptr->au / 20) + randint1(2000);
 						if (gold > p_ptr->au) gold = p_ptr->au;
 						p_ptr->au -= gold;
 						if (gold <= 0)
@@ -1051,7 +1051,7 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					if ((o_ptr->pval > 0) && (!artifact_p(o_ptr)))
 					{
 						/* Reduce fuel */
-						o_ptr->pval -= (250 + randint(250));
+						o_ptr->pval -= (250 + randint1(250));
 						if (o_ptr->pval < 1) o_ptr->pval = 1;
 
 						/* Notice */
@@ -1159,14 +1159,14 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					{
 						if (p_ptr->blind)
 						{
-							if (set_blind(p_ptr->blind + 6 + randint(rlev / 2)))
+							if (set_blind(p_ptr->blind + 6 + randint1(rlev / 2)))
 							{
 								obvious = TRUE;
 							}
 						}
 						else
 						{
-							if (set_blind(12 + randint(rlev)))
+							if (set_blind(12 + randint1(rlev)))
 							{
 								obvious = TRUE;
 							}
@@ -1190,14 +1190,14 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					{
 						if (p_ptr->confused)
 						{
-							if (set_confused(p_ptr->confused + 2 + randint(rlev / 2)))
+							if (set_confused(p_ptr->confused + 2 + randint1(rlev / 2)))
 							{
 								obvious = TRUE;
 							}
 						}
 						else
 						{
-							if (set_confused(5 + randint(rlev)))
+							if (set_confused(5 + randint1(rlev)))
 							{
 								obvious = TRUE;
 							}
@@ -1231,14 +1231,14 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					{
 						if (p_ptr->afraid)
 						{
-							if (set_afraid(p_ptr->afraid + 2 + randint(rlev / 2)))
+							if (set_afraid(p_ptr->afraid + 2 + randint1(rlev / 2)))
 							{
 								obvious = TRUE;
 							}
 						}
 						else
 						{
-							if (set_afraid(6 + randint(rlev)))
+							if (set_afraid(6 + randint1(rlev)))
 							{
 								obvious = TRUE;
 							}
@@ -1275,14 +1275,14 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 					{
 						if (p_ptr->paralyzed)
 						{
-							if (set_paralyzed(p_ptr->paralyzed + 2 + randint(rlev / 6)))
+							if (set_paralyzed(p_ptr->paralyzed + 2 + randint1(rlev / 6)))
 							{
 								obvious = TRUE;
 							}
 						}
 						else
 						{
-							if (set_paralyzed(4 + randint(rlev / 2)))
+							if (set_paralyzed(4 + randint1(rlev / 2)))
 							{
 								obvious = TRUE;
 							}
@@ -1540,11 +1540,11 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 				switch (tmp)
 				{
 					case 0: k = 0; break;
-					case 1: k = randint(5); break;
-					case 2: k = randint(5) + 5; break;
-					case 3: k = randint(20) + 20; break;
-					case 4: k = randint(50) + 50; break;
-					case 5: k = randint(100) + 100; break;
+					case 1: k = randint1(5); break;
+					case 2: k = randint1(5) + 5; break;
+					case 3: k = randint1(20) + 20; break;
+					case 4: k = randint1(50) + 50; break;
+					case 5: k = randint1(100) + 100; break;
 					case 6: k = 300; break;
 					default: k = 500; break;
 				}
@@ -1565,11 +1565,11 @@ bool make_attack_normal(monster_type *m_ptr, int y, int x)
 				switch (tmp)
 				{
 					case 0: k = 0; break;
-					case 1: k = randint(5); break;
-					case 2: k = randint(8) + 8; break;
-					case 3: k = randint(15) + 15; break;
-					case 4: k = randint(25) + 25; break;
-					case 5: k = randint(35) + 35; break;
+					case 1: k = randint1(5); break;
+					case 2: k = randint1(8) + 8; break;
+					case 3: k = randint1(15) + 15; break;
+					case 4: k = randint1(25) + 25; break;
+					case 5: k = randint1(35) + 35; break;
 					case 6: k = 60; break;
 					default: k = 100; break;
 				}
@@ -3479,7 +3479,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 				msg("%^s draws psychic energy from you!", m_name);
 
 				/* Drain */
-				r1 = remove_player_mana((randint(spower) / 20) + 1);
+				r1 = remove_player_mana((randint1(spower) / 20) + 1);
 
 				/* Redraw mana */
 				p_ptr->redraw |= (PR_MANA);
@@ -3704,7 +3704,7 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 			if (blind) msg_print("You suddenly feel hungry.");
 			else msg("%^s gestures at you, and you suddenly feel hungry.", m_name);
 
-			if (randint(100) > p_ptr->skill_sav)
+			if (randint1(100) > p_ptr->skill_sav)
 			{
 				/* Reduce food abruptly.  */
 				(void)set_food(p_ptr->food - (p_ptr->food/3));
@@ -4093,12 +4093,12 @@ bool make_attack_ranged(monster_type *m_ptr, int attack)
 	/* Power Siphon Specialty Ability */
 	if ((check_ability(SP_POWER_SIPHON)) && (manacost) && m_ptr->ml)
 	{
-		if (randint(3) == 1)
+		if (randint1(3) == 1)
 		{
 			int drain;
 
 			/* Find strength */
-			drain = randint(manacost + (p_ptr->lev / 2));
+			drain = randint1(manacost + (p_ptr->lev / 2));
 
 			/* Drain some mana */
 			if (drain > m_ptr->mana) m_ptr->mana = 0;

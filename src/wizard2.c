@@ -1311,7 +1311,7 @@ static void wiz_create_item(void)
 	if (i_ptr->tval == TV_GOLD)
 	{
 		k_ptr = &k_info[i_ptr->k_idx];
-		i_ptr->pval = k_ptr->cost / 2 + randint((k_ptr->cost + 1) / 2);
+		i_ptr->pval = k_ptr->cost / 2 + randint1((k_ptr->cost + 1) / 2);
 	}
 
 	/* Drop the object from heaven */
@@ -1466,7 +1466,7 @@ static void do_cmd_rerate(void)
 		/* Collect values */
 		for (i = 1; i < PY_MAX_LEVEL; i++)
 		{
-			p_ptr->player_hp[i] = randint(p_ptr->hitdie);
+			p_ptr->player_hp[i] = randint1(p_ptr->hitdie);
 			p_ptr->player_hp[i] += p_ptr->player_hp[i - 1];
 		}
 

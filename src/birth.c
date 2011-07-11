@@ -199,7 +199,7 @@ static void get_stats(void)
 		for (j = i = 0; i < 3 * A_MAX; i++)
 		{
 			/* Roll the dice */
-			dice[i] = randint(3 + i % 3);
+			dice[i] = randint1(3 + i % 3);
 
 			/* Collect the maximum */
 			j += dice[i];
@@ -296,11 +296,11 @@ static void get_extra(void)
 			}
 
 			/* No bias necessary. */
-			else j = randint(p_ptr->hitdie - 1);
+			else j = randint1(p_ptr->hitdie - 1);
 		}
 
 		/* Usually no bias -- average gain of half the hitdice. */
-		else j = randint(p_ptr->hitdie - 1);
+		else j = randint1(p_ptr->hitdie - 1);
 
 		/* Add this level's HP gain to the previous level's HPs. */
 		p_ptr->player_hp[i] = p_ptr->player_hp[i-1] + j;
@@ -333,7 +333,7 @@ static void get_history(void)
 	buf[0] = '\0';
 
 	/* Initial social class */
-	social_class = randint(4);
+	social_class = randint1(4);
 
 	/* Starting place */
 	chart = rp_ptr->hist;
@@ -345,7 +345,7 @@ static void get_history(void)
 		i = 0;
 
 		/* Roll for nobility */
-		roll = randint(100);
+		roll = randint1(100);
 
 		/* Get the proper entry in the table */
 		while ((chart != h_info[i].chart) || (roll > h_info[i].roll)) i++;
@@ -423,7 +423,7 @@ static void get_history(void)
 static void get_ahw(void)
 {
 	/* Calculate the age */
-	p_ptr->age = rp_ptr->b_age + randint(rp_ptr->m_age);
+	p_ptr->age = rp_ptr->b_age + randint1(rp_ptr->m_age);
 
 	/* Calculate the height/weight for males */
 	if (p_ptr->psex == SEX_MALE)
@@ -453,7 +453,7 @@ static void get_money(void)
 	int gold;
 
 	/* Social Class determines starting gold */
-	gold = (p_ptr->sc * 6) + randint(100) + 300;
+	gold = (p_ptr->sc * 6) + randint1(100) + 300;
 
 	/* Process the stats */
 	for (i = 0; i < A_MAX; i++)

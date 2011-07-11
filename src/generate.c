@@ -525,7 +525,7 @@ static char *mon_restrict(char symbol, byte depth, bool *ordered, bool unique_ok
 		for (i = 0; i < 2500; i++)
 		{
 			/* Get a random monster. */
-			j = randint(MAX_R_IDX - 1);
+			j = randint1(MAX_R_IDX - 1);
 
 			/* Must be a real monster */
 			if (!r_info[j].rarity) continue;
@@ -732,7 +732,7 @@ static char *mon_restrict(char symbol, byte depth, bool *ordered, bool unique_ok
 				for (i = 0; i < 500; i++)
 				{
 					/* Find a suitable monster near depth. */
-					j = randint(MAX_R_IDX - 1);
+					j = randint1(MAX_R_IDX - 1);
 
 					/* Require a non-unique undead. */
 					if ((r_info[j].flags3 & RF3_UNDEAD) &&
@@ -1378,14 +1378,14 @@ static void build_streamer(int feat, int chance)
 	bool change;
 
 	/* Initialize time until next turn, and time until next treasure */
-	int time_to_treas = randint(chance * 2);
-	int time_to_turn = randint(DUN_STR_CHG * 2);
+	int time_to_treas = randint1(chance * 2);
+	int time_to_turn = randint1(DUN_STR_CHG * 2);
 
 
 	/* Set standard width.  Vary width sometimes. */
 	int width = 2 * DUN_STR_WID + 1;
-	if (randint0(6) == 0) width += randint(3);
-	else if (randint0(6) == 0) width -= randint(3);
+	if (randint0(6) == 0) width += randint1(3);
+	else if (randint0(6) == 0) width -= randint1(3);
 	if (width < 1) width = 1;
 
 	/* Set expansion outward from centerline. */
@@ -1441,7 +1441,7 @@ static void build_streamer(int feat, int chance)
 				/* Hack -- Add some (known) treasure */
 				if (time_to_treas == 0)
 				{
-					time_to_treas = randint(chance * 2);
+					time_to_treas = randint1(chance * 2);
 					cave_feat[y][dx] += 0x04;
 				}
 			}
@@ -1475,7 +1475,7 @@ static void build_streamer(int feat, int chance)
 				/* Hack -- Add some (known) treasure */
 				if (time_to_treas == 0)
 				{
-					time_to_treas = randint(chance * 2);
+					time_to_treas = randint1(chance * 2);
 					cave_feat[dy][x] += 0x04;
 				}
 			}
@@ -1488,7 +1488,7 @@ static void build_streamer(int feat, int chance)
 		if (time_to_turn == 0)
 		{
 			/* Get time until next turn. */
-			time_to_turn = randint(DUN_STR_CHG * 2);
+			time_to_turn = randint1(DUN_STR_CHG * 2);
 
 			/* Randomizer. */
 			i = randint0(3);
@@ -1567,8 +1567,8 @@ void destroy_level(bool new_level)
 	if (cheat_room && new_level) msg_print("Destroyed Level");
 
 	/* determine the maximum number of epicenters. */
-	if (new_level) epicenter_max = randint(5) + 1;
-	else epicenter_max = randint(5) + 5;
+	if (new_level) epicenter_max = randint1(5) + 1;
+	else epicenter_max = randint1(5) + 5;
 
 	/* Drop a few epi-centers */
 	for (n = 0; n < epicenter_max; n++)
@@ -2037,7 +2037,7 @@ static bool find_space(int *y, int *x, int height, int width)
 	/* Sometimes, little rooms like to have more space. */
 	if ((blocks_wide == 2) && (randint0(3) == 0)) blocks_wide = 3;
 	else if ((blocks_wide == 1) && (randint0(2) == 0))
-		blocks_wide = 1 + randint(2);
+		blocks_wide = 1 + randint1(2);
 
 
 	/* We'll allow twenty-five guesses. */
@@ -2490,7 +2490,7 @@ static bool generate_starburst_room(int y1, int x1, int y2, int x2,
 								{
 									/* Make denser in the middle. */
 									if ((cave_feat[y][x] == FEAT_FLOOR) &&
-										(randint(max_dist + 5) >= dist + 5))
+										(randint1(max_dist + 5) >= dist + 5))
 										cave_set_feat(y, x, feat);
 								}
 								if ((feat == FEAT_WATER) || (feat == FEAT_LAVA))
@@ -2600,8 +2600,8 @@ static bool build_type1_moria(bool light)
 		/* Really large room - only on first try. */
 		if ((i == 0) && (select % 15 == 0))
 		{
-			height = (1 + randint(2)) * height;
-			width =  (2 + randint(3)) * width;
+			height = (1 + randint1(2)) * height;
+			width =  (2 + randint1(3)) * width;
 		}
 
 		/* Long, narrow room.  Sometimes tall and thin. */
@@ -2670,7 +2670,7 @@ static bool build_type1(void)
 	bool light = FALSE;
 
 	/* Occasional light */
-	if (p_ptr->depth <= randint(35)) light = TRUE;
+	if (p_ptr->depth <= randint1(35)) light = TRUE;
 
 
 	/* Use an alternative function if on a moria level. */
@@ -2679,8 +2679,8 @@ static bool build_type1(void)
 
 
 	/* Pick a room size (less border walls) */
-	x = 1 + randint(11) + randint(11);
-	y = 1 + randint(4) + randint(4);
+	x = 1 + randint1(11) + randint1(11);
+	y = 1 + randint1(4) + randint1(4);
 
 	/* Find and reserve some space in the dungeon.  Get center of room. */
 	if (!find_space(&y0, &x0, y+2, x+2)) return (FALSE);
@@ -2795,7 +2795,7 @@ static bool build_type1(void)
 			/* Here, creatures of Earth dwell. */
 			if ((p_ptr->depth > 35) && (randint0(3) == 0))
 			{
-				spread_monsters('X', p_ptr->depth, 2 + randint(3),
+				spread_monsters('X', p_ptr->depth, 2 + randint1(3),
 				y0, x0, 3, 9);
 
 				/* No normal monsters. */
@@ -2815,7 +2815,7 @@ static bool build_type1(void)
 				/* ... there may be water creatures, ... */
 				if ((p_ptr->depth > 15) && (randint0(4) == 0))
 				{
-					spread_monsters('6', p_ptr->depth, 2 + randint(4),
+					spread_monsters('6', p_ptr->depth, 2 + randint1(4),
 						y0, x0, 3, 7);
 
 					water_room = TRUE;
@@ -2871,20 +2871,20 @@ static bool build_type2(void)
 	int light = FALSE;
 
 	/* Occasional light */
-	if (p_ptr->depth <= randint(35)) light = TRUE;
+	if (p_ptr->depth <= randint1(35)) light = TRUE;
 
 
 	/* Determine extents of room (a) */
-	y1a = randint(4);
-	x1a = randint(13);
-	y2a = randint(3);
-	x2a = randint(9);
+	y1a = randint1(4);
+	x1a = randint1(13);
+	y2a = randint1(3);
+	x2a = randint1(9);
 
 	/* Determine extents of room (b) */
-	y1b = randint(3);
-	x1b = randint(9);
-	y2b = randint(4);
-	x2b = randint(13);
+	y1b = randint1(3);
+	x1b = randint1(9);
+	y2b = randint1(4);
+	x2b = randint1(13);
 
 
 	/* Calculate height */
@@ -2937,8 +2937,8 @@ static bool build_type2(void)
 		if (randint0(3) == 0)
 		{
 			/* Pool of lava */
-			(void)generate_starburst_room(y0 - randint(2),
-				x0 - randint(3), y0 + randint(2), x0 + randint(3),
+			(void)generate_starburst_room(y0 - randint1(2),
+				x0 - randint1(3), y0 + randint1(2), x0 + randint1(3),
 				FALSE, FEAT_LAVA, FALSE);
 
 			if (p_ptr->depth > 45) spread_monsters('U', p_ptr->depth,
@@ -2986,7 +2986,7 @@ static bool build_type3(void)
 	int light = FALSE;
 
 	/* Occasional light */
-	if (p_ptr->depth <= randint(35)) light = TRUE;
+	if (p_ptr->depth <= randint1(35)) light = TRUE;
 
 
 	/* Pick inner dimension */
@@ -3054,7 +3054,7 @@ static bool build_type3(void)
 
 
 	/* Special features */
-	switch (randint(4))
+	switch (randint1(4))
 	{
 		/* Nothing */
 		case 1:
@@ -3091,7 +3091,7 @@ static bool build_type3(void)
 			monster_level = p_ptr->depth;
 
 			/* Traps, naturally. */
-			spread_traps(randint(3), y0, x0, 4, 4);
+			spread_traps(randint1(3), y0, x0, 4, 4);
 
 			break;
 		}
@@ -3163,7 +3163,7 @@ static bool build_type4(void)
 	int light = FALSE;
 
 	/* Occasional light */
-	if (p_ptr->depth <= randint(35)) light = TRUE;
+	if (p_ptr->depth <= randint1(35)) light = TRUE;
 
 
 	/* Pick a room size (less border walls) */
@@ -3201,7 +3201,7 @@ static bool build_type4(void)
 	generate_draw(y1-1, x1-1, y2+1, x2+1, FEAT_WALL_INNER);
 
 	/* Inner room variations */
-	switch (randint(4))
+	switch (randint1(4))
 	{
 		/* An inner room with a small inner room */
 		case 1:
@@ -3213,7 +3213,7 @@ static bool build_type4(void)
 			generate_draw(y0-1, x0-1, y0+1, x0+1, FEAT_WALL_INNER);
 
 			/* Open the inner room with a locked door */
-			generate_hole(y0-1, x0-1, y0+1, x0+1, FEAT_DOOR_HEAD + randint(7));
+			generate_hole(y0-1, x0-1, y0+1, x0+1, FEAT_DOOR_HEAD + randint1(7));
 
 			/* Monsters on guard */
 			spread_monsters('\0', p_ptr->depth + 2, 4, y0, x0, 2, 6);
@@ -3279,11 +3279,11 @@ static bool build_type4(void)
 				generate_draw(y0-1, x0-5, y0+1, x0+5, FEAT_WALL_INNER);
 
 				/* Secret doors (random top/bottom) */
-				place_secret_door(y0 - 3 + (randint(2) * 2), x0 - 3);
-				place_secret_door(y0 - 3 + (randint(2) * 2), x0 + 3);
+				place_secret_door(y0 - 3 + (randint1(2) * 2), x0 - 3);
+				place_secret_door(y0 - 3 + (randint1(2) * 2), x0 + 3);
 
 				/* Monsters */
-				spread_monsters('\0', p_ptr->depth, randint(4), y0, x0, 2, 7);
+				spread_monsters('\0', p_ptr->depth, randint1(4), y0, x0, 2, 7);
 
 				/* Objects */
 				if (randint0(3) == 0) place_object(y0, x0 - 2, FALSE, FALSE, FALSE);
@@ -3313,11 +3313,11 @@ static bool build_type4(void)
 
 			/* Monsters (especially undead) just love mazes. */
 			if (randint0(3) == 0)
-				spread_monsters('N', p_ptr->depth, randint(6), y0, x0, 2, 9);
+				spread_monsters('N', p_ptr->depth, randint1(6), y0, x0, 2, 9);
 			else if (randint0(3) == 0)
-				spread_monsters('*', p_ptr->depth, randint(6), y0, x0, 2, 9);
+				spread_monsters('*', p_ptr->depth, randint1(6), y0, x0, 2, 9);
 			else
-				spread_monsters('\0', p_ptr->depth, randint(6), y0, x0, 2, 9);
+				spread_monsters('\0', p_ptr->depth, randint1(6), y0, x0, 2, 9);
 
 			/* No random monsters. */
 			generate_mark(y1, x1, y2, x2, CAVE_TEMP);
@@ -3340,7 +3340,7 @@ static bool build_type4(void)
 			/* Doors into the rooms */
 			if (randint0(100) < 50)
 			{
-				int i = randint(10);
+				int i = randint1(10);
 				place_secret_door(y1 - 1, x0 - i);
 				place_secret_door(y1 - 1, x0 + i);
 				place_secret_door(y2 + 1, x0 - i);
@@ -3348,7 +3348,7 @@ static bool build_type4(void)
 			}
 			else
 			{
-				int i = randint(3);
+				int i = randint1(3);
 				place_secret_door(y0 + i, x1 - 1);
 				place_secret_door(y0 - i, x1 - 1);
 				place_secret_door(y0 + i, x2 + 1);
@@ -3356,7 +3356,7 @@ static bool build_type4(void)
 			}
 
 			/* Treasure, centered at the center of the cross */
-			spread_objects(p_ptr->depth, 2 + randint(2), y0, x0, 1, 1);
+			spread_objects(p_ptr->depth, 2 + randint1(2), y0, x0, 1, 1);
 
 			/* Gotta have some monsters */
 			spread_monsters('\0', p_ptr->depth, 6 + randint0(11), y0, x0, 2, 9);
@@ -3589,7 +3589,7 @@ static bool build_type5(void)
 	rating += 10;
 
 	/* Sometimes cause a special feeling */
-	if ((randint(50) >= p_ptr->depth) && (randint0(2) == 0))
+	if ((randint1(50) >= p_ptr->depth) && (randint0(2) == 0))
 	{
 		good_item_flag = TRUE;
 	}
@@ -4142,7 +4142,7 @@ static bool build_type6(void)
 	rating += 10;
 
 	/* (Sometimes) Cause a "special feeling". */
-	if ((randint(50) >= p_ptr->depth) && (randint0(2) == 0))
+	if ((randint1(50) >= p_ptr->depth) && (randint0(2) == 0))
 	{
 		good_item_flag = TRUE;
 	}
@@ -4311,7 +4311,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 				/* Treasure seam, in either magma or quartz. */
 				case '*':
 				{
-					if (randint(2) == 1)
+					if (randint1(2) == 1)
 						cave_set_feat(y, x, FEAT_MAGMA_K);
 					else cave_set_feat(y, x, FEAT_QUARTZ_K);
 					break;
@@ -4554,8 +4554,8 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 				{
 					object_level = p_ptr->depth + 3;
 
-					if (randint(3) == 1) temp = randint(9);
-					else temp = randint(8);
+					if (randint1(3) == 1) temp = randint1(9);
+					else temp = randint1(8);
 
 					if (temp == 1) required_tval = TV_BOOTS;
 					else if (temp == 2) required_tval = TV_GLOVES;
@@ -4579,7 +4579,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 				{
 					object_level = p_ptr->depth + 3;
 
-					temp = randint(3);
+					temp = randint1(3);
 
 					if (temp == 1) required_tval = TV_SWORD;
 					else if (temp == 2) required_tval = TV_POLEARM;
@@ -4598,7 +4598,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					required_tval = TV_RING;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4613,7 +4613,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					required_tval = TV_AMULET;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4628,7 +4628,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					required_tval = TV_POTION;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4643,7 +4643,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					required_tval = TV_SCROLL;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4658,7 +4658,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					required_tval = TV_STAFF;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4674,7 +4674,7 @@ static bool build_vault(int y0, int x0, int ymax, int xmax, const char * data,
 					else required_tval = TV_ROD;
 
 					object_level = p_ptr->depth + 3;
-					if (randint(4) == 1)
+					if (randint1(4) == 1)
 						place_object(y, x, TRUE, FALSE, TRUE);
 					else place_object(y, x, FALSE, FALSE, TRUE);
 					object_level = p_ptr->depth;
@@ -4841,7 +4841,7 @@ static bool build_type8(void)
 
 	/* (Sometimes) Cause a special feeling */
 	if ((p_ptr->depth <= 50) ||
-	    (randint((p_ptr->depth - 40) * (p_ptr->depth - 40) + 1) < 400))
+	    (randint1((p_ptr->depth - 40) * (p_ptr->depth - 40) + 1) < 400))
 	{
 		good_item_flag = TRUE;
 	}
@@ -4941,8 +4941,8 @@ static bool build_type10(void)
 		else light = FALSE;
 
 		/* Get a size */
-		height = (2 + randint(2)) * BLOCK_HGT;
-		width  = (3 + randint(6)) * BLOCK_WID;
+		height = (2 + randint1(2)) * BLOCK_HGT;
+		width  = (3 + randint1(6)) * BLOCK_WID;
 
 		/* Find and reserve some space.  Get center of room. */
 		if (!find_space(&y0, &x0, height, width)) return (FALSE);
@@ -4959,10 +4959,10 @@ static bool build_type10(void)
 
 
 		/* Often, add rubble to break things up a bit. */
-		if (randint(5) > 2)
+		if (randint1(5) > 2)
 		{
 			/* Determine how many rubble fields to add (between 1 and 6). */
-			count = height * width * randint(2) / 1100;
+			count = height * width * randint1(2) / 1100;
 
 			/* Make the rubble fields. */
 			for (i = 0; i < count; i++)
@@ -5596,8 +5596,8 @@ void build_tunnel(int start_room, int end_room)
 	bool head_for_entrance = FALSE;
 
 	/* Initialize some movement counters */
-	int adjust_dir_timer = randint(DUN_TUN_ADJ * 2);
-	int rand_dir_timer   = randint(DUN_TUN_RND * 2);
+	int adjust_dir_timer = randint1(DUN_TUN_ADJ * 2);
+	int rand_dir_timer   = randint1(DUN_TUN_RND * 2);
 	int correct_dir_timer = 0;
 
 
@@ -5686,8 +5686,8 @@ void build_tunnel(int start_room, int end_room)
 				{
 					rand_dir(&row_dir, &col_dir, row1, col1);
 
-					rand_dir_timer = randint(DUN_TUN_RND * 2);
-					correct_dir_timer = randint(4);
+					rand_dir_timer = randint1(DUN_TUN_RND * 2);
+					correct_dir_timer = randint1(4);
 				}
 
 				/* Adjust direction, set timer. */
@@ -5695,7 +5695,7 @@ void build_tunnel(int start_room, int end_room)
 				{
 					adjust_dir(&row_dir, &col_dir, row1, col1, row2, col2);
 
-					adjust_dir_timer = randint(DUN_TUN_ADJ * 2);
+					adjust_dir_timer = randint1(DUN_TUN_ADJ * 2);
 				}
 
 
@@ -6310,7 +6310,7 @@ static bool build_themed_level(void)
 	for(i = 0; i < 40; i++)
 	{
 		/* Select a random themed level record. */
-		choice = randint(THEME_MAX);
+		choice = randint1(THEME_MAX);
 
 		/* Accept the first themed level, among those not already generated,
 		 * able to be generated at this depth.
@@ -6651,7 +6651,7 @@ static void cave_gen(void)
 
 
 	/* Pick a base number of monsters */
-	i = MIN_M_ALLOC_LEVEL + randint(8);
+	i = MIN_M_ALLOC_LEVEL + randint1(8);
 
 	/* Moria levels have a lot more monsters. */
 	if (moria_level) i *= 2;
@@ -6723,10 +6723,10 @@ static void cave_gen(void)
 	}
 
 	/* Place some traps in the dungeon. */
-	alloc_object(ALLOC_SET_BOTH, ALLOC_TYP_TRAP, randint(k));
+	alloc_object(ALLOC_SET_BOTH, ALLOC_TYP_TRAP, randint1(k));
 
 	/* Put some rubble in corridors. */
-	alloc_object(ALLOC_SET_CORR, ALLOC_TYP_RUBBLE, randint(k));
+	alloc_object(ALLOC_SET_CORR, ALLOC_TYP_RUBBLE, randint1(k));
 
 	/* Put some objects in rooms */
 	alloc_object(ALLOC_SET_ROOM, ALLOC_TYP_OBJECT, Rand_normal(DUN_AMT_ROOM, 3));
@@ -6783,10 +6783,10 @@ static void build_store(int n, int yy, int xx)
 	x0 = qx + xx * 11 + 11;
 
 	/* Determine the store boundaries */
-	y1 = y0 - (1 + randint((yy == 0) ? 2 : 1));
-	y2 = y0 + (1 + randint((yy == 1) ? 2 : 1));
-	x1 = x0 - (1 + randint(3));
-	x2 = x0 + (1 + randint(3));
+	y1 = y0 - (1 + randint1((yy == 0) ? 2 : 1));
+	y2 = y0 + (1 + randint1((yy == 1) ? 2 : 1));
+	x1 = x0 - (1 + randint1(3));
+	x2 = x0 + (1 + randint1(3));
 
 	/* Build an invulnerable rectangular building */
 	for (y = y1; y <= y2; y++)

@@ -418,7 +418,7 @@ static byte multi_hued_attr(monster_race *r_ptr)
 
 
 	/* Monsters with no ranged attacks can be any color */
-	if (!r_ptr->freq_ranged) return (randint(15));
+	if (!r_ptr->freq_ranged) return (randint1(15));
 
 	/* Check breaths */
 	for (i = 0; i < 32; i++)
@@ -435,14 +435,14 @@ static byte multi_hued_attr(monster_race *r_ptr)
 		if (first_color == 0) continue;
 
 		/* Monster can be of any color */
-		if (first_color == 255) return (randint(15));
+		if (first_color == 255) return (randint1(15));
 
 
 		/* Increment the number of breaths */
 		breaths++;
 
 		/* Monsters with lots of breaths may be any color. */
-		if (breaths == 6) return (randint(15));
+		if (breaths == 6) return (randint1(15));
 
 
 		/* Always store the first color */
@@ -468,7 +468,7 @@ static byte multi_hued_attr(monster_race *r_ptr)
 	}
 
 	/* Monsters with no breaths may be of any color. */
-	if (breaths == 0) return (randint(15));
+	if (breaths == 0) return (randint1(15));
 
 	/* If monster has one breath, store the second color too. */
 	if (breaths == 1)
@@ -499,7 +499,7 @@ static u16b image_monster(void)
 	c = image_monster_hack[randint0(sizeof(image_monster_hack) - 1)];
 
 	/* Random color */
-	a = randint(15);
+	a = randint1(15);
 
 	/* Encode */
 	return (PICT(a,c));
@@ -524,7 +524,7 @@ static u16b image_object(void)
 	c = image_object_hack[randint0(sizeof(image_object_hack) - 1)];
 
 	/* Random color */
-	a = randint(15);
+	a = randint1(15);
 
 	/* Encode */
 	return (PICT(a,c));
@@ -788,7 +788,7 @@ void map_info(int y, int x, byte *ap, char *cp, byte *tap, char *tcp)
 		int i;
 
 		/* Display a random image, reset count. */
-		image_count = randint(511);
+		image_count = randint1(511);
 		i = image_random();
 
 		a = PICT_A(i);

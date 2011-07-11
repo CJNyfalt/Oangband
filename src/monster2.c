@@ -1622,7 +1622,7 @@ static bool place_monster_one(int y, int x, int r_idx, bool slp)
 	if (slp && r_ptr->sleep)
 	{
 		int val = r_ptr->sleep;
-		n_ptr->csleep = ((val * 2) + randint(val * 10));
+		n_ptr->csleep = ((val * 2) + randint1(val * 10));
 	}
 
 	/* Assign maximal hitpoints */
@@ -1745,14 +1745,14 @@ static bool place_monster_group(int y, int x, int r_idx, bool slp, s16b group_si
 	if (r_ptr->level > p_ptr->depth)
 	{
 		reduce = (r_ptr->level - p_ptr->depth) / 2;
-		group_size -= randint(reduce);
+		group_size -= randint1(reduce);
 	}
 
 	/* Easy monsters, slightly smaller groups  -BR- */
 	else if (r_ptr->level < p_ptr->depth)
 	{
 		reduce = (p_ptr->depth - r_ptr->level) / 6;
-		group_size -= randint(reduce);
+		group_size -= randint1(reduce);
 	}
 
 	/* Minimum size */
@@ -1925,12 +1925,12 @@ static void place_monster_escort(int y, int x, int leader_idx, bool slp)
 			if (r_info[escort_idx].flags1 & (RF1_FRIENDS))
 			{
 				/* Place a group of monsters */
-				(void)place_monster_group(my, mx, escort_idx, slp, (s16b)(5 + randint(10)));
+				(void)place_monster_group(my, mx, escort_idx, slp, (s16b)(5 + randint1(10)));
 			}
 			else if (r_info[escort_idx].flags1 & (RF1_FRIEND))
 			{
 				/* Place a group of monsters */
-				(void)place_monster_group(my, mx, escort_idx, slp, (s16b)(1 + randint(2)));
+				(void)place_monster_group(my, mx, escort_idx, slp, (s16b)(1 + randint1(2)));
 			}
 		}
 	}
@@ -1977,7 +1977,7 @@ bool place_monster_aux(int y, int x, int r_idx, bool slp, bool grp)
 	else if (r_ptr->flags1 & (RF1_FRIEND))
 	{
 		/* Attempt to place a small group */
-		(void)place_monster_group(y, x, r_idx, slp, (s16b)randint(3));
+		(void)place_monster_group(y, x, r_idx, slp, (s16b)randint1(3));
 	}
 
 	/* Escorts for certain monsters */

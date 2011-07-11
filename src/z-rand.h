@@ -31,11 +31,19 @@
 
 
 /**
- * Generates a random signed long integer X where "O <= X < M" holds.
+ * Generates a random signed long integer X where "0 <= X < M" holds.
  *
  * The integer X falls along a uniform distribution.
  */
 #define randint0(M) ((s32b) Rand_div(M))
+
+
+/**
+ * Generates a random signed long integer X where "1 <= X <= M" holds.
+ *
+ * The integer X falls along a uniform distribution.
+ */
+#define randint1(M) ((s32b) Rand_div(M) + 1)
 
 /**
  * Generate a random signed long integer X where "A - D <= X <= A + D" holds.
@@ -76,7 +84,7 @@ void Rand_state_init(u32b seed);
 /**
  * Generates a random unsigned long integer X where "0 <= X < M" holds.
  *
- * The integer X falls along an uniform distribution.
+ * The integer X falls along a uniform distribution.
  */
 u32b Rand_div(u32b m);
 

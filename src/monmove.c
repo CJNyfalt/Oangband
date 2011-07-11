@@ -2112,7 +2112,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 		/* Hack -- memorize lack of moves after a while. */
 		if (!(l_ptr->flags1 & (RF1_NEVER_MOVE)))
 		{
-			if ((m_ptr->ml) && (randint(20) == 1))
+			if ((m_ptr->ml) && (randint1(20) == 1))
 				l_ptr->flags1 |= (RF1_NEVER_MOVE);
 		}
 
@@ -2125,7 +2125,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 				/* Hack -- memorize lack of attacks after a while */
 				if (!(l_ptr->flags1 & (RF1_NEVER_BLOW)))
 				{
-					if ((m_ptr->ml) && (randint(10) == 1))
+					if ((m_ptr->ml) && (randint1(10) == 1))
 						l_ptr->flags1 |= (RF1_NEVER_BLOW);
 				}
 				return (FALSE);
@@ -2204,7 +2204,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 			/* Hack -- memorize lack of attacks after a while */
 			if (!(l_ptr->flags1 & (RF1_NEVER_BLOW)))
 			{
-				if ((m_ptr->ml) && (randint(10) == 1))
+				if ((m_ptr->ml) && (randint1(10) == 1))
 					l_ptr->flags1 |= (RF1_NEVER_BLOW);
 			}
 
@@ -2930,7 +2930,7 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear, bool *ba
 						chance = cave_passable_mon(m_ptr, *ty, *tx, bash);
 
 						/* Try to move into the grid */
-						if ((chance < 100) && (randint(100) > chance))
+						if ((chance < 100) && (randint1(100) > chance))
 						{
 							/* Can't move */
 							return (FALSE);
@@ -3110,7 +3110,7 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear, bool *ba
 
 		/* Try to move in the chosen direction.  If we fail, end turn. */
 		if ((moves_data[i].move_chance < 100) &&
-		    (randint(100) > moves_data[i].move_chance))
+		    (randint1(100) > moves_data[i].move_chance))
 		{
 			return (FALSE);
 		}
@@ -3292,7 +3292,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 	if (dis_chance > 215) dis_chance = 215;
 
 	/* Smart monsters may attempts to disarm traps which would affect them */
-	if ((trap_hit) && (r_ptr->flags2 & (RF2_SMART)) && (randint(dis_chance) > p_ptr->skill_dis - 15))
+	if ((trap_hit) && (r_ptr->flags2 & (RF2_SMART)) && (randint1(dis_chance) > p_ptr->skill_dis - 15))
 	{
 		if (m_ptr->ml) msg("%^s finds your trap and disarms it.", m_name);
 
@@ -3307,7 +3307,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 	if ((trap_hit) && (m_ptr->mflag & (MFLAG_WARY)))
 	{
 		/* Check for avoidance */
-		if (randint(dis_chance) > (p_ptr->skill_dis - 15) / 2)
+		if (randint1(dis_chance) > (p_ptr->skill_dis - 15) / 2)
 		{
 			if (m_ptr->ml) msg("%^s avoids your trap.", m_name);
 
@@ -3368,13 +3368,13 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 
 		/* Find the 'power' of the trap effect */
 		n = p_ptr->lev + ((p_ptr->lev * p_ptr->lev)/ 25);
-		trap_power = 3 + randint(n) + (n / 2);
+		trap_power = 3 + randint1(n) + (n / 2);
 
 		/* Monsters can be wary of traps */
 		if (m_ptr->mflag & (MFLAG_WARY)) trap_power /= 3;
 
 		/* Trap 'critical' based on disarming skill (if not wary) */
-		else if (randint(p_ptr->skill_dis) > 50 + r_ptr->level) trap_power += trap_power / 2;
+		else if (randint1(p_ptr->skill_dis) > 50 + r_ptr->level) trap_power += trap_power / 2;
 
 		/* Affect the monster. */
 		/* The basic trap does full damage */
@@ -3465,7 +3465,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 		else if (feat == FEAT_MTRAP_DISPEL_M)
 		{
 			/* 50% - 75% damage of trap power to all creatures within LOS of trap*/
-			int dam = ((trap_power / 2) + randint(trap_power / 4));
+			int dam = ((trap_power / 2) + randint1(trap_power / 4));
 
 			(void)project_los_not_player(y, x, dam, GF_DISP_ALL);
 			if (!(m_ptr->r_idx)) mon_dies = TRUE;
@@ -4123,7 +4123,7 @@ static void process_monster(monster_type *m_ptr)
 	else if ((r_ptr->flags2 & (RF2_PLAYER_GHOST)) &&
 	         (player_has_los_bold(m_ptr->fy, m_ptr->fx)) &&
 	         (ghost_string_type == 1) &&
-	         (!ghost_has_spoken) && (randint(3) == 1))
+	         (!ghost_has_spoken) && (randint1(3) == 1))
 	{
 		char m_name[80];
 
@@ -4310,7 +4310,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 
 		/* Sudden emergence.  Uniques get a bonus. */
 		if (50 + r_ptr->level + (r_ptr->flags1 & (RF1_UNIQUE) ?
-			r_ptr->level / 2 : 0) > randint(800))
+			r_ptr->level / 2 : 0) > randint1(800))
 		{
 			m_ptr->stasis = 0;
 		}
@@ -4427,7 +4427,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 		}
 
 		/* See if monster notices player */
-		else if (total_wakeup_chance >= randint(10000))
+		else if (total_wakeup_chance >= randint1(10000))
 		{
 			int d = 1;
 
@@ -4486,7 +4486,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 		if (add_wakeup_chance > randint0(10000))
 		{
 			/* Disturb the monster quite a lot. */
-			int d = randint(add_wakeup_chance / 40);
+			int d = randint1(add_wakeup_chance / 40);
 
 			/* Still asleep */
 			if (m_ptr->csleep > d)
@@ -4572,7 +4572,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 	/* Recover from confusion */
 	if (m_ptr->confused)
 	{
-		int d = randint(r_ptr->level / 10 + 1);
+		int d = randint1(r_ptr->level / 10 + 1);
 
 		/* Still confused */
 		if (m_ptr->confused > d)
@@ -4606,7 +4606,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 	if (m_ptr->monfear)
 	{
 		/* Random recovery from fear */
-		int d = randint(r_ptr->level / 20 + 1);
+		int d = randint1(r_ptr->level / 20 + 1);
 
 		/* Still afraid */
 		if (m_ptr->monfear > d)

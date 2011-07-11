@@ -453,7 +453,7 @@ static void mass_produce(object_type *o_ptr)
 		case TV_POTION:
 		case TV_SCROLL:
 		{
-			if ((store_num == 6) && (randint(2) == 1))
+			if ((store_num == 6) && (randint1(2) == 1))
 			{
 				if (cost < 400L) size += mass_roll(15,3);
 			}
@@ -513,7 +513,7 @@ static void mass_produce(object_type *o_ptr)
 		case TV_WAND:
 		case TV_STAFF:
 		{
-			if ((store_num == 6) && (randint(3) == 1))
+			if ((store_num == 6) && (randint1(3) == 1))
 			{
 				if (cost < 1601L) size += mass_roll(1, 5);
 				else if (cost < 3201L) size += mass_roll(1, 3);
@@ -1871,7 +1871,7 @@ static int increase_insults(void)
 		st_ptr->bad_buy = 0;
 
 		/* Open tomorrow */
-		st_ptr->store_open = turn + 25000 + randint(25000);
+		st_ptr->store_open = turn + 25000 + randint1(25000);
 
 		/* Closed */
 		return (TRUE);
@@ -3734,7 +3734,7 @@ void store_maint(int which)
 	j = st_ptr->stock_num;
 
 	/* Sell a few items */
-	j = j - randint(STORE_TURNOVER);
+	j = j - randint1(STORE_TURNOVER);
 
 	/* Never keep more than "STORE_MAX_KEEP" slots */
 	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
@@ -3753,7 +3753,7 @@ void store_maint(int which)
 	j = st_ptr->stock_num;
 
 	/* Buy some more items */
-	j = j + randint(STORE_TURNOVER);
+	j = j + randint1(STORE_TURNOVER);
 
 	/* Never keep more than "STORE_MAX_KEEP" slots */
 	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;

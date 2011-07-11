@@ -513,7 +513,7 @@ static void process_world(void)
 	if (p_ptr->poisoned)
 	{
 		/* Take damage */
-		take_hit(randint(p_ptr->poisoned > 300 ? 20 : (p_ptr->poisoned + 14) / 15), "poison");
+		take_hit(randint1(p_ptr->poisoned > 300 ? 20 : (p_ptr->poisoned + 14) / 15), "poison");
 	}
 
 	/* Take damage from cuts */

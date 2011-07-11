@@ -63,7 +63,7 @@ void do_cmd_go_up(void)
 	 * chance of going up another level. -LM-
 	 */
 	if ((is_quest(p_ptr->depth) == FALSE) &&
-		(p_ptr->depth != 0) && (randint(3) == 1))
+		(p_ptr->depth != 0) && (randint1(3) == 1))
 	{
 		msg_print("The stairs continue up.  Go up another level? (y/n)");
 
@@ -128,7 +128,7 @@ void do_cmd_go_down(void)
 	 * there is a 50% chance of descending another level. -LM-
 	 */
 	if ((is_quest(p_ptr->depth) == FALSE) && (p_ptr->depth < MAX_DEPTH -1) &&
-		(randint(2) == 1))
+		(randint1(2) == 1))
 	{
 		msg_print("The stairs continue down.  Go down another level? (y/n)");
 
@@ -254,7 +254,7 @@ static byte get_choice(void)
 	if (chances_total < 1) return (TV_CLOAK);
 
 	/* Now pick over the ranges of choices */
-	choice = randint(chances_total);
+	choice = randint1(chances_total);
 
 	/* Start from the beginning */
 	i = 0;
@@ -300,8 +300,8 @@ static void chest_death(bool scatter, int y, int x, s16b o_idx)
 	o_ptr = &o_list[o_idx];
 
 	/* Determine how much to drop. */
-	if (o_ptr->sval >= SV_CHEST_MIN_LARGE) number = 4 + randint(3);
-	else number = 2 + randint(3);
+	if (o_ptr->sval >= SV_CHEST_MIN_LARGE) number = 4 + randint1(3);
+	else number = 2 + randint1(3);
 
 	/* Zero pval means empty chest */
 	if (!o_ptr->pval) number = 0;
@@ -348,13 +348,13 @@ static void chest_death(bool scatter, int y, int x, s16b o_idx)
 			case TV_BOLT:
 			case TV_ARROW:
 			{
-				if (randint(200) < object_level)
+				if (randint1(200) < object_level)
 				{
 					obj_success=make_object(i_ptr, TRUE, TRUE, TRUE);
 					break;
 				}
 
-				else if (randint(40) < object_level)
+				else if (randint1(40) < object_level)
 				{
 					obj_success=make_object(i_ptr, TRUE, FALSE, TRUE);
 					break;
@@ -371,7 +371,7 @@ static void chest_death(bool scatter, int y, int x, s16b o_idx)
 			case TV_DRUID_BOOK:
 			case TV_NECRO_BOOK:
 			{
-				if (randint(80) < object_level)
+				if (randint1(80) < object_level)
 				{
 				  obj_success=make_object(i_ptr, TRUE, FALSE, TRUE);
 				}
@@ -391,7 +391,7 @@ static void chest_death(bool scatter, int y, int x, s16b o_idx)
 			case TV_STAFF:
 			case TV_ROD:
 			{
-				if (randint(100) < (object_level - 10) / 2)
+				if (randint1(100) < (object_level - 10) / 2)
 				{
 					obj_success=make_object(i_ptr, TRUE, FALSE, TRUE);
 				}
@@ -512,14 +512,14 @@ static void chest_trap(int y, int x, s16b o_idx)
 		msg_print("A puff of yellow gas surrounds you!");
 		if (!p_ptr->free_act)
 		{
-			(void)set_paralyzed(p_ptr->paralyzed + 10 + randint(20));
+			(void)set_paralyzed(p_ptr->paralyzed + 10 + randint1(20));
 		}
 	}
 
 	/* Summon monsters */
 	if (trap & (CHEST_SUMMON))
 	{
-		int num = 2 + randint(3);
+		int num = 2 + randint1(3);
 		msg_print("You are enveloped in a cloud of smoke!");
 		(void)summon_specific(y, x, FALSE, summon_level, 0, num);
 	}
@@ -544,7 +544,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 	/* Elemental summon. */
 	if (trap & (CHEST_E_SUMMON))
 	{
-		j = randint(3) + 5;
+		j = randint1(3) + 5;
 		msg_print("Elemental beings appear to protect their treasures!");
 		(void) summon_specific(y, x, FALSE, summon_level, SUMMON_ELEMENTAL, j);
 	}
@@ -554,11 +554,11 @@ static void chest_trap(int y, int x, s16b o_idx)
 	{
 		msg_print("A storm of birds swirls around you!");
 
-		j = randint(3) + 3;
+		j = randint1(3) + 3;
 		for (i = 0; i < j; i++)
 			(void)fire_meteor(0, GF_FORCE, y, x, o_ptr->pval / 5, 7, TRUE);
 
-		j = randint(5) + o_ptr->pval /5;
+		j = randint1(5) + o_ptr->pval /5;
 		(void)summon_specific(y, x, TRUE, summon_level, SUMMON_BIRD, j);
 	}
 
@@ -570,7 +570,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		{
 			msg_print("Demons materialize in clouds of fire and brimstone!");
 
-			j = randint(3) + 2;
+			j = randint1(3) + 2;
 			for (i = 0; i < j; i++)
 			{
 				(void)fire_meteor(0, GF_FIRE, y, x, 10, 5, TRUE);
@@ -583,7 +583,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		{
 			msg_print("Draconic forms loom out of the darkness!");
 
-			j = randint(3) + 2;
+			j = randint1(3) + 2;
 			(void)summon_specific(y, x, FALSE, summon_level, SUMMON_DRAGON, j);
 		}
 
@@ -592,7 +592,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		{
 			msg_print("Creatures strange and twisted assault you!");
 
-			j = randint(5) + 3;
+			j = randint1(5) + 3;
 			(void)summon_specific(y, x, FALSE, summon_level, SUMMON_HYBRID, j);
 		}
 
@@ -601,7 +601,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		{
 			msg_print("Vortices coalesce and wreak destruction!");
 
-			j = randint(3) + 2;
+			j = randint1(3) + 2;
 			(void)summon_specific(y, x, TRUE, summon_level, SUMMON_VORTEX, j);
 		}
 	}
@@ -775,7 +775,7 @@ static bool do_cmd_disarm_chest(int y, int x, s16b o_idx)
 	}
 
 	/* Failure -- Keep trying */
-	else if ((i > 5) && (randint(i) > 5))
+	else if ((i > 5) && (randint1(i) > 5))
 	{
 		/* We may keep trying */
 		more = TRUE;
@@ -1758,7 +1758,7 @@ static bool do_cmd_disarm_aux(int y, int x)
 	}
 
 	/* Failure -- Keep trying */
-	else if ((i > 5) && (randint(i) > 5))
+	else if ((i > 5) && (randint1(i) > 5))
 	{
 		/* Failure */
 		if (flush_failure) flush();

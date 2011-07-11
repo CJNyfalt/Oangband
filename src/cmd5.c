@@ -356,7 +356,7 @@ static void rebalance_weapon(void)
 	}
 
 	/* 20% chance to curse weapon. */
-	else if (randint(5) == 1)
+	else if (randint1(5) == 1)
 	{
 		/* Description */
 		object_desc(o_name, o_ptr, FALSE, 0);
@@ -1145,11 +1145,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->fast)
 				{
-					(void)set_fast(randint(20) + plev);
+					(void)set_fast(randint1(20) + plev);
 				}
 				else
 				{
-					(void)set_fast(p_ptr->fast + randint(5));
+					(void)set_fast(p_ptr->fast + randint1(5));
 				}
 				break;
 			}
@@ -1172,32 +1172,32 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 33:	/* Resist Fire */
 			{
-				(void)set_oppose_fire(p_ptr->oppose_fire + randint(plev) + plev);
+				(void)set_oppose_fire(p_ptr->oppose_fire + randint1(plev) + plev);
 				break;
 			}
 			case 34:	/* Resist Cold */
 			{
-				(void)set_oppose_cold(p_ptr->oppose_cold + randint(plev) + plev);
+				(void)set_oppose_cold(p_ptr->oppose_cold + randint1(plev) + plev);
 				break;
 			}
 			case 35:	/* Resist Acid */
 			{
-				(void)set_oppose_acid(p_ptr->oppose_acid + randint(plev) + plev);
+				(void)set_oppose_acid(p_ptr->oppose_acid + randint1(plev) + plev);
 				break;
 			}
 
 			case 36:	/* Resist Poison */
 			{
-				(void)set_oppose_pois(p_ptr->oppose_pois + randint(plev) + plev);
+				(void)set_oppose_pois(p_ptr->oppose_pois + randint1(plev) + plev);
 				break;
 			}
 			case 37:	/* Resistance */
 			{
-				(void)set_oppose_acid(p_ptr->oppose_acid + randint(20) + 20);
-				(void)set_oppose_elec(p_ptr->oppose_elec + randint(20) + 20);
-				(void)set_oppose_fire(p_ptr->oppose_fire + randint(20) + 20);
-				(void)set_oppose_cold(p_ptr->oppose_cold + randint(20) + 20);
-				(void)set_oppose_pois(p_ptr->oppose_pois + randint(20) + 20);
+				(void)set_oppose_acid(p_ptr->oppose_acid + randint1(20) + 20);
+				(void)set_oppose_elec(p_ptr->oppose_elec + randint1(20) + 20);
+				(void)set_oppose_fire(p_ptr->oppose_fire + randint1(20) + 20);
+				(void)set_oppose_cold(p_ptr->oppose_cold + randint1(20) + 20);
+				(void)set_oppose_pois(p_ptr->oppose_pois + randint1(20) + 20);
 				break;
 			}
 			case 38:	/* Door Creation */
@@ -1286,11 +1286,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->shield)
 				{
-					(void)set_shield(p_ptr->shield + randint(20) + 30);
+					(void)set_shield(p_ptr->shield + randint1(20) + 30);
 				}
 				else
 				{
-					(void)set_shield(p_ptr->shield + randint(10) + 15);
+					(void)set_shield(p_ptr->shield + randint1(10) + 15);
 				}
 				break;
 			}
@@ -1303,11 +1303,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->fast)
 				{
-					(void)set_fast(randint(30) + 10 + plev);
+					(void)set_fast(randint1(30) + 10 + plev);
 				}
 				else
 				{
-					(void)set_fast(p_ptr->fast + randint(10));
+					(void)set_fast(p_ptr->fast + randint1(10));
 				}
 				break;
 			}
@@ -1319,7 +1319,7 @@ void do_cmd_cast_or_pray(void)
 				}
 				else
 				{
-					(void)set_extra_defences(p_ptr->magicdef + randint(20));
+					(void)set_extra_defences(p_ptr->magicdef + randint1(20));
 				}
 
 				break;
@@ -1374,8 +1374,8 @@ void do_cmd_cast_or_pray(void)
 			{
 				const char * p = (p_ptr->psex == SEX_FEMALE ? "Daughters" : "Sons");
 				msg("%s of Night rejoice!  It's the Day of Misrule!", p);
-				(void)set_fast(randint(30) + 30);
-				(void)set_shero(p_ptr->shero + randint(30) + 30);
+				(void)set_fast(randint1(30) + 30);
+				(void)set_shero(p_ptr->shero + randint1(30) + 30);
 				break;
 			}
 
@@ -1397,11 +1397,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->blessed)
 				{
-					(void)set_blessed(p_ptr->blessed + randint(12) + 12);
+					(void)set_blessed(p_ptr->blessed + randint1(12) + 12);
 				}
 				else
 				{
-					(void)set_blessed(p_ptr->blessed + randint(4) + 4);
+					(void)set_blessed(p_ptr->blessed + randint1(4) + 4);
 				}
 				break;
 			}
@@ -1454,11 +1454,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->blessed)
 				{
-					(void)set_blessed(p_ptr->blessed + randint(24) + 24);
+					(void)set_blessed(p_ptr->blessed + randint1(24) + 24);
 				}
 				else
 				{
-					(void)set_blessed(p_ptr->blessed + randint(8) + 8);
+					(void)set_blessed(p_ptr->blessed + randint1(8) + 8);
 				}
 				break;
 			}
@@ -1479,8 +1479,8 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 79: /* Resist Heat and Cold */
 			{
-				(void)set_oppose_fire(p_ptr->oppose_fire + randint(10) + plev / 2);
-				(void)set_oppose_cold(p_ptr->oppose_cold + randint(10) + plev / 2);
+				(void)set_oppose_fire(p_ptr->oppose_fire + randint1(10) + plev / 2);
+				(void)set_oppose_cold(p_ptr->oppose_cold + randint1(10) + plev / 2);
 				break;
 			}
 			case 80: /* Neutralize Poison */
@@ -1498,7 +1498,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 82: /* Sense Invisible */
 			{
-				(void)set_tim_invis(p_ptr->tim_invis + randint(24) + plev);
+				(void)set_tim_invis(p_ptr->tim_invis + randint1(24) + plev);
 				break;
 			}
 			case 83: /* Protection from Evil */
@@ -1506,11 +1506,11 @@ void do_cmd_cast_or_pray(void)
 				if (!p_ptr->protevil)
 				{
 					(void)set_protevil(p_ptr->protevil +
-						randint(24) + 3 * plev / 2);
+						randint1(24) + 3 * plev / 2);
 				}
 				else
 				{
-					(void)set_protevil(p_ptr->protevil + randint(30));
+					(void)set_protevil(p_ptr->protevil + randint1(30));
 				}
 				break;
 			}
@@ -1543,17 +1543,17 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->blessed)
 				{
-					(void)set_blessed(p_ptr->blessed + randint(48) + 48);
+					(void)set_blessed(p_ptr->blessed + randint1(48) + 48);
 				}
 				else
 				{
-					(void)set_blessed(p_ptr->blessed + randint(12) + 12);
+					(void)set_blessed(p_ptr->blessed + randint1(12) + 12);
 				}
 				break;
 			}
 			case 89: /* Dispel Undead */
 			{
-				(void)dispel_undead(randint(plev * 3));
+				(void)dispel_undead(randint1(plev * 3));
 				break;
 			}
 			case 90: /* Heal */
@@ -1565,19 +1565,19 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 91: /* Dispel Evil */
 			{
-				(void)dispel_evil(randint(plev * 3));
+				(void)dispel_evil(randint1(plev * 3));
 				break;
 			}
 			case 92: /* Sacred Shield */
 			{
 				if (!p_ptr->shield)
 				{
-					(void)set_shield(p_ptr->shield + randint(20) +
+					(void)set_shield(p_ptr->shield + randint1(20) +
 						plev / 2);
 				}
 				else
 				{
-					(void)set_shield(p_ptr->shield + randint(10) +
+					(void)set_shield(p_ptr->shield + randint1(10) +
 						plev / 4);
 				}
 				break;
@@ -1589,7 +1589,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 94: /* Holy Word */
 			{
-				(void)dispel_evil(randint(plev * 4));
+				(void)dispel_evil(randint1(plev * 4));
 				(void)hp_player(300);
 				(void)set_afraid(0);
 				(void)set_poisoned(p_ptr->poisoned - 200);
@@ -1786,7 +1786,7 @@ void do_cmd_cast_or_pray(void)
 			case 120: /* Annihilation */
 			{
 				if (!get_aim_dir(&dir)) return;
-				drain_life(dir, plev * 3 + randint(100));
+				drain_life(dir, plev * 3 + randint1(100));
 				break;
 			}
 			case 121: /* Call on Varda */
@@ -1823,11 +1823,11 @@ void do_cmd_cast_or_pray(void)
 				(void)hp_player(20);
 				if (!p_ptr->hero)
 				{
-					(void)set_hero(p_ptr->hero + randint(20) + 20);
+					(void)set_hero(p_ptr->hero + randint1(20) + 20);
 				}
 				else
 				{
-					(void)set_hero(p_ptr->hero + randint(10) + 10);
+					(void)set_hero(p_ptr->hero + randint1(10) + 10);
 				}
 				(void)set_afraid(0);
 
@@ -1844,7 +1844,7 @@ void do_cmd_cast_or_pray(void)
 				else if (randint0(2) == 0) type = GF_FIRE;
 				else type = GF_MANA;
 
-				fire_ball(type, dir, 25 + plev + randint(plev), 0, FALSE);
+				fire_ball(type, dir, 25 + plev + randint1(plev), 0, FALSE);
 				break;
 			}
 
@@ -1949,11 +1949,11 @@ void do_cmd_cast_or_pray(void)
 				(void)hp_player(20);
 				if (!p_ptr->hero)
 				{
-					(void)set_hero(p_ptr->hero + randint(20) + 20);
+					(void)set_hero(p_ptr->hero + randint1(20) + 20);
 				}
 				else
 				{
-					(void)set_hero(p_ptr->hero + randint(10) + 10);
+					(void)set_hero(p_ptr->hero + randint1(10) + 10);
 				}
 				(void)set_afraid(0);
 				break;
@@ -1985,7 +1985,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 149:  /* resist poison */
 			{
-				(void)set_oppose_pois(p_ptr->oppose_pois + randint(20) + 20);
+				(void)set_oppose_pois(p_ptr->oppose_pois + randint1(20) + 20);
 				break;
 			}
 			case 150:  /* earthquake */
@@ -1995,8 +1995,8 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 151:  /* resist fire & cold */
 			{
-				(void)set_oppose_fire(p_ptr->oppose_fire + randint(20) + 20);
-				(void)set_oppose_cold(p_ptr->oppose_cold + randint(20) + 20);
+				(void)set_oppose_fire(p_ptr->oppose_fire + randint1(20) + 20);
+				(void)set_oppose_cold(p_ptr->oppose_cold + randint1(20) + 20);
 				break;
 			}
 			case 152:  /* detect all */
@@ -2013,8 +2013,8 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 154:  /* resist acid & lightning */
 			{
-				(void)set_oppose_acid(p_ptr->oppose_acid + randint(20) + 20);
-				(void)set_oppose_elec(p_ptr->oppose_elec + randint(20) + 20);
+				(void)set_oppose_acid(p_ptr->oppose_acid + randint1(20) + 20);
+				(void)set_oppose_elec(p_ptr->oppose_elec + randint1(20) + 20);
 				break;
 			}
 			case 155:  /* wither foe */
@@ -2046,7 +2046,7 @@ void do_cmd_cast_or_pray(void)
 			case 159:  /* raging storm */
 			{
 				if (!get_aim_dir(&dir)) return;
-				fire_ball(GF_ELEC, dir, plev + randint(60 + plev * 2),
+				fire_ball(GF_ELEC, dir, plev + randint1(60 + plev * 2),
 					(1 + plev / 15), FALSE);
 				break;
 			}
@@ -2054,7 +2054,7 @@ void do_cmd_cast_or_pray(void)
 			{
 				msg_print("Boom!");
 				fire_sphere(GF_SOUND, 0,
-					  plev + randint(40 + plev * 2), plev / 8, 20);
+					  plev + randint1(40 + plev * 2), plev / 8, 20);
 				break;
 			}
 			case 161:  /* become mouse */
@@ -2109,12 +2109,12 @@ void do_cmd_cast_or_pray(void)
 				if (!p_ptr->tim_invis)
 				{
 					(void)set_tim_invis(p_ptr->tim_invis +
-						randint(24) + 24);
+						randint1(24) + 24);
 				}
 				else
 				{
 					(void)set_tim_invis(p_ptr->tim_invis +
-						randint(12) + 12);
+						randint1(12) + 12);
 				}
 				break;
 			}
@@ -2128,7 +2128,7 @@ void do_cmd_cast_or_pray(void)
 			case 171:  /* blizzard */
 			{
 				if (!get_aim_dir(&dir)) return;
-				fire_ball(GF_COLD, dir, plev + randint(50 + plev * 2),
+				fire_ball(GF_COLD, dir, plev + randint1(50 + plev * 2),
 					1 + plev / 12, FALSE);
 				break;
 			}
@@ -2136,13 +2136,13 @@ void do_cmd_cast_or_pray(void)
 			{
 				msg_print("You hurl mighty waves at your foes!");
 				fire_sphere(GF_WATER, 0,
-					  30 + ((4 * plev) / 5) + randint(30 + plev * 2), plev / 7, 20);
+					  30 + ((4 * plev) / 5) + randint1(30 + plev * 2), plev / 7, 20);
 				break;
 			}
 			case 173:  /* volcanic eruption */
 			{
 				msg_print("The earth convulses and erupts in fire!");
-				fire_sphere(GF_FIRE, 0, 3 * plev / 2 + randint(50 + plev * 3), 1 + plev / 15, 20);
+				fire_sphere(GF_FIRE, 0, 3 * plev / 2 + randint1(50 + plev * 3), 1 + plev / 15, 20);
 				earthquake(py, px, plev / 5, TRUE);
 				break;
 			}
@@ -2150,14 +2150,14 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!get_aim_dir(&dir)) return;
 				fire_ball(GF_PLASMA, dir,
-					35 + (2 * plev) + randint(90 + plev * 4), 1, FALSE);
+					35 + (2 * plev) + randint1(90 + plev * 4), 1, FALSE);
 				break;
 			}
 			case 175:  /* starburst. */
 			{
 				msg_print("Light bright beyond enduring dazzles your foes!");
 				fire_sphere(GF_LITE, 0,
-					  40 + (3 * plev / 2) + randint(plev * 3), plev / 10, 20);
+					  40 + (3 * plev / 2) + randint1(plev * 3), plev / 10, 20);
 				break;
 			}
 			case 176:  /* song of lulling */
@@ -2173,12 +2173,12 @@ void do_cmd_cast_or_pray(void)
 				msg_print("Your song creates a mystic shield.");
 				if (!p_ptr->shield)
 				{
-					(void)set_shield(p_ptr->shield + randint(30) +
+					(void)set_shield(p_ptr->shield + randint1(30) +
 						plev / 2);
 				}
 				else
 				{
-					(void)set_shield(p_ptr->shield + randint(15) +
+					(void)set_shield(p_ptr->shield + randint1(15) +
 						plev / 4);
 				}
 				break;
@@ -2187,8 +2187,8 @@ void do_cmd_cast_or_pray(void)
 			{
 				msg_print("An unbearable discord tortures your foes!");
 
-				(void)dispel_monsters(randint(plev * 2));
-				(void)dispel_evil(randint(plev * 2));
+				(void)dispel_monsters(randint1(plev * 2));
+				(void)dispel_evil(randint1(plev * 2));
 				break;
 			}
 			case 179:  /* song of warding */
@@ -2222,11 +2222,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->fast)
 				{
-					(void)set_fast(randint(10) + plev / 2);
+					(void)set_fast(randint1(10) + plev / 2);
 				}
 				else
 				{
-					(void)set_fast(p_ptr->fast + randint(5));
+					(void)set_fast(p_ptr->fast + randint1(5));
 				}
 				break;
 			}
@@ -2249,7 +2249,7 @@ void do_cmd_cast_or_pray(void)
 			{
 				(void)dispel_evil(100);
 				(void)hp_player(500);
-				(void)set_blessed(p_ptr->blessed + randint(100) + 100);
+				(void)set_blessed(p_ptr->blessed + randint1(100) + 100);
 				(void)set_afraid(0);
 				(void)set_poisoned(0);
 				(void)set_stun(0);
@@ -2280,7 +2280,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 194: /* enhanced infravision */
 			{
-				set_tim_infra(p_ptr->tim_infra + 70 + randint(70));
+				set_tim_infra(p_ptr->tim_infra + 70 + randint1(70));
 				break;
 			}
 			case 195: /* break curse */
@@ -2349,12 +2349,12 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 206: /* dispel undead */
 			{
-				(void)dispel_undead(plev + 15 + randint(3 * plev / 2));
+				(void)dispel_undead(plev + 15 + randint1(3 * plev / 2));
 				break;
 			}
 			case 207: /* dispel evil */
 			{
-				(void)dispel_evil(plev + randint(plev));
+				(void)dispel_evil(plev + randint1(plev));
 				break;
 			}
 			case 208: /* see invisible */
@@ -2362,12 +2362,12 @@ void do_cmd_cast_or_pray(void)
 				if (!p_ptr->tim_invis)
 				{
 					set_tim_invis(p_ptr->tim_invis + 20 +
-						randint(plev / 2));
+						randint1(plev / 2));
 				}
 				else
 				{
 					set_tim_invis(p_ptr->tim_invis + 10 +
-						randint(plev / 4));
+						randint1(plev / 4));
 				}
 				break;
 			}
@@ -2415,12 +2415,12 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 216: /* resist poison */
 			{
-				(void)set_oppose_pois(p_ptr->oppose_pois + randint(20) + plev / 2);
+				(void)set_oppose_pois(p_ptr->oppose_pois + randint1(20) + plev / 2);
 				break;
 			}
 			case 217: /* Exorcise Demons */
 			{
-				(void)dispel_demons(2 * plev + randint(2 * plev));
+				(void)dispel_demons(2 * plev + randint1(2 * plev));
 				break;
 			}
 			case 218: /* dark spear */
@@ -2450,7 +2450,7 @@ void do_cmd_cast_or_pray(void)
 			case 222: /* stench of death */
 			{
 				take_hit(damroll(2, 8), "the stench of Death");
-				(void)dispel_living(50 + randint(plev));
+				(void)dispel_living(50 + randint1(plev));
 				confu_monsters(plev + 10);
 				if (get_aim_dir(&dir))
 				{
@@ -2481,8 +2481,8 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 228: /* resist acid and cold */
 			{
-				(void)set_oppose_acid(p_ptr->oppose_pois + randint(20) + 20);
-				(void)set_oppose_cold(p_ptr->oppose_cold + randint(20) + 20);
+				(void)set_oppose_acid(p_ptr->oppose_pois + randint1(20) + 20);
+				(void)set_oppose_cold(p_ptr->oppose_cold + randint1(20) + 20);
 				break;
 			}
 			case 229: /* heal any wound */
@@ -2493,12 +2493,12 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 230: /* protection from evil */
 			{
-				(void)set_protevil(p_ptr->protevil + plev / 2 + randint(plev));
+				(void)set_protevil(p_ptr->protevil + plev / 2 + randint1(plev));
 				break;
 			}
 			case 231: /* black blessing */
 			{
-				(void)set_blessed(p_ptr->blessed + randint(66));
+				(void)set_blessed(p_ptr->blessed + randint1(66));
 				break;
 			}
 			case 232: /* banish evil */
@@ -2510,11 +2510,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->shield)
 				{
-					(void)set_shield(p_ptr->shield + randint(20) + 10);
+					(void)set_shield(p_ptr->shield + randint1(20) + 10);
 				}
 				else
 				{
-					(void)set_shield(p_ptr->shield + randint(10) + 5);
+					(void)set_shield(p_ptr->shield + randint1(10) + 5);
 				}
 				break;
 			}
@@ -2542,7 +2542,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 237: /* dispel life */
 			{
-				(void)dispel_living(60 + randint(plev * 2));
+				(void)dispel_living(60 + randint1(plev * 2));
 				break;
 			}
 			case 238: /* vampiric drain */
@@ -2580,11 +2580,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->fast)
 				{
-					(void)set_fast(10 + randint(20));
+					(void)set_fast(10 + randint1(20));
 				}
 				else
 				{
-					(void)set_fast(p_ptr->fast + randint(5));
+					(void)set_fast(p_ptr->fast + randint1(5));
 				}
 				break;
 			}
@@ -2615,7 +2615,7 @@ void do_cmd_cast_or_pray(void)
 			}
 			case 247: /* smash undead */
 			{
-				(void)dispel_undead(plev * 3 + randint(50));
+				(void)dispel_undead(plev * 3 + randint1(50));
 				break;
 			}
 			case 248: /* bind undead */
@@ -2633,11 +2633,11 @@ void do_cmd_cast_or_pray(void)
 			{
 				if (!p_ptr->tim_esp)
 				{
-					(void)set_tim_esp(30 + randint(40));
+					(void)set_tim_esp(30 + randint1(40));
 				}
 				else
 				{
-					(void)set_tim_esp(p_ptr->tim_esp + randint(30));
+					(void)set_tim_esp(p_ptr->tim_esp + randint1(30));
 				}
 				break;
 			}
@@ -2649,7 +2649,7 @@ void do_cmd_cast_or_pray(void)
 				}
 				else
 				{
-					(void)set_superstealth(p_ptr->superstealth + randint(20));
+					(void)set_superstealth(p_ptr->superstealth + randint1(20));
 				}
 				break;
 			}
@@ -2661,7 +2661,7 @@ void do_cmd_cast_or_pray(void)
 				}
 				else
 				{
-					(void)set_shero(p_ptr->shero + randint(20));
+					(void)set_shero(p_ptr->shero + randint1(20));
 				}
 
 				(void)set_fast(40);
@@ -2936,7 +2936,7 @@ void do_cmd_cast_or_pray(void)
 		else msg_print("You faint from the effort!");
 
 		/* Hack -- Bypass free action */
-		(void)set_paralyzed(p_ptr->paralyzed + randint(5 * oops + 1));
+		(void)set_paralyzed(p_ptr->paralyzed + randint1(5 * oops + 1));
 
 		/* Damage CON (possibly permanently) */
 		if (randint0(100) < 50)
@@ -2947,7 +2947,7 @@ void do_cmd_cast_or_pray(void)
 			msg_print("You have damaged your health!");
 
 			/* Reduce constitution */
-			(void)dec_stat(A_CON, 15 + randint(10), perm);
+			(void)dec_stat(A_CON, 15 + randint1(10), perm);
 		}
 	}
 

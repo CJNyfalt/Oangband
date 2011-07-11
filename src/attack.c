@@ -72,7 +72,7 @@ void hit_monster_black_breath(int power, monster_type *m_ptr)
 		msg("%^s is immune!", m_name);
 	}
 	/* All other monsters get a saving throw. */
-	else if (randint0(power) < r_ptr->level + randint(10))
+	else if (randint0(power) < r_ptr->level + randint1(10))
 	{
 		msg("%^s wards off your deadly attack.", m_name);
 	}
@@ -111,7 +111,7 @@ void hit_monster_confuse(int power, monster_type *m_ptr)
 
 		msg("%^s is unaffected.", m_name);
 	}
-	else if (randint0(power) < r_ptr->level + randint(10))
+	else if (randint0(power) < r_ptr->level + randint1(10))
 	{
 		msg("%^s is unaffected.", m_name);
 	}
@@ -144,7 +144,7 @@ void hit_monster_slow(int power, monster_type *m_ptr)
 	monster_desc(m_name, m_ptr, 0);
 
 	/* Check for slow */
-	if (randint0(power) < r_ptr->level + randint(10))
+	if (randint0(power) < r_ptr->level + randint1(10))
 	{
 		msg("%^s is unaffected.", m_name);
 	}
@@ -334,7 +334,7 @@ static int critical_melee(int chance, int sleeping_bonus, bool visible,
 	}
 
 	/* Test for critical hit. */
-	if ((armsman) || (randint(power + 240) <= power))
+	if ((armsman) || (randint1(power + 240) <= power))
 	{
 		/* Determine level of critical hit. */
 		if      (randint0(40) == 0) add_dice = 5;
@@ -487,7 +487,7 @@ static int critical_shot(int chance, int sleeping_bonus, bool thrown_weapon,
 	object_desc(o_name, o_ptr, FALSE, 0);
 
 	/* Test for critical hit. */
-	if (marksman || (randint(power + 360) <= power))
+	if (marksman || (randint1(power + 360) <= power))
 	{
 		/* Determine level of critical hit. */
 		if (randint0(50) == 0) add_dice = 3;
@@ -821,7 +821,7 @@ static int adjust_dam(long *die_average, object_type *o_ptr, monster_type *m_ptr
 	}
 
 	/* Hack - Sometimes, a temporary Holy Attack becomes exhusted. */
-	if ((p_ptr->special_attack & (ATTACK_HOLY)) && (randint(20) == 1))
+	if ((p_ptr->special_attack & (ATTACK_HOLY)) && (randint1(20) == 1))
 	{
 		p_ptr->special_attack &= ~(ATTACK_HOLY);
 		msg_print("Your temporary Holy attack has dissipated.");
@@ -902,7 +902,7 @@ static int get_druid_damage(int plev, char m_name[], int power, int deadliness)
 	for (n=0; n < n_chances; n++)
 	{
 		/* Choose a (level restricted) attack */
-		chance = randint(2 * plev / 5);
+		chance = randint1(2 * plev / 5);
 
 		/* Keep the best attack */
 		if (chance > b_select) b_select = chance;
@@ -1197,7 +1197,7 @@ void py_attack(int y, int x)
 		if (bash_dam > 125) bash_dam = 125;
 
 		/* Encourage the player to keep wearing that heavy shield. */
-		if (randint(bash_dam) > 30 + randint(bash_dam / 2))
+		if (randint1(bash_dam) > 30 + randint1(bash_dam / 2))
 		{
 			msgt(MSG_HIT, "WHAMM!");
 		}
@@ -1237,7 +1237,7 @@ void py_attack(int y, int x)
 		}
 
 		/* Stunning. */
-		if (bash_quality + p_ptr->lev > randint(200 + r_ptr->level * 4))
+		if (bash_quality + p_ptr->lev > randint1(200 + r_ptr->level * 4))
 		{
 		       msgt(MSG_HIT, "%^s is stunned.", m_name);
 
@@ -1246,7 +1246,7 @@ void py_attack(int y, int x)
 		}
 
 		/* Confusion. */
-		if (bash_quality + p_ptr->lev > randint(300 + r_ptr->level * 6) &&
+		if (bash_quality + p_ptr->lev > randint1(300 + r_ptr->level * 6) &&
 			!(r_ptr->flags3 & (RF3_NO_CONF)))
 		{
 			msgt(MSG_HIT, "%^s appears confused.", m_name);
@@ -1255,9 +1255,9 @@ void py_attack(int y, int x)
 		}
 
 		/* The player will sometimes stumble. */
-		if ((30 + adj_dex_th[p_ptr->stat_ind[A_DEX]] - 128) < randint(60))
+		if ((30 + adj_dex_th[p_ptr->stat_ind[A_DEX]] - 128) < randint1(60))
 		{
-			blows -= randint(blows);
+			blows -= randint1(blows);
 
 			msgt(MSG_GENERIC, "You stumble!");
 		}
@@ -1281,7 +1281,7 @@ void py_attack(int y, int x)
 	if (total_deadliness > 150) total_deadliness = 150;
 
 	/* Specialty Ability */
-	if ((check_ability(SP_FAST_ATTACK)) && (randint(8) <= p_ptr->num_blow))
+	if ((check_ability(SP_FAST_ATTACK)) && (randint1(8) <= p_ptr->num_blow))
 	{
 		blows++;
 		bonus_attack = TRUE;
@@ -1784,7 +1784,7 @@ bool do_cmd_fire(int mode)
 		msg_print("Your missile turns in midair and strikes you!");
 
 		/* Calculate damage. */
-		damage = damroll(p_ptr->ammo_mult * i_ptr->dd * randint(2), i_ptr->ds * 4);
+		damage = damroll(p_ptr->ammo_mult * i_ptr->dd * randint1(2), i_ptr->ds * 4);
 		if (special_dam)
 		{
 			damage += 15;
@@ -1792,7 +1792,7 @@ bool do_cmd_fire(int mode)
 
 		/* Inflict both normal and wound damage. */
 		take_hit(damage, "ammo of backbiting");
-		set_cut(randint(damage * 3));
+		set_cut(randint1(damage * 3));
 
 		/* That ends that shot! */
 		return(TRUE);
@@ -1841,7 +1841,7 @@ bool do_cmd_fire(int mode)
 	handle_stuff();
 
 	/* Multishot mode? */
-	multi = ((mode == FIRE_MODE_MULTI) ? (randint(3) + 2) : 1);
+	multi = ((mode == FIRE_MODE_MULTI) ? (randint1(3) + 2) : 1);
 
 	/* Later shots may spread out, save some numbers */
 	if (multi > 1) spread_target_prepare(py, px, ty, tx, &spread_y_cen, &spread_x_cen, &spread_roll, &spread_sign_y, &spread_sign_x);
