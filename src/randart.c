@@ -940,7 +940,7 @@ static void initialize_artifact(int a_idx)
 	while(TRUE)
 	{
 		/* Acquire an object at random */
-		index = rand_int(MAX_K_IDX);
+		index = randint0(MAX_K_IDX);
 		k_ptr = &k_info[index];
 
 		/* Skip "empty" objects */
@@ -975,7 +975,7 @@ static void initialize_artifact(int a_idx)
 		rarity = 1000 / freq;
 
 		/* Accept object if it passes the rarity roll. */
-		if (rand_int(rarity) == 0) break;
+		if (randint0(rarity) == 0) break;
 	}
 
 
@@ -1249,7 +1249,7 @@ static void choose_basic_theme(int a_idx)
 
 
 	/* Frequently (but not always) assign a basic theme to the artifact. */
-	selection = rand_int(100);
+	selection = randint0(100);
 
 	switch(k_ptr->tval)
 	{
@@ -3555,7 +3555,7 @@ static char *make_word(void)
 	{
 	    getletter:
 		c_next = 0;
-		r = rand_int (ltotal [c_prev][c_cur]);
+		r = randint0 (ltotal [c_prev][c_cur]);
 		totalfreq = lprobs [c_prev][c_cur][c_next];
 		while (totalfreq <= r)
 		{
@@ -3666,7 +3666,7 @@ static void name_artifact(int a_idx)
 	{
 		word = make_word();
 
-		if (rand_int(3) == 0)
+		if (randint0(3) == 0)
 			sprintf(buf, "'%s'", word);
 		else
 			sprintf(buf, "of %s", word);
@@ -3699,7 +3699,7 @@ static void design_random_artifact(int a_idx)
 	haggle_till_done(a_idx);
 
 	/* Decide if the artifact is to be terrible. */
-	if (TERRIBLE_CHANCE > rand_int(100))
+	if (TERRIBLE_CHANCE > randint0(100))
 	{
 		/* If it is, add a few benefits and more drawbacks. */
 		make_terrible(a_idx);

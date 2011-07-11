@@ -2158,8 +2158,8 @@ void monster_death(int m_idx)
 
 
 	/* Determine how much we can drop */
-	if ((r_ptr->flags1 & (RF1_DROP_40)) && (rand_int(100) < 40)) number++;
-	if ((r_ptr->flags1 & (RF1_DROP_60)) && (rand_int(100) < 60)) number++;
+	if ((r_ptr->flags1 & (RF1_DROP_40)) && (randint0(100) < 40)) number++;
+	if ((r_ptr->flags1 & (RF1_DROP_60)) && (randint0(100) < 60)) number++;
 	if (r_ptr->flags1 & (RF1_DROP_ONE)) number += 1;
 	if (r_ptr->flags1 & (RF1_DROP_TWO)) number += 2;
 
@@ -2192,7 +2192,7 @@ void monster_death(int m_idx)
 	}
 
 	/* Normally Average dungeon and monster levels */
-	if (!(rand_int(100) < deeper_chance)) object_level = ((p_ptr->depth + r_ptr->level) / 2);
+	if (!(randint0(100) < deeper_chance)) object_level = ((p_ptr->depth + r_ptr->level) / 2);
 
 	/* Otherwise just base from dungeon level */
 	else object_level = p_ptr->depth;
@@ -2231,7 +2231,7 @@ void monster_death(int m_idx)
 		object_wipe(i_ptr);
 
 		/* Make gold when allowed */
-		if (rand_int(100) < gold_chance)
+		if (randint0(100) < gold_chance)
 		{
 
 			/* Make some gold */
@@ -2589,7 +2589,7 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, const char * note)
 		 * or (usually) when hit for half its current hit points
 		 */
 		if ((dam > 0) && ((randint(10) >= percentage) ||
-		    ((dam >= m_ptr->hp) && (rand_int(100) < 80))))
+		    ((dam >= m_ptr->hp) && (randint0(100) < 80))))
 		{
 			/* Hack -- note fear */
 			(*fear) = TRUE;
@@ -4675,7 +4675,7 @@ bool get_aim_dir(int *dp)
 	if (p_ptr->confused)
 	{
 		/* Random direction */
-		dir = ddd[rand_int(8)];
+		dir = ddd[randint0(8)];
 	}
 
 	/* Notice confusion */
@@ -4790,10 +4790,10 @@ bool confuse_dir(int *dp)
 	if (p_ptr->confused)
 	{
 		/* Apply confusion XXX XXX XXX */
-		if ((dir == 5) || (rand_int(100) < 75))
+		if ((dir == 5) || (randint0(100) < 75))
 		{
 			/* Random direction */
-			dir = ddd[rand_int(8)];
+			dir = ddd[randint0(8)];
 		}
 	}
 

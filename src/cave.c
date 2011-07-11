@@ -478,7 +478,7 @@ static byte multi_hued_attr(monster_race *r_ptr)
 	}
 
 	/* Pick a color at random */
-	return (allowed_attrs[rand_int(stored_colors)]);
+	return (allowed_attrs[randint0(stored_colors)]);
 }
 
 /*
@@ -496,7 +496,7 @@ static u16b image_monster(void)
 	char c;
 
 	/* Random symbol from set above (not including final nul) */
-	c = image_monster_hack[rand_int(sizeof(image_monster_hack) - 1)];
+	c = image_monster_hack[randint0(sizeof(image_monster_hack) - 1)];
 
 	/* Random color */
 	a = randint(15);
@@ -521,7 +521,7 @@ static u16b image_object(void)
 	char c;
 
 	/* Random symbol from set above (not including final nul) */
-	c = image_object_hack[rand_int(sizeof(image_object_hack) - 1)];
+	c = image_object_hack[randint0(sizeof(image_object_hack) - 1)];
 
 	/* Random color */
 	a = randint(15);
@@ -537,7 +537,7 @@ static u16b image_object(void)
 static u16b image_random(void)
 {
 	/* Normally, assume monsters */
-	if (rand_int(100) < 75)
+	if (randint0(100) < 75)
 	{
 		return (image_monster());
 	}

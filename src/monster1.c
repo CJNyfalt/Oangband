@@ -2561,7 +2561,7 @@ bool prepare_ghost(int r_idx, monster_type *m_ptr, bool from_savefile)
 	/*** Process sex. ***/
 
 	/* Sanity check. */
-	if ((ghost_sex >= MAX_SEXES) || (ghost_class < 0)) ghost_sex = rand_int(MAX_SEXES);
+	if ((ghost_sex >= MAX_SEXES) || (ghost_class < 0)) ghost_sex = randint0(MAX_SEXES);
 
 	/* And use that number to toggle on either the male or the female flag. */
 	if (ghost_sex == 0) r_ptr->flags1 |= (RF1_FEMALE);
@@ -2571,7 +2571,7 @@ bool prepare_ghost(int r_idx, monster_type *m_ptr, bool from_savefile)
 	/*** Process race. ***/
 
 	/* Sanity check. */
-	if (ghost_race >= MAX_P_IDX) ghost_race = rand_int(MAX_P_IDX);
+	if (ghost_race >= MAX_P_IDX) ghost_race = randint0(MAX_P_IDX);
 
 	/* And use the ghost race to gain some flags. */
 	process_ghost_race(ghost_race, r_idx, m_ptr);
@@ -2580,7 +2580,7 @@ bool prepare_ghost(int r_idx, monster_type *m_ptr, bool from_savefile)
 	/*** Process class. ***/
 
 	/* Sanity check. */
-	if (ghost_class >= MAX_CLASS) ghost_class = rand_int(MAX_CLASS);
+	if (ghost_class >= MAX_CLASS) ghost_class = randint0(MAX_CLASS);
 
 	/* And use the ghost class to gain some flags. */
 	process_ghost_class(ghost_class, r_idx, m_ptr);

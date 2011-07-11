@@ -2079,7 +2079,7 @@ void py_steal(int y, int x)
 		if ((randint(5) == 1) && (purse) && (r_ptr->flags2 & (RF2_SMART)))
 		{
 			monster_desc(m_name, m_ptr, 0);
-			act = desc_victim_outcry[rand_int(20)];
+			act = desc_victim_outcry[randint0(20)];
 			msg("%^s cries out %s", m_name, act);
 		}
 		/* Otherwise, simply explain what happened. */

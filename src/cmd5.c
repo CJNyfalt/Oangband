@@ -78,13 +78,13 @@ static void pseudo_probe(void)
 		monster_desc(m_name, m_ptr, 0x04);
 
 		/* Approximate monster HPs */
-		approx_hp = m_ptr->hp - rand_int(m_ptr->hp / 4) +
-			rand_int(m_ptr->hp / 4);
+		approx_hp = m_ptr->hp - randint0(m_ptr->hp / 4) +
+			randint0(m_ptr->hp / 4);
 
 		/* Approximate monster HPs */
 		if (r_ptr->mana)
-			approx_mana = m_ptr->mana - rand_int(m_ptr->mana / 4) +
-			  rand_int(m_ptr->mana / 4);
+			approx_mana = m_ptr->mana - randint0(m_ptr->mana / 4) +
+			  randint0(m_ptr->mana / 4);
 
 		/* Describe the monster */
 		if (!(r_ptr->mana))
@@ -93,31 +93,31 @@ static void pseudo_probe(void)
 			msg("%^s has about %d hit points and about %d mana.", m_name, approx_hp, approx_mana);
 
 		/* Learn some flags.  Chance of omissions. */
-		if ((r_ptr->flags3 & (RF3_ANIMAL)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_ANIMAL)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_ANIMAL);
-		if ((r_ptr->flags3 & (RF3_EVIL)) && (rand_int(10) != 1))
+		if ((r_ptr->flags3 & (RF3_EVIL)) && (randint0(10) != 1))
 			l_ptr->flags3 |= (RF3_EVIL);
-		if ((r_ptr->flags3 & (RF3_UNDEAD)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_UNDEAD)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_UNDEAD);
-		if ((r_ptr->flags3 & (RF3_DEMON)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_DEMON)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_DEMON);
-		if ((r_ptr->flags3 & (RF3_ORC)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_ORC)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_ORC);
-		if ((r_ptr->flags3 & (RF3_TROLL)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_TROLL)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_TROLL);
-		if ((r_ptr->flags3 & (RF3_GIANT)) && (rand_int(10) != 1))
+		if ((r_ptr->flags3 & (RF3_GIANT)) && (randint0(10) != 1))
 			l_ptr->flags3 |= (RF3_GIANT);
-		if ((r_ptr->flags3 & (RF3_DRAGON)) && (rand_int(20) != 1))
+		if ((r_ptr->flags3 & (RF3_DRAGON)) && (randint0(20) != 1))
 			l_ptr->flags3 |= (RF3_DRAGON);
-		if ((r_ptr->flags3 & (RF3_IM_ACID)) && (rand_int(5) != 1))
+		if ((r_ptr->flags3 & (RF3_IM_ACID)) && (randint0(5) != 1))
 			l_ptr->flags3 |= (RF3_IM_ACID);
-		if ((r_ptr->flags3 & (RF3_IM_ELEC)) && (rand_int(5) != 1))
+		if ((r_ptr->flags3 & (RF3_IM_ELEC)) && (randint0(5) != 1))
 			l_ptr->flags3 |= (RF3_IM_ELEC);
-		if ((r_ptr->flags3 & (RF3_IM_FIRE)) && (rand_int(5) != 1))
+		if ((r_ptr->flags3 & (RF3_IM_FIRE)) && (randint0(5) != 1))
 			l_ptr->flags3 |= (RF3_IM_FIRE);
-		if ((r_ptr->flags3 & (RF3_IM_COLD)) && (rand_int(5) != 1))
+		if ((r_ptr->flags3 & (RF3_IM_COLD)) && (randint0(5) != 1))
 			l_ptr->flags3 |= (RF3_IM_COLD);
-		if ((r_ptr->flags3 & (RF3_IM_POIS)) && (rand_int(5) != 1))
+		if ((r_ptr->flags3 & (RF3_IM_POIS)) && (randint0(5) != 1))
 			l_ptr->flags3 |= (RF3_IM_POIS);
 
 		/* Confirm success. */
@@ -301,7 +301,7 @@ bool dimen_door(void)
 	 */
 	if (!cave_empty_bold(ny,nx) || (cave_info[ny][nx] & CAVE_ICKY) ||
 		(distance(ny,nx,p_ptr->py,p_ptr->px) > 25) ||
-		(rand_int(p_ptr->lev) == 0))
+		(randint0(p_ptr->lev) == 0))
 	{
 		msg_print("You fail to exit the astral plane correctly!");
 		p_ptr->energy -= 50;
@@ -363,8 +363,8 @@ static void rebalance_weapon(void)
 
 		/* Light curse and lower to_h and to_d by 2 to 5 each. */
 		o_ptr->ident |= (IDENT_CURSED);
-		o_ptr->to_h -= (s16b) (2 + rand_int(4));
-		o_ptr->to_d -= (s16b) (2 + rand_int(4));
+		o_ptr->to_h -= (s16b) (2 + randint0(4));
+		o_ptr->to_d -= (s16b) (2 + randint0(4));
 
 		/* Describe */
 		msg("Oh no!  A dreadful black aura surrounds your %s!", o_name);
@@ -378,7 +378,7 @@ static void rebalance_weapon(void)
 	{
 		/* Grant perfect balance. */
 		o_ptr->xtra1 = OBJECT_XTRA_TYPE_BALANCE;
-		o_ptr->xtra2 = (byte) rand_int(OBJECT_XTRA_SIZE_BALANCE);
+		o_ptr->xtra2 = (byte) randint0(OBJECT_XTRA_SIZE_BALANCE);
 
 		/* Description */
 		object_desc(o_name, o_ptr, FALSE, 0);
@@ -941,7 +941,7 @@ void do_cmd_cast_or_pray(void)
 	plev += get_spell_level_boost();
 
 	/* Failed spell */
-	if (rand_int(100) < chance)
+	if (randint0(100) < chance)
 	{
 		failed = TRUE;
 
@@ -1218,11 +1218,11 @@ void do_cmd_cast_or_pray(void)
 			case 41:	/* Word of Recall */
 			{
 #if 1
-				word_recall(rand_int(20) + 15);
+				word_recall(randint0(20) + 15);
 #else
 				if (!p_ptr->word_recall)
 				{
-					p_ptr->word_recall = rand_int(20) + 15;
+					p_ptr->word_recall = randint0(20) + 15;
 					msg_print("The air about you becomes charged...");
 				}
 				else
@@ -1621,11 +1621,11 @@ void do_cmd_cast_or_pray(void)
 			case 99: /* Word of Recall */
 			{
 #if 1
-				word_recall(rand_int(20) + 15);
+				word_recall(randint0(20) + 15);
 #else
 				if (p_ptr->word_recall == 0)
 				{
-					p_ptr->word_recall = rand_int(20) + 15;
+					p_ptr->word_recall = randint0(20) + 15;
 					msg_print("The air about you becomes charged...");
 				}
 				else
@@ -1750,13 +1750,13 @@ void do_cmd_cast_or_pray(void)
 					answer = inkey();
 					if ((answer == 'W') || (answer == 'w'))
 					{
-						(void)enchant_spell(rand_int(4) + 1,
-						rand_int(4) + 1, 0);
+						(void)enchant_spell(randint0(4) + 1,
+						randint0(4) + 1, 0);
 						break;
 					}
 					else if ((answer == 'A') || (answer == 'a'))
 					{
-						(void)enchant_spell(0, 0, rand_int(3) + 2);
+						(void)enchant_spell(0, 0, randint0(3) + 2);
 						break;
 					}
 					else if (answer == ESCAPE) return;
@@ -1839,9 +1839,9 @@ void do_cmd_cast_or_pray(void)
 				int type;
 				if (!get_aim_dir(&dir)) return;
 
-				if (rand_int(4) == 0) type = GF_LITE;
-				else if (rand_int(3) == 0) type = GF_HOLY_ORB;
-				else if (rand_int(2) == 0) type = GF_FIRE;
+				if (randint0(4) == 0) type = GF_LITE;
+				else if (randint0(3) == 0) type = GF_HOLY_ORB;
+				else if (randint0(2) == 0) type = GF_FIRE;
 				else type = GF_MANA;
 
 				fire_ball(type, dir, 25 + plev + randint(plev), 0, FALSE);
@@ -2939,9 +2939,9 @@ void do_cmd_cast_or_pray(void)
 		(void)set_paralyzed(p_ptr->paralyzed + randint(5 * oops + 1));
 
 		/* Damage CON (possibly permanently) */
-		if (rand_int(100) < 50)
+		if (randint0(100) < 50)
 		{
-			bool perm = (rand_int(100) < 25);
+			bool perm = (randint0(100) < 25);
 
 			/* Message */
 			msg_print("You have damaged your health!");

@@ -126,7 +126,7 @@ static void sense_inventory(void)
 	heavy = (check_ability(SP_PSEUDO_ID_HEAVY));
 
 	/* Do we get pseudo-id this turn? */
-	if (0 != rand_int(cp_ptr->sense_base / (heavy ? (plev * plev + 40) : (plev + 5)))) return;
+	if (0 != randint0(cp_ptr->sense_base / (heavy ? (plev * plev + 40) : (plev + 5)))) return;
 
 	/*** Sense everything ***/
 
@@ -177,7 +177,7 @@ static void sense_inventory(void)
 		if (object_known_p(o_ptr)) continue;
 
 		/* Occasional failure on inventory items */
-		if ((i < INVEN_WIELD) && (0 != rand_int(5))) continue;
+		if ((i < INVEN_WIELD) && (0 != randint0(5))) continue;
 
 		/* Check for a feeling */
 		feel = (heavy ? value_check_aux1(o_ptr) : value_check_aux2(o_ptr));
@@ -472,13 +472,13 @@ static void process_world(void)
 
 
 			/* Sometimes, shuffle the shop-keepers */
-			if (rand_int(STORE_SHUFFLE) == 0)
+			if (randint0(STORE_SHUFFLE) == 0)
 			{
 				/* Message */
 				if (cheat_xtra) msg_print("Shuffling a Shopkeeper...");
 
 				/* pick a store randomly. */
-				n = rand_int(MAX_STORES);
+				n = randint0(MAX_STORES);
 
 				/* Shuffle the store, if not the home. */
 				if (n != STORE_HOME) store_shuffle(n);
@@ -497,7 +497,7 @@ static void process_world(void)
 	if (bones_selector) was_ghost=TRUE;
 
 	/* Check for creature generation, except on themed levels */
-	if ((rand_int(MAX_M_ALLOC_CHANCE) == 0) && (!p_ptr->themed_level))
+	if ((randint0(MAX_M_ALLOC_CHANCE) == 0) && (!p_ptr->themed_level))
 	{
 		/* Make a new monster */
 		(void)alloc_monster(MAX_SIGHT + 5, FALSE, FALSE);
@@ -611,14 +611,14 @@ static void process_world(void)
 		if (p_ptr->food < PY_FOOD_FAINT)
 		{
 			/* Faint occasionally */
-			if (!p_ptr->paralyzed && (rand_int(100) < 10))
+			if (!p_ptr->paralyzed && (randint0(100) < 10))
 			{
 				/* Message */
 				msg_print("You faint from the lack of food.");
 				disturb(1, 0);
 
 				/* Hack -- faint (bypass free action) */
-				(void)set_paralyzed(p_ptr->paralyzed + 1 + rand_int(5));
+				(void)set_paralyzed(p_ptr->paralyzed + 1 + randint0(5));
 			}
 		}
 	}
@@ -1010,7 +1010,7 @@ static void process_world(void)
 		if (hardy) chance = 2;
 		else chance = 5;
 
-		if ((rand_int(100) < chance) && (p_ptr->exp > 0))
+		if ((randint0(100) < chance) && (p_ptr->exp > 0))
 		{
 			p_ptr->exp -= 1 + plev / 5;
 			p_ptr->max_exp -= 1 + plev / 5;
@@ -1135,7 +1135,7 @@ static void process_world(void)
 	/*** Involuntary Movement ***/
 
 	/* Mega-Hack -- Random teleportation XXX XXX XXX */
-	if ((p_ptr->teleport) && (rand_int(100) < 1))
+	if ((p_ptr->teleport) && (randint0(100) < 1))
 	{
 		/* Teleport player */
 		teleport_player(40,FALSE);
@@ -2928,10 +2928,10 @@ void play_game(bool new_game)
 			p_ptr->depth = 0;
 
 			/* Hack -- seed for flavors */
-			seed_flavor = rand_int(0x10000000);
+			seed_flavor = randint0(0x10000000);
 
 			/* Hack -- seed for town layout */
-			seed_town = rand_int(0x10000000);
+			seed_town = randint0(0x10000000);
 
 			/* See if we can reuse a savefile */
 			if (sf_lives &&

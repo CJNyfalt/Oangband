@@ -614,7 +614,7 @@ static void remove_expensive_spells(int m_idx, u32b *f4p, u32b *f5p, u32b *f6p, 
 	/* Determine maximum amount of mana to be spent */
 	/* Smart monsters will usually not blow all their mana on one spell */
 	if (r_ptr->flags2 & (RF2_SMART))
-		max_cost=(m_ptr->mana * (4 + rand_int(7)))/10;
+		max_cost=(m_ptr->mana * (4 + randint0(7)))/10;
 
 	/* Otherwise spend up to the full current mana */
 	else max_cost=m_ptr->mana;
@@ -783,7 +783,7 @@ static int choose_attack_spell_fast(int m_idx, u32b *f4p, u32b *f5p, u32b *f6p, 
 	if (!(random)) return(0);
 
 	/* Pick at random */
-	return (spells[rand_int(num)]);
+	return (spells[randint0(num)]);
 }
 
 
@@ -846,7 +846,7 @@ static int choose_ranged_attack(int m_idx, bool archery_only)
 	{
 		/* Flat out 75% chance of not casting if the player is not in sight */
 		/* In addition, most spells don't work without a player around */
-		if (rand_int(4) != 0) return(0);
+		if (randint0(4) != 0) return(0);
 
 		los=FALSE;
 	}
@@ -909,8 +909,8 @@ static int choose_ranged_attack(int m_idx, bool archery_only)
 	/* Sometimes non-dumb monsters cast randomly (though from the
 	 * restricted list)
 	 */
-	if ((r_ptr->flags2 & (RF2_SMART)) && (rand_int(10)==0)) rand = TRUE;
-	if ((!(r_ptr->flags2 & (RF2_SMART))) && (rand_int(5)==0)) rand = TRUE;
+	if ((r_ptr->flags2 & (RF2_SMART)) && (randint0(10)==0)) rand = TRUE;
+	if ((!(r_ptr->flags2 & (RF2_SMART))) && (randint0(5)==0)) rand = TRUE;
 
 	/* Try 'fast' selection first.
 	 * If there is only one spell, choose that spell.
@@ -1043,8 +1043,8 @@ static int choose_ranged_attack(int m_idx, bool archery_only)
 		if (is_harass && m_ptr->harass) cur_spell_rating += 2*cur_spell_rating/3;
 
 		/* Random factor; less random for smart monsters */
-		if (r_ptr->flags2 & (RF2_SMART)) cur_spell_rating *= 16 + rand_int(9);
-		else cur_spell_rating *= 12 + rand_int(17);
+		if (r_ptr->flags2 & (RF2_SMART)) cur_spell_rating *= 16 + randint0(9);
+		else cur_spell_rating *= 12 + randint0(17);
 
 		/* Deflate for testing purposes */
 		cur_spell_rating /= 20;
@@ -1751,7 +1751,7 @@ static bool find_safety(monster_type *m_ptr, int *ty, int *tx)
 
 							/* Accept lower-cost, sometimes accept same-cost options */
 							if ((least_cost > this_cost) ||
-							    (least_cost == this_cost && rand_int(2) == 0))
+							    (least_cost == this_cost && randint0(2) == 0))
 							{
 								bool has_escape = FALSE;
 
@@ -1971,7 +1971,7 @@ static bool get_move_retreat(monster_type *m_ptr, int *ty, int *tx)
 	else
 	{
 		int prev_cost = cave_cost[m_ptr->fy][m_ptr->fx];
-		int start = rand_int(8);
+		int start = randint0(8);
 
 		/* Look for adjacent hiding places */
 		for (i = start; i < 8 + start; i++)
@@ -2304,7 +2304,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 	/* Monster groups try to surround the character. */
 	if ((!*fear) && (r_ptr->flags1 & (RF1_FRIENDS)) && (m_ptr->cdis <= 3))
 	{
-		start = rand_int(8);
+		start = randint0(8);
 
 		/* Find a random empty square next to the player to head for */
 		for (i = start; i < 8 + start; i++)
@@ -2369,7 +2369,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 			}
 
 			/* Monsters not too close will often advance */
-			else if ((m_ptr->cdis > m_ptr->min_range)  && (rand_int(2) == 0))
+			else if ((m_ptr->cdis > m_ptr->min_range)  && (randint0(2) == 0))
 			{
 				*ty = py;
 				*tx = px;
@@ -2393,7 +2393,7 @@ static bool get_move(monster_type *m_ptr, int *ty, int *tx, bool *fear,
 				if (r_ptr->flags1 & (RF1_RAND_50 | RF1_RAND_25))
 				{
 					/* pick a random grid next to the monster */
-					int i = rand_int(8);
+					int i = randint0(8);
 
 					*ty = m_ptr->fy + ddy_ddd[i];
 					*tx = m_ptr->fx + ddx_ddd[i];
@@ -2644,7 +2644,7 @@ static void make_confused_move(monster_type *m_ptr, int y, int x)
 		}
 
 		/* Sometimes stun the monster, but only lightly */
-		if ((rand_int(3) == 0) && (m_ptr->stunned < 5))
+		if ((randint0(3) == 0) && (m_ptr->stunned < 5))
 			m_ptr->stunned += 3;
 	}
 
@@ -2767,14 +2767,14 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear, bool *ba
 			if (chance == 0)
 			{
 				/* Sometimes hurt the poor little critter */
-				if (rand_int(5) == 0) make_confused_move(m_ptr, *ty, *tx);
+				if (randint0(5) == 0) make_confused_move(m_ptr, *ty, *tx);
 
 				/* Do not actually move */
 				return (FALSE);
 			}
 
 			/* We can enter this grid */
-			if ((chance == 100) || (chance > rand_int(100)))
+			if ((chance == 100) || (chance > randint0(100)))
 			{
 				return (TRUE);
 			}
@@ -2988,7 +2988,7 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear, bool *ba
 
 			/* XXX XXX -- Sometimes attempt to break glyphs. */
 			if ((cave_feat[ny][nx] == FEAT_GLYPH) && (!fear) &&
-			    (rand_int(5) == 0))
+			    (randint0(5) == 0))
 			{
 				break;
 			}
@@ -3102,7 +3102,7 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear, bool *ba
 		if ((m_ptr->confused) && (moves_data[i].move_chance == 0))
 		{
 			/* Sometimes hurt the poor little critter */
-			if (rand_int(5) == 0) make_confused_move(m_ptr, *ty, *tx);
+			if (randint0(5) == 0) make_confused_move(m_ptr, *ty, *tx);
 
 			/* Do not actually move */
 			return (FALSE);
@@ -3244,7 +3244,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 	/* Non-flying monsters usually avoid netted traps */
 	if (feat == FEAT_MTRAP_NET)
 	{
-		if (!(r_ptr->flags2 & (RF2_FLYING)) && (rand_int(3) != 0 || (RF2_PASS_WALL)))
+		if (!(r_ptr->flags2 & (RF2_FLYING)) && (randint0(3) != 0 || (RF2_PASS_WALL)))
 		{
 			if (m_ptr->ml) msg("%^s avoids your netted trap.", m_name);
 			trap_hit = FALSE;
@@ -3269,7 +3269,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 	/* Lightning traps affect all but ghosts */
 	else if (feat == FEAT_MTRAP_ELEC)
 	{
-		if ((r_ptr->flags2 & (RF2_PASS_WALL)) && (rand_int(4) != 0))
+		if ((r_ptr->flags2 & (RF2_PASS_WALL)) && (randint0(4) != 0))
 		{
 			if (m_ptr->ml) msg("%^s flies over your trap.", m_name);
 			trap_hit = FALSE;
@@ -3279,7 +3279,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 	/* Other traps seldom affect flying monsters or ghosts. */
 	else if (((r_ptr->flags2 & (RF2_PASS_WALL)) ||
 		  (r_ptr->flags2 & (RF2_FLYING))) &&
-	          (rand_int(4) != 0))
+	          (randint0(4) != 0))
 	{
 		if (m_ptr->ml) msg("%^s flies over your trap.", m_name);
 		trap_hit = FALSE;
@@ -3360,11 +3360,11 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 		/* Some traps are rarely destroyed */
 		else if (feat == FEAT_MTRAP_STURDY)
 		{
-			if (rand_int(8) == 0) trap_destroyed = TRUE;
+			if (randint0(8) == 0) trap_destroyed = TRUE;
 		}
 
 		/* Most traps are destroyed 1 time in 3 */
-		else if (rand_int(3) == 0) trap_destroyed = TRUE;
+		else if (randint0(3) == 0) trap_destroyed = TRUE;
 
 		/* Find the 'power' of the trap effect */
 		n = p_ptr->lev + ((p_ptr->lev * p_ptr->lev)/ 25);
@@ -3387,7 +3387,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 		else if (feat == FEAT_MTRAP_CONF)
 		{
 			int tmp;
-			tmp = rand_int((3 * trap_power) / 2) - r_ptr->level - 10;
+			tmp = randint0((3 * trap_power) / 2) - r_ptr->level - 10;
 
 			/* Confuse the monster */
 			if (r_ptr->flags3 & (RF3_NO_CONF))
@@ -3482,7 +3482,7 @@ static void apply_monster_trap(monster_type *m_ptr, int y, int x, bool *death)
 
 		/* May become wary if not dumb */
 		if ((!(r_ptr->flags2 & (RF2_STUPID))) &&
-		    ((rand_int(4) == 0) || (m_ptr->hp < m_ptr->maxhp / 2))) m_ptr->mflag |= (MFLAG_WARY);
+		    ((randint0(4) == 0) || (m_ptr->hp < m_ptr->maxhp / 2))) m_ptr->mflag |= (MFLAG_WARY);
 	}
 
 	if (trap_destroyed)
@@ -3623,7 +3623,7 @@ static void process_move(monster_type *m_ptr, int ty, int tx, bool bash)
 				did_bash_door = TRUE;
 
 				/* Break down the door */
-				if (rand_int(100) < 50) cave_set_feat(ny, nx, FEAT_BROKEN);
+				if (randint0(100) < 50) cave_set_feat(ny, nx, FEAT_BROKEN);
 				else cave_set_feat(ny, nx, FEAT_OPEN);
 
 				/* Handle viewable doors */
@@ -3662,7 +3662,7 @@ static void process_move(monster_type *m_ptr, int ty, int tx, bool bash)
 					cave_set_feat(ny, nx, FEAT_OPEN);
 
 					/* Step into doorway sometimes */
-					if (rand_int(5) != 0) do_move = FALSE;
+					if (randint0(5) != 0) do_move = FALSE;
 				}
 			}
 		}
@@ -4068,7 +4068,7 @@ static void process_monster(monster_type *m_ptr)
 		}
 
 		/* Hack -- multiply slower in crowded areas */
-		if ((k < 4) && (!k || !rand_int(k * MON_MULT_ADJ)))
+		if ((k < 4) && (!k || !randint0(k * MON_MULT_ADJ)))
 		{
 			/* Try to multiply */
 			if (multiply_monster(cave_m_idx[m_ptr->fy][m_ptr->fx]))
@@ -4091,7 +4091,7 @@ static void process_monster(monster_type *m_ptr)
 	{
 		/* Low-level monsters will find it difficult to locate the player. */
 		if ((p_ptr->lev * 2 > r_ptr->level) &&
-		    (rand_int(p_ptr->lev * 2 - r_ptr->level) != 0))
+		    (randint0(p_ptr->lev * 2 - r_ptr->level) != 0))
 		{
 			aware = FALSE;
 
@@ -4104,7 +4104,7 @@ static void process_monster(monster_type *m_ptr)
 	/* Monsters can speak.  -originally by TY- */
 	if ((r_ptr->flags2 & (RF2_SPEAKING)) &&
 	    (player_has_los_bold(m_ptr->fy, m_ptr->fx)) &&
-	    (!m_ptr->monfear) && (rand_int(16) == 0))
+	    (!m_ptr->monfear) && (randint0(16) == 0))
 	{
 		char m_name[80];
 		char bravado[80];
@@ -4140,7 +4140,7 @@ static void process_monster(monster_type *m_ptr)
 	/* Monsters may drop the 'wary of traps' state if they see the player */
 	if ((aware) && (player_has_los_bold(m_ptr->fy, m_ptr->fx)))
 	{
-		if (rand_int(4) == 0) m_ptr->mflag &= ~(MFLAG_WARY);
+		if (randint0(4) == 0) m_ptr->mflag &= ~(MFLAG_WARY);
 	}
 
 	/*** Ranged attacks ***/
@@ -4158,7 +4158,7 @@ static void process_monster(monster_type *m_ptr)
 	if ((chance) && (m_ptr->stunned)) chance /= 2;
 
 	/* Monster can use ranged attacks */
-	if ((chance != 0) && (rand_int(100) < chance))
+	if ((chance != 0) && (randint0(100) < chance))
 	{
 		/* Pick a ranged attack */
 		choice = choose_ranged_attack(cave_m_idx[m_ptr->fy][m_ptr->fx], FALSE);
@@ -4168,7 +4168,7 @@ static void process_monster(monster_type *m_ptr)
 	if ((choice == 0) && (r_ptr->flags2 & (RF2_ARCHER)) && (!(m_ptr->confused)))
 	{
 		/* Pick an archery attack (usually) */
-		if ((rand_int(8) != 0) && (m_ptr->cdis > 1)) choice = choose_ranged_attack(cave_m_idx[m_ptr->fy][m_ptr->fx], TRUE);
+		if ((randint0(8) != 0) && (m_ptr->cdis > 1)) choice = choose_ranged_attack(cave_m_idx[m_ptr->fy][m_ptr->fx], TRUE);
 	}
 
 	/* Selected a ranged attack? */
@@ -4209,7 +4209,7 @@ static void process_monster(monster_type *m_ptr)
 		}
 
 		/* Chance of moving randomly */
-		if (rand_int(100) < chance) random = TRUE;
+		if (randint0(100) < chance) random = TRUE;
 	}
 
 
@@ -4230,7 +4230,7 @@ static void process_monster(monster_type *m_ptr)
 	if ((m_ptr->confused) && (!(r_ptr->flags1 & (RF1_NEVER_MOVE))))
 	{
 		/* Choose any direction except five and zero */
-		dir = rand_int(8);
+		dir = randint0(8);
 
 		/* Monster can try to wander into /anything/... */
 		ty = m_ptr->fy + ddy_ddd[dir];
@@ -4240,7 +4240,7 @@ static void process_monster(monster_type *m_ptr)
 	/* Monster isn't confused, just moving semi-randomly */
 	else if (random)
 	{
-		int start = rand_int(8);
+		int start = randint0(8);
 		bool dummy;
 
 		/* Is the monster scared? */
@@ -4342,7 +4342,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 	 * Monsters have a (small) chance to recover from the Black Breath;
 	 * maybe they have some Athelas handy...
 	 */
-	if ((m_ptr->black_breath) && (rand_int(250 - r_ptr->level) == 0))
+	if ((m_ptr->black_breath) && (randint0(250 - r_ptr->level) == 0))
 	{
 		m_ptr->black_breath = FALSE;
 		if (m_ptr->ml)
@@ -4368,7 +4368,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 			 * Mana comes back 1 point at a time, with probability
 			 * based on maximum mana.
 			 */
-			if (rand_int(200) < (r_ptr->mana)) m_ptr->mana++;
+			if (randint0(200) < (r_ptr->mana)) m_ptr->mana++;
 
 			/* Do not over-regenerate */
 			if (m_ptr->mana > r_ptr->mana) m_ptr->mana = r_ptr->mana;
@@ -4483,7 +4483,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 	if ((m_ptr->csleep) && (add_wakeup_chance > 0) &&
 	     (player_has_los_bold(m_ptr->fy, m_ptr->fx)))
 	{
-		if (add_wakeup_chance > rand_int(10000))
+		if (add_wakeup_chance > randint0(10000))
 		{
 			/* Disturb the monster quite a lot. */
 			int d = randint(add_wakeup_chance / 40);
@@ -4535,7 +4535,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 		int d = 1;
 
 		/* Make a "saving throw" against stun. */
-		if (rand_int(330) < r_ptr->level + 10)
+		if (randint0(330) < r_ptr->level + 10)
 		{
 			/* Recover fully */
 			d = m_ptr->stunned;
@@ -4653,7 +4653,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 		 * 1.5% - 3.0% chance (depending on level) that slowed monsters
 		 * will return to normal speed.
 		 */
-		if ((m_ptr->mspeed < r_ptr->speed) && (rand_int(67) == speedup_chance))
+		if ((m_ptr->mspeed < r_ptr->speed) && (randint0(67) == speedup_chance))
 		{
 			m_ptr->mspeed = r_ptr->speed;
 
@@ -4671,7 +4671,7 @@ static void recover_monster(monster_type *m_ptr, bool regen)
 		}
 
 		/* 1% chance that hasted monsters will return to normal speed. */
-		else if ((m_ptr->mspeed > r_ptr->speed) && (rand_int(100) == 0))
+		else if ((m_ptr->mspeed > r_ptr->speed) && (randint0(100) == 0))
 		{
 			m_ptr->mspeed = r_ptr->speed;
 

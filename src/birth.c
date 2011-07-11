@@ -269,7 +269,7 @@ static void get_extra(void)
 		int diff = average - p_ptr->player_hp[i-1];
 
 		/* Make adjustments near the end or where necessary */
-		if (i >= (PY_MAX_LEVEL - 6) || rand_int(p_ptr->hitdie * 2) < ABS(diff))
+		if (i >= (PY_MAX_LEVEL - 6) || randint0(p_ptr->hitdie * 2) < ABS(diff))
 		{
 			/* If previous level's HPs < average, bias for a large gain. */
 			if (average > p_ptr->player_hp[i-1])
@@ -280,7 +280,7 @@ static void get_extra(void)
 
 				/* Relatively small one otherwise. */
 				else
-					j = p_ptr->hitdie - rand_int(p_ptr->hitdie - ABS(diff));
+					j = p_ptr->hitdie - randint0(p_ptr->hitdie - ABS(diff));
 			}
 
 			/* If previous level's HPs > average, bias for a small gain. */
@@ -292,7 +292,7 @@ static void get_extra(void)
 
 				/* Relatively small one otherwise. */
 				else
-					j = 1 + rand_int(p_ptr->hitdie - 1 - ABS(diff));
+					j = 1 + randint0(p_ptr->hitdie - 1 - ABS(diff));
 			}
 
 			/* No bias necessary. */
@@ -738,7 +738,7 @@ static int get_player_choice(birth_menu *choices, int num, int col, int wid,
 		if (c == '*')
 		{
 			/* Select at random */
-			cur = rand_int(num);
+			cur = randint0(num);
 
 			/* Move it onto the screen */
 			if ((cur < top) || (cur > top + hgt))
@@ -1135,10 +1135,10 @@ void player_clear(bool full)
 	}
 
 	/* Hack -- seed for flavors */
-	seed_flavor = rand_int(0x10000000);
+	seed_flavor = randint0(0x10000000);
 
 	/* Hack -- seed for town layout */
-	seed_town = rand_int(0x10000000);
+	seed_town = randint0(0x10000000);
 
 	/* Wipe the objects */
 	wipe_o_list();

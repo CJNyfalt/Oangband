@@ -30,7 +30,7 @@ static bool test_hit_combat(int chance, int ac, int visible)
 	int k;
 
 	/* Percentile dice */
-	k = rand_int(100);
+	k = randint0(100);
 
 	/* Hack -- Instant miss or hit */
 	if (k < 10) return (k < 5);
@@ -39,7 +39,7 @@ static bool test_hit_combat(int chance, int ac, int visible)
 	if (!visible) chance = chance / 2;
 
 	/* Power competes against armor */
-	if ((chance > 0) && (rand_int(chance) >= ac)) return (TRUE);
+	if ((chance > 0) && (randint0(chance) >= ac)) return (TRUE);
 
 	/* Assume miss */
 	return (FALSE);
@@ -72,7 +72,7 @@ void hit_monster_black_breath(int power, monster_type *m_ptr)
 		msg("%^s is immune!", m_name);
 	}
 	/* All other monsters get a saving throw. */
-	else if (rand_int(power) < r_ptr->level + randint(10))
+	else if (randint0(power) < r_ptr->level + randint(10))
 	{
 		msg("%^s wards off your deadly attack.", m_name);
 	}
@@ -111,7 +111,7 @@ void hit_monster_confuse(int power, monster_type *m_ptr)
 
 		msg("%^s is unaffected.", m_name);
 	}
-	else if (rand_int(power) < r_ptr->level + randint(10))
+	else if (randint0(power) < r_ptr->level + randint(10))
 	{
 		msg("%^s is unaffected.", m_name);
 	}
@@ -119,13 +119,13 @@ void hit_monster_confuse(int power, monster_type *m_ptr)
 	{
 		if (m_ptr->ml) msgt(MSG_HIT, "%^s appears more confused.", m_name);
 		else msgt(MSG_HIT, "%^s sounds more confused.", m_name);
-		m_ptr->confused += 4 + rand_int(p_ptr->lev) / 12;
+		m_ptr->confused += 4 + randint0(p_ptr->lev) / 12;
 	}
 	else
 	{
 		if (m_ptr->ml) msgt(MSG_HIT, "%^s appears confused.", m_name);
 		else msgt(MSG_HIT, "%^s sounds confused.", m_name);
-		m_ptr->confused += 10 + rand_int(p_ptr->lev) / 5;
+		m_ptr->confused += 10 + randint0(p_ptr->lev) / 5;
 	}
 }
 
@@ -144,7 +144,7 @@ void hit_monster_slow(int power, monster_type *m_ptr)
 	monster_desc(m_name, m_ptr, 0);
 
 	/* Check for slow */
-	if (rand_int(power) < r_ptr->level + randint(10))
+	if (randint0(power) < r_ptr->level + randint(10))
 	{
 		msg("%^s is unaffected.", m_name);
 	}
@@ -195,8 +195,8 @@ void spread_target_prepare(int y, int x, int ty, int tx,
 		*spread_y_cen = y;
 		*spread_x_cen = x;
 		*spread_roll = 10;
-		*spread_sign_y = rand_int(3) -1;
-		*spread_sign_x = rand_int(3) -1;
+		*spread_sign_y = randint0(3) -1;
+		*spread_sign_x = randint0(3) -1;
 		return;
 	}
 
@@ -217,14 +217,14 @@ void spread_target_prepare(int y, int x, int ty, int tx,
 	if ((x_rel == 0) || (abs(y_rel / 2) > abs(x_rel)))
 	{
 		*spread_sign_y = 0;
-		if (rand_int(2) == 0) *spread_sign_x = 1;
+		if (randint0(2) == 0) *spread_sign_x = 1;
 		else *spread_sign_x = -1;
 		*spread_roll = 4;
 	}
 	/* Shooting horizontal - spread vertical */
 	else if ((y_rel == 0) || (abs(x_rel / 2) > abs(y_rel)))
 	{
-		if (rand_int(2) == 0) *spread_sign_y = 1;
+		if (randint0(2) == 0) *spread_sign_y = 1;
 		else *spread_sign_y = -1;
 		*spread_sign_x = 0;
 		*spread_roll = 4;
@@ -232,7 +232,7 @@ void spread_target_prepare(int y, int x, int ty, int tx,
 	/* Shooting diagonal - spread the other diagonal */
 	else if ((x_rel / y_rel) > 0)
 	{
-		if (rand_int(2) == 0) *spread_sign_y = 1;
+		if (randint0(2) == 0) *spread_sign_y = 1;
 		else *spread_sign_y = -1;
 		*spread_sign_x = -1 * *spread_sign_y;
 		*spread_roll = 3;
@@ -240,7 +240,7 @@ void spread_target_prepare(int y, int x, int ty, int tx,
 	/* Shooting diagonal - spread the other diagonal */
 	else
 	{
-		if (rand_int(2) == 0) *spread_sign_y = 1;
+		if (randint0(2) == 0) *spread_sign_y = 1;
 		else *spread_sign_y = -1;
 		*spread_sign_x = 1 * *spread_sign_y;
 		*spread_roll = 3;
@@ -275,7 +275,7 @@ void spread_target(int spread_y_cen, int spread_x_cen, int spread_roll, int *spr
 	int spread_d;
 
 	/* Spread perpendicular to line of fire */
-	spread_d = rand_int(spread_roll);
+	spread_d = randint0(spread_roll);
 	*new_y = spread_y_cen + (spread_d * *spread_sign_y);
 	*new_x = spread_x_cen + (spread_d * *spread_sign_x);
 
@@ -328,7 +328,7 @@ static int critical_melee(int chance, int sleeping_bonus, bool visible,
 	}*/
 
 	/* Specialty Ability */
-	if ((visible) && (check_ability(SP_ARMSMAN)) && (rand_int(6) == 0))
+	if ((visible) && (check_ability(SP_ARMSMAN)) && (randint0(6) == 0))
 	{
 		armsman = TRUE;
 	}
@@ -337,9 +337,9 @@ static int critical_melee(int chance, int sleeping_bonus, bool visible,
 	if ((armsman) || (randint(power + 240) <= power))
 	{
 		/* Determine level of critical hit. */
-		if      (rand_int(40) == 0) add_dice = 5;
-		else if (rand_int(12) == 0) add_dice = 4;
-		else if (rand_int(3)  == 0) add_dice = 3;
+		if      (randint0(40) == 0) add_dice = 5;
+		else if (randint0(12) == 0) add_dice = 4;
+		else if (randint0(3)  == 0) add_dice = 3;
 		else                        add_dice = 2;
 
 		/* Encourage the player to beat on sleeping monsters. */
@@ -478,7 +478,7 @@ static int critical_shot(int chance, int sleeping_bonus, bool thrown_weapon,
 	}*/
 
 	/* Specialty Ability */
-	if ((visible) && (check_ability(SP_MARKSMAN)) && (rand_int(6) == 0))
+	if ((visible) && (check_ability(SP_MARKSMAN)) && (randint0(6) == 0))
 	{
 		marksman = TRUE;
 	}
@@ -490,8 +490,8 @@ static int critical_shot(int chance, int sleeping_bonus, bool thrown_weapon,
 	if (marksman || (randint(power + 360) <= power))
 	{
 		/* Determine level of critical hit. */
-		if (rand_int(50) == 0) add_dice = 3;
-		else if (rand_int(10) == 0) add_dice = 2;
+		if (randint0(50) == 0) add_dice = 3;
+		else if (randint0(10) == 0) add_dice = 2;
 		else add_dice = 1;
 
 		/* Encourage the player to throw and shoot things at sleeping monsters. */
@@ -866,8 +866,8 @@ static int get_druid_damage(int plev, char m_name[], int power, int deadliness)
 	bool power_strike = FALSE;
 
         /* Specialty Ability */
-        if ((check_ability(SP_MARTIAL_ARTS) && (rand_int(6) == 0))
-	    || (check_ability(SP_POWER_STRIKE) && (rand_int(8) == 0)))
+        if ((check_ability(SP_MARTIAL_ARTS) && (randint0(6) == 0))
+	    || (check_ability(SP_POWER_STRIKE) && (randint0(8) == 0)))
 	{
 		power_strike = TRUE;
 	}
@@ -896,7 +896,7 @@ static int get_druid_damage(int plev, char m_name[], int power, int deadliness)
 	n_chances = 2 + (i / 100);
 
 	/* Deal with fractional chances */
-	if (rand_int(100) < (i % 100)) n_chances++;
+	if (randint0(100) < (i % 100)) n_chances++;
 
 	/* Loop over number of number of chances */
 	for (n=0; n < n_chances; n++)
@@ -925,7 +925,7 @@ static int get_druid_damage(int plev, char m_name[], int power, int deadliness)
 	else damage = damroll(dd, ds);
 
 	/* Druids can also confuse monsters. */
-	if ((power_strike && (rand_int(3) != 0)) || (power > rand_int(500) + 25))
+	if ((power_strike && (randint0(3) != 0)) || (power > randint0(500) + 25))
 	{
 		/* Use the special druid confusion attack. */
 		p_ptr->special_attack |= (ATTACK_DRUID_CONFU);
@@ -1172,7 +1172,7 @@ void py_attack(int y, int x)
 	}
 
 	/* Try to get in a shield bash. */
-	if (bash_chance > rand_int(240 + r_ptr->level * 9))
+	if (bash_chance > randint0(240 + r_ptr->level * 9))
 	{
 		msgt(MSG_HIT, "You get in a shield bash!");
 
@@ -1241,7 +1241,7 @@ void py_attack(int y, int x)
 		{
 		       msgt(MSG_HIT, "%^s is stunned.", m_name);
 
-			m_ptr->stunned += rand_int(p_ptr->lev / 5) + 4;
+			m_ptr->stunned += randint0(p_ptr->lev / 5) + 4;
 			if (m_ptr->stunned > 24) m_ptr->stunned = 24;
 		}
 
@@ -1251,7 +1251,7 @@ void py_attack(int y, int x)
 		{
 			msgt(MSG_HIT, "%^s appears confused.", m_name);
 
-			m_ptr->confused += rand_int(p_ptr->lev / 5) + 4;
+			m_ptr->confused += randint0(p_ptr->lev / 5) + 4;
 		}
 
 		/* The player will sometimes stumble. */
@@ -1369,7 +1369,7 @@ void py_attack(int y, int x)
 
 				/* Calculate the actual number of sides to each die. */
 				sides = (temp / 10000) +
-				        (rand_int(10000) < (temp % 10000) ? 1 : 0);
+				        (randint0(10000) < (temp % 10000) ? 1 : 0);
 
 
 				/* Roll out the damage. */
@@ -1752,7 +1752,7 @@ bool do_cmd_fire(int mode)
 	sound(SOUND_SHOOT);
 
 	/* Missile launchers of Velocity sometimes "supercharge" */
-	if ((o_ptr->name2 == EGO_VELOCITY) && (rand_int(5) == 0))
+	if ((o_ptr->name2 == EGO_VELOCITY) && (randint0(5) == 0))
 	{
 		object_desc(o_name, o_ptr, FALSE, 0);
 
@@ -1765,7 +1765,7 @@ bool do_cmd_fire(int mode)
 	}
 
 	/* Missile launchers of Accuracy sometimes "supercharge" */
-	if ((o_ptr->name2 == EGO_ACCURACY) && (rand_int(5) == 0))
+	if ((o_ptr->name2 == EGO_ACCURACY) && (randint0(5) == 0))
 	{
 		object_desc(o_name, o_ptr, FALSE, 0);
 
@@ -2033,7 +2033,7 @@ bool do_cmd_fire(int mode)
 
 				/* Calculate the actual number of sides to each die. */
 				sides = (temp / 10000) +
-				        (rand_int(10000) < (temp % 10000) ? 1 : 0);
+				        (randint0(10000) < (temp % 10000) ? 1 : 0);
 
 				/* Roll out the damage. */
 				damage = damroll(dice, (s16b)sides);
@@ -2117,7 +2117,7 @@ bool do_cmd_fire(int mode)
 
 				/* Check for piercing */
 				if ((check_ability(SP_PIERCE_SHOT)) &&
-				    (rand_int(2) == 0) &&
+				    (randint0(2) == 0) &&
 				    ((p_ptr->ammo_tval == TV_ARROW) ||
 				     (p_ptr->ammo_tval == TV_BOLT)))
 				{
@@ -2503,7 +2503,7 @@ bool do_cmd_throw(int mode)
 
 			/* Calculate the actual number of sides to each die. */
 			sides = (temp / 10000) +
-			        (rand_int(10000) < (temp % 10000) ? 1 : 0);
+			        (randint0(10000) < (temp % 10000) ? 1 : 0);
 
 			/* Roll out the damage. */
 			damage = damroll(dice, (s16b)sides);

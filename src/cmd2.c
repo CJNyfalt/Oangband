@@ -423,8 +423,8 @@ static void chest_death(bool scatter, int y, int x, s16b o_idx)
 			for (i = 0; i < 200; i++)
 			{
 				/* Pick a totally random spot. */
-				y = rand_int(DUNGEON_HGT);
-				x = rand_int(DUNGEON_WID);
+				y = randint0(DUNGEON_HGT);
+				x = randint0(DUNGEON_WID);
 
 				/* Must be an empty floor. */
 				if (!cave_empty_bold(y, x)) continue;
@@ -566,7 +566,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 	if (trap & (CHEST_H_SUMMON))
 	{
 		/* Summon demons. */
-		if (rand_int(4) == 0)
+		if (randint0(4) == 0)
 		{
 			msg_print("Demons materialize in clouds of fire and brimstone!");
 
@@ -579,7 +579,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		}
 
 		/* Summon dragons. */
-		else if (rand_int(3) == 0)
+		else if (randint0(3) == 0)
 		{
 			msg_print("Draconic forms loom out of the darkness!");
 
@@ -588,7 +588,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		}
 
 		/* Summon hybrids. */
-		else if (rand_int(2) == 0)
+		else if (randint0(2) == 0)
 		{
 			msg_print("Creatures strange and twisted assault you!");
 
@@ -613,7 +613,7 @@ static void chest_trap(int y, int x, s16b o_idx)
 		msg_print("Hideous voices bid: 'Let the darkness have thee!'");
 
 		/* Determine how many nasty tricks can be played. */
-		nasty_tricks_count = 4 + rand_int(3);
+		nasty_tricks_count = 4 + randint0(3);
 
 		/* This is gonna hurt... */
 		for (; nasty_tricks_count > 0; nasty_tricks_count--)
@@ -621,19 +621,19 @@ static void chest_trap(int y, int x, s16b o_idx)
 			/* ...but a high saving throw does help a little. */
 			if (!check_save(2 * o_ptr->pval))
 			{
-				if (rand_int(6) == 0) take_hit(damroll(5, 20), "a chest dispel-player trap");
-				else if (rand_int(5) == 0) (void)set_cut(p_ptr->cut + 200);
-				else if (rand_int(4) == 0)
+				if (randint0(6) == 0) take_hit(damroll(5, 20), "a chest dispel-player trap");
+				else if (randint0(5) == 0) (void)set_cut(p_ptr->cut + 200);
+				else if (randint0(4) == 0)
 				{
 					if (!p_ptr->free_act)
 						(void)set_paralyzed(p_ptr->paralyzed + 2 +
-						rand_int(6));
+						randint0(6));
 					else
 						(void)set_stun(p_ptr->stun + 10 +
-						rand_int(100));
+						randint0(100));
 				}
-				else if (rand_int(3) == 0) apply_disenchant(0);
-				else if (rand_int(2) == 0)
+				else if (randint0(3) == 0) apply_disenchant(0);
+				else if (randint0(2) == 0)
 				{
 					(void)do_dec_stat(A_STR);
 					(void)do_dec_stat(A_DEX);
@@ -687,7 +687,7 @@ static bool do_cmd_open_chest(int y, int x, s16b o_idx)
 		if (j < 2) j = 2;
 
 		/* Success -- May still have traps */
-		if (rand_int(100) < j)
+		if (randint0(100) < j)
 		{
 			msg_print("You have picked the lock.");
 			gain_exp(o_ptr->pval);
@@ -767,7 +767,7 @@ static bool do_cmd_disarm_chest(int y, int x, s16b o_idx)
 	}
 
 	/* Success (get a fair amount of experience) */
-	else if (rand_int(100) < j)
+	else if (randint0(100) < j)
 	{
 		msg_print("You have disarmed the chest.");
 		gain_exp(o_ptr->pval * o_ptr->pval / 10);
@@ -1013,7 +1013,7 @@ static bool do_cmd_open_aux(int y, int x)
 		if (j < 2) j = 2;
 
 		/* Success */
-		if (rand_int(100) < j)
+		if (randint0(100) < j)
 		{
 			/* Message */
 			msgt(MSG_OPENDOOR, "You have picked the lock.");
@@ -1415,7 +1415,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 	else if (cave_feat[y][x] >= FEAT_WALL_EXTRA)
 	{
 		/* Tunnel */
-		if ((p_ptr->skill_dig > 40 + rand_int(1600)) && twall(y, x))
+		if ((p_ptr->skill_dig > 40 + randint0(1600)) && twall(y, x))
 		{
 			msg_print("You have finished the tunnel.");
 		}
@@ -1451,13 +1451,13 @@ static bool do_cmd_tunnel_aux(int y, int x)
 		/* Quartz */
 		if (hard)
 		{
-			okay = (p_ptr->skill_dig > 20 + rand_int(800));
+			okay = (p_ptr->skill_dig > 20 + randint0(800));
 		}
 
 		/* Magma */
 		else
 		{
-			okay = (p_ptr->skill_dig > 10 + rand_int(400));
+			okay = (p_ptr->skill_dig > 10 + randint0(400));
 		}
 
 		/* Success */
@@ -1502,13 +1502,13 @@ static bool do_cmd_tunnel_aux(int y, int x)
 	else if (cave_feat[y][x] == FEAT_RUBBLE)
 	{
 		/* Remove the rubble */
-		if ((p_ptr->skill_dig > rand_int(200)) && twall(y, x))
+		if ((p_ptr->skill_dig > randint0(200)) && twall(y, x))
 		{
 			/* Message */
 			msg_print("You have removed the rubble.");
 
 			/* Hack -- place an object */
-			if (rand_int(100) == 0)
+			if (randint0(100) == 0)
 			{
 				/* Create a simple object */
 				place_object(y, x, FALSE, FALSE, FALSE);
@@ -1533,7 +1533,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 	else if (cave_feat[y][x] >= FEAT_SECRET)
 	{
 		/* Tunnel */
-		if ((p_ptr->skill_dig > 30 + rand_int(1200)) && twall(y, x))
+		if ((p_ptr->skill_dig > 30 + randint0(1200)) && twall(y, x))
 		{
 			msg_print("You have finished the tunnel.");
 		}
@@ -1546,7 +1546,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 			more = TRUE;
 
 			/* Occasional Search XXX XXX */
-			if (rand_int(100) < 25) search();
+			if (randint0(100) < 25) search();
 		}
 	}
 
@@ -1554,7 +1554,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 	else
 	{
 		/* Tunnel */
-		if ((p_ptr->skill_dig > 30 + rand_int(1200)) && twall(y, x))
+		if ((p_ptr->skill_dig > 30 + randint0(1200)) && twall(y, x))
 		{
 			msg_print("You have finished the tunnel.");
 		}
@@ -1731,7 +1731,7 @@ static bool do_cmd_disarm_aux(int y, int x)
 	if (j < 2) j = 2;
 
 	/* Success */
-	if ((power == 0) || (rand_int(100) < j))
+	if ((power == 0) || (randint0(100) < j))
 	{
 		/* Special message for glyphs. */
 		if (cave_feat[y][x] == FEAT_GLYPH)
@@ -1960,13 +1960,13 @@ static bool do_cmd_bash_aux(int y, int x)
 	if (temp < 1) temp = 1;
 
 	/* Hack -- attempt to bash down the door */
-	if (rand_int(100) < temp)
+	if (randint0(100) < temp)
 	{
 		/* Message */
 		msgt(MSG_OPENDOOR, "The door crashes open!");
 
 		/* Break down the door */
-		if (rand_int(100) < 50)
+		if (randint0(100) < 50)
 		{
 			cave_set_feat(y, x, FEAT_BROKEN);
 		}
@@ -1985,7 +1985,7 @@ static bool do_cmd_bash_aux(int y, int x)
 	}
 
 	/* Saving throw against stun */
-	else if (rand_int(100) < adj_dex_safe[p_ptr->stat_ind[A_DEX]] +
+	else if (randint0(100) < adj_dex_safe[p_ptr->stat_ind[A_DEX]] +
 		  p_ptr->lev)
 	{
 		/* Message */
@@ -2002,7 +2002,7 @@ static bool do_cmd_bash_aux(int y, int x)
 		msg_print("You are off-balance.");
 
 		/* Hack -- Lose balance ala paralysis */
-		(void)set_paralyzed(p_ptr->paralyzed + 2 + rand_int(2));
+		(void)set_paralyzed(p_ptr->paralyzed + 2 + randint0(2));
 	}
 
 	/* Result */
@@ -2588,7 +2588,7 @@ static void do_cmd_hold_or_stay(int pickup)
 	p_ptr->energy_use = 100;
 
 	/* Spontaneous Searching */
-	if ((p_ptr->skill_fos >= 50) || (0 == rand_int(50 - p_ptr->skill_fos)))
+	if ((p_ptr->skill_fos >= 50) || (0 == randint0(50 - p_ptr->skill_fos)))
 	{
 		search();
 	}

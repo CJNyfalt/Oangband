@@ -382,7 +382,7 @@ void compact_objects(int size)
 				x = m_ptr->fx;
 
 				/* Monsters protect their objects */
-				if (rand_int(100) < 90) continue;
+				if (randint0(100) < 90) continue;
 			}
 
 			/* Dungeon */
@@ -403,7 +403,7 @@ void compact_objects(int size)
 			if (artifact_p(o_ptr) && (cnt < 1000)) chance = 100;
 
 			/* Apply the saving throw */
-			if (rand_int(100) < chance) continue;
+			if (randint0(100) < chance) continue;
 
 			/* Delete the object */
 			delete_object_idx(i);
@@ -621,7 +621,7 @@ s16b get_obj_num(int level)
 	if (level > 0)
 	{
 		/* Occasional boost to allowed level.  Less generous in Oangband. */
-		if (rand_int(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
+		if (randint0(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
 	}
 
 
@@ -662,7 +662,7 @@ s16b get_obj_num(int level)
 
 
 	/* Pick an object */
-	value = rand_int(total);
+	value = randint0(total);
 
 	/* Find the object */
 	for (i = 0; i < alloc_kind_size; i++)
@@ -676,7 +676,7 @@ s16b get_obj_num(int level)
 
 
 	/* Power boost */
-	p = rand_int(100);
+	p = randint0(100);
 
 	/* Hack -- chests should have decent stuff, and chests should themselves
 	 * be decent, so we guarantee two more tries for better objects. -LM-
@@ -690,7 +690,7 @@ s16b get_obj_num(int level)
 		j = i;
 
 		/* Pick an object */
-		value = rand_int(total);
+		value = randint0(total);
 
 		/* Find the object */
 		for (i = 0; i < alloc_kind_size; i++)
@@ -713,7 +713,7 @@ s16b get_obj_num(int level)
 		j = i;
 
 		/* Pick an object */
-		value = rand_int(total);
+		value = randint0(total);
 
 		/* Find the object */
 		for (i = 0; i < alloc_kind_size; i++)
@@ -1691,7 +1691,7 @@ static s16b m_bonus(int max, int level)
 	extra = ((max * level) % MAX_DEPTH);
 
 	/* Hack -- simulate floating point computations */
-	if (rand_int(MAX_DEPTH) < extra) bonus++;
+	if (randint0(MAX_DEPTH) < extra) bonus++;
 
 
 	/* The "stand" is equal to one quarter of the max */
@@ -1701,7 +1701,7 @@ static s16b m_bonus(int max, int level)
 	extra = (max % 4);
 
 	/* Hack -- simulate floating point computations */
-	if (rand_int(4) < extra) stand++;
+	if (randint0(4) < extra) stand++;
 
 
 	/* Choose an "interesting" value */
@@ -1786,9 +1786,9 @@ static int make_ego_item(object_type *o_ptr, int power)
 	/* Boost level (like with object base types) */
 	if (level > 0)
 	{
-	  //		if (rand_int(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
+	  //		if (randint0(GREAT_OBJ) == 0) level += randint(20) + randint(level / 2);
 		/* Occasional "boost" */
-		if (rand_int(GREAT_EGO) == 0)
+		if (randint0(GREAT_EGO) == 0)
 		{
 			/* The bizarre calculation again */
 			level = 1 + (level * MAX_DEPTH / randint(MAX_DEPTH));
@@ -1847,7 +1847,7 @@ static int make_ego_item(object_type *o_ptr, int power)
 
 
 	/* Pick an ego-item */
-	value = rand_int(total);
+	value = randint0(total);
 
 	/* Find the object */
 	for (i = 0; i < alloc_ego_size; i++)
@@ -1887,7 +1887,7 @@ static bool make_artifact_special(object_type *o_ptr)
 	/* No artifacts in the town */
 	if (!p_ptr->depth) return (FALSE);
 
-	first_pick = rand_int(artifact_special_cnt);
+	first_pick = randint0(artifact_special_cnt);
 
 	for (i = 0; i < artifact_special_cnt; i++)
 	{
@@ -1908,11 +1908,11 @@ static bool make_artifact_special(object_type *o_ptr)
 			int d = (a_ptr->level - p_ptr->depth) * 2;
 
 			/* Roll for out-of-depth creation */
-			if (rand_int(d) != 0) continue;
+			if (randint0(d) != 0) continue;
 		}
 
 		/* Artifact "rarity roll" */
-		if (rand_int(a_ptr->rarity) != 0) continue;
+		if (randint0(a_ptr->rarity) != 0) continue;
 
 		/* Find the base object */
 		k_idx = lookup_kind(a_ptr->tval, a_ptr->sval);
@@ -1924,7 +1924,7 @@ static bool make_artifact_special(object_type *o_ptr)
 			int d = (k_info[k_idx].level - object_level) * 5;
 
 			/* Roll for out-of-depth creation */
-			if (rand_int(d) != 0) continue;
+			if (randint0(d) != 0) continue;
 		}
 
 		/* Assign the template */
@@ -1983,11 +1983,11 @@ static bool make_artifact(object_type *o_ptr)
 			int d = (a_ptr->level - p_ptr->depth) * 2;
 
 			/* Roll for out-of-depth creation */
-			if (rand_int(d) != 0) continue;
+			if (randint0(d) != 0) continue;
 		}
 
 		/* We must make the "rarity roll" */
-		if (rand_int(a_ptr->rarity) != 0) continue;
+		if (randint0(a_ptr->rarity) != 0) continue;
 
 		/* Hack -- mark the item as an artifact */
 		o_ptr->name1 = choice;
@@ -2241,7 +2241,7 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					o_ptr->pval = randint(5) + m_bonus(5, level);
 
 					/* Super-charge the ring */
-					while (rand_int(100) < 50) o_ptr->pval++;
+					while (randint0(100) < 50) o_ptr->pval++;
 
 					/* Cursed Ring */
 					if (power < 0)
@@ -2277,14 +2277,14 @@ static void a_m_aux_3(object_type *o_ptr, int level, int power)
 					if (randint(2) == 1)
 					{
 						o_ptr->xtra1 = OBJECT_XTRA_TYPE_POWER;
-						o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_POWER);
+						o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_POWER);
 					}
 
 					/* Or Else Random Resist */
 					else
 					{
 						o_ptr->xtra1 = OBJECT_XTRA_TYPE_RESIST;
-						o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_RESIST);
+						o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_RESIST);
 					}
 
 					/* Rating boost */
@@ -2739,23 +2739,23 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 	power = 0;
 
 	/* Roll for "good" */
-	if (good || (rand_int(100) < good_percent))
+	if (good || (randint0(100) < good_percent))
 	{
 		/* Assume "good" */
 		power = 1;
 
 		/* Roll for "great" */
-		if (great || (rand_int(100) < great_percent)) power = 2;
+		if (great || (randint0(100) < great_percent)) power = 2;
 	}
 
 	/* Roll for "cursed" */
-	else if ((rand_int(100) < good_percent) && (required_tval == 0))
+	else if ((randint0(100) < good_percent) && (required_tval == 0))
 	{
 		/* Assume "cursed" */
 		power = -1;
 
 		/* Roll for "broken" */
-		if (rand_int(100) < great_percent) power = -2;
+		if (randint0(100) < great_percent) power = -2;
 	}
 
 
@@ -2840,11 +2840,11 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 			/* Reduced values and removed hard limit on (ds*dd) -BR- */
 			int newdicesides = 0;
 
-			if (rand_int(3 * (o_ptr->dd + 1) * (o_ptr->ds + 1)) == 0)
+			if (randint0(3 * (o_ptr->dd + 1) * (o_ptr->ds + 1)) == 0)
 			{
 				newdicesides = 4 * o_ptr->ds / 3;
 
-				if (rand_int((o_ptr->dd + 2) *
+				if (randint0((o_ptr->dd + 2) *
 					(o_ptr->ds + 2) / 4) == 0)
 				{
 					newdicesides = 3 * o_ptr->ds / 2;
@@ -3007,7 +3007,7 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 		case TV_RING:
 		case TV_AMULET:
 		{
-			if (!power && (rand_int(100) < 50)) power = -1;
+			if (!power && (randint0(100) < 50)) power = -1;
 			a_m_aux_3(o_ptr, lev, power);
 			break;
 		}
@@ -3032,10 +3032,10 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 		/* 22% of standard items, 44% of ego items */
 		j = (o_ptr->name2) ? 4 : 2;
 
-		if (rand_int(9) < j)
+		if (randint0(9) < j)
 		{
 			o_ptr->xtra1 = OBJECT_XTRA_TYPE_BALANCE;
-			o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_BALANCE);
+			o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_BALANCE);
 		}
 	}
 
@@ -3078,19 +3078,19 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 			{
 				case OBJECT_XTRA_TYPE_SUSTAIN:
 				{
-					o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_SUSTAIN);
+					o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_SUSTAIN);
 					break;
 				}
 
 				case OBJECT_XTRA_TYPE_RESIST:
 				{
-					o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_RESIST);
+					o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_RESIST);
 					break;
 				}
 
 				case OBJECT_XTRA_TYPE_POWER:
 				{
-					o_ptr->xtra2 = (byte)rand_int(OBJECT_XTRA_SIZE_POWER);
+					o_ptr->xtra2 = (byte)randint0(OBJECT_XTRA_SIZE_POWER);
 					break;
 				}
 			}
@@ -3362,7 +3362,7 @@ bool make_object(object_type *j_ptr, bool good, bool great, bool exact_kind)
 
 
 	/* Generate a special object, or a normal object */
-	if ((rand_int(prob) != 0) || !make_artifact_special(j_ptr))
+	if ((randint0(prob) != 0) || !make_artifact_special(j_ptr))
 	{
 		int k_idx;
 
@@ -3537,7 +3537,7 @@ bool make_gold(object_type *j_ptr)
 		gold_depth = (object_level / 2) + randint((object_level + 1) / 2);
 
 		/* Apply "extra" magic. */
-		if (rand_int(GREAT_OBJ) == 0) gold_depth += randint(gold_depth);
+		if (randint0(GREAT_OBJ) == 0) gold_depth += randint(gold_depth);
 
 		/* Find the highest-level legal gold object. */
 		for (i = first_gold_idx; i < first_gold_idx + SV_GOLD_MAX; i++)
@@ -3688,7 +3688,7 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 
 
 	/* Handle normal "breakage" */
-	if (!artifact_p(j_ptr) && (rand_int(100) < chance))
+	if (!artifact_p(j_ptr) && (randint0(100) < chance))
 	{
 		/* Message */
 		msg("The %s disappear%s.",
@@ -3786,7 +3786,7 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 			if (s > bs) bn = 0;
 
 			/* Apply the randomizer to equivalent values */
-			if ((++bn >= 2) && (rand_int(bn) != 0)) continue;
+			if ((++bn >= 2) && (randint0(bn) != 0)) continue;
 
 			/* Keep score */
 			bs = s;
@@ -3829,8 +3829,8 @@ void drop_near(object_type *j_ptr, int chance, int y, int x)
 		/* Random locations */
 		else
 		{
-			ty = rand_int(DUNGEON_HGT);
-			tx = rand_int(DUNGEON_WID);
+			ty = randint0(DUNGEON_HGT);
+			tx = randint0(DUNGEON_WID);
 		}
 
 		/* Require floor space */
@@ -3990,7 +3990,7 @@ void pick_trap(int y, int x)
 	while (!(trap_is_okay))
 	{
 		/* Pick at random. */
-		feat = FEAT_TRAP_HEAD + rand_int(16);
+		feat = FEAT_TRAP_HEAD + randint0(16);
 
 		/* Assume legal until proven otherwise. */
 		trap_is_okay = TRUE;
@@ -4157,7 +4157,7 @@ void place_closed_door(int y, int x)
 	int tmp;
 
 	/* Choose an object */
-	tmp = rand_int(400);
+	tmp = randint0(400);
 
 	/* Closed doors (300/400) */
 	if (tmp < 300)
@@ -4177,7 +4177,7 @@ void place_closed_door(int y, int x)
 	else
 	{
 		/* Create jammed door */
-		cave_set_feat(y, x, FEAT_DOOR_HEAD + 0x08 + rand_int(8));
+		cave_set_feat(y, x, FEAT_DOOR_HEAD + 0x08 + randint0(8));
 	}
 }
 
@@ -4190,7 +4190,7 @@ void place_random_door(int y, int x)
 	int tmp;
 
 	/* Choose an object */
-	tmp = rand_int(1000);
+	tmp = randint0(1000);
 
 	/* Open doors (300/1000) */
 	if (tmp < 300)

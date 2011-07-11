@@ -30,21 +30,20 @@
 /**** Available macros ****/
 
 
-/*
- * Generates a random long integer X where O<=X<M.
+/**
+ * Generates a random signed long integer X where "O <= X < M" holds.
+ *
  * The integer X falls along a uniform distribution.
- * For example, if M is 100, you get "percentile dice"
  */
-#define rand_int(M) \
-	((s32b)(Rand_div(M)))
+#define randint0(M) ((s32b) Rand_div(M))
 
-/*
+/**
  * Generate a random signed long integer X where "A - D <= X <= A + D" holds.
  * Note that "rand_spread(A, D)" == "rand_range(A - D, A + D)"
  *
  * The integer X falls along a uniform distribution.
  */
-#define rand_spread(A, D) ((A) + (rand_int(1 + (D) + (D))) - (D))
+#define rand_spread(A, D) ((A) + (randint0(1 + (D) + (D))) - (D))
 
 
 

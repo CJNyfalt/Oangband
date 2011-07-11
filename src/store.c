@@ -133,7 +133,7 @@ static const char * comment_6[MAX_COMMENT_6] =
  */
 static void say_comment_1(void)
 {
-	msg_print(comment_1[rand_int(MAX_COMMENT_1)]);
+	msg_print(comment_1[randint0(MAX_COMMENT_1)]);
 }
 
 
@@ -151,14 +151,14 @@ static void say_comment_2(s32b value, int annoyed)
 	if (annoyed > 0)
 	{
 		/* Formatted message */
-		msg(comment_2a[rand_int(MAX_COMMENT_2A)], tmp_val);
+		msg(comment_2a[randint0(MAX_COMMENT_2A)], tmp_val);
 	}
 
 	/* Normal offer */
 	else
 	{
 		/* Formatted message */
-		msg(comment_2b[rand_int(MAX_COMMENT_2B)], tmp_val);
+		msg(comment_2b[randint0(MAX_COMMENT_2B)], tmp_val);
 	}
 }
 
@@ -177,14 +177,14 @@ static void say_comment_3(s32b value, int annoyed)
 	if (annoyed > 0)
 	{
 		/* Formatted message */
-		msg(comment_3a[rand_int(MAX_COMMENT_3A)], tmp_val);
+		msg(comment_3a[randint0(MAX_COMMENT_3A)], tmp_val);
 	}
 
 	/* Normal offer */
 	else
 	{
 		/* Formatted message */
-		msg(comment_3b[rand_int(MAX_COMMENT_3B)], tmp_val);
+		msg(comment_3b[randint0(MAX_COMMENT_3B)], tmp_val);
 	}
 }
 
@@ -194,8 +194,8 @@ static void say_comment_3(s32b value, int annoyed)
  */
 static void say_comment_4(void)
 {
-	msg_print(comment_4a[rand_int(MAX_COMMENT_4A)]);
-	msg_print(comment_4b[rand_int(MAX_COMMENT_4B)]);
+	msg_print(comment_4a[randint0(MAX_COMMENT_4A)]);
+	msg_print(comment_4b[randint0(MAX_COMMENT_4B)]);
 }
 
 
@@ -204,7 +204,7 @@ static void say_comment_4(void)
  */
 static void say_comment_5(void)
 {
-	msg_print(comment_5[rand_int(MAX_COMMENT_5)]);
+	msg_print(comment_5[randint0(MAX_COMMENT_5)]);
 }
 
 
@@ -213,7 +213,7 @@ static void say_comment_5(void)
  */
 static void say_comment_6(void)
 {
-	msg_print(comment_6[rand_int(MAX_COMMENT_6)]);
+	msg_print(comment_6[randint0(MAX_COMMENT_6)]);
 }
 
 
@@ -274,7 +274,7 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
 	if ((value <= 0) && (price > value))
 	{
 		/* Comment */
-		msgt(MSG_STORE1, comment_7a[rand_int(MAX_COMMENT_7A)]);
+		msgt(MSG_STORE1, comment_7a[randint0(MAX_COMMENT_7A)]);
 
 		/* Sound */
 		sound(SOUND_STORE1);
@@ -284,7 +284,7 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
 	else if ((value < guess) && (price > value))
 	{
 		/* Comment */
-		msgt(MSG_STORE2, comment_7b[rand_int(MAX_COMMENT_7B)]);
+		msgt(MSG_STORE2, comment_7b[randint0(MAX_COMMENT_7B)]);
 
 		/* Sound */
 		sound(SOUND_STORE2);
@@ -294,7 +294,7 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
 	else if ((value > guess) && (value < (4 * guess)) && (price < value))
 	{
 		/* Comment */
-		msgt(MSG_STORE3, comment_7c[rand_int(MAX_COMMENT_7C)]);
+		msgt(MSG_STORE3, comment_7c[randint0(MAX_COMMENT_7C)]);
 
 		/* Sound */
 		sound(SOUND_STORE3);
@@ -304,7 +304,7 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
 	else if ((value > guess) && (price < value))
 	{
 		/* Comment */
-		msgt(MSG_STORE4, comment_7d[rand_int(MAX_COMMENT_7D)]);
+		msgt(MSG_STORE4, comment_7d[randint0(MAX_COMMENT_7D)]);
 
 		/* Sound */
 		sound(SOUND_STORE4);
@@ -414,7 +414,7 @@ static int mass_roll(int num, int max)
 	int i, t = 0;
 	for (i = 0; i < num; i++)
 	{
-		t += ((max > 1) ? rand_int(max) : 1);
+		t += ((max > 1) ? randint0(max) : 1);
 	}
 	return (t);
 }
@@ -552,19 +552,19 @@ static void mass_produce(object_type *o_ptr)
 	{
 		discount = 0;
 	}
-	else if (rand_int(400 / discount_probability) == 0)
+	else if (randint0(400 / discount_probability) == 0)
 	{
 		discount = 25;
 	}
-	else if (rand_int(2000 / discount_probability) == 0)
+	else if (randint0(2000 / discount_probability) == 0)
 	{
 		discount = 50;
 	}
-	else if (rand_int(4000 / discount_probability) == 0)
+	else if (randint0(4000 / discount_probability) == 0)
 	{
 		discount = 75;
 	}
-	else if (rand_int(6000 / discount_probability) == 0)
+	else if (randint0(6000 / discount_probability) == 0)
 	{
 		discount = 90;
 	}
@@ -1202,16 +1202,16 @@ static void store_delete(void)
 	if (st_ptr->stock_num <= 0) return;
 
 	/* Pick a random slot */
-	what = rand_int(st_ptr->stock_num);
+	what = randint0(st_ptr->stock_num);
 
 	/* Determine how many objects are in the slot */
 	num = st_ptr->stock[what].number;
 
 	/* Hack -- sometimes, only destroy half the objects */
-	if (rand_int(100) < 50) num = (num + 1) / 2;
+	if (randint0(100) < 50) num = (num + 1) / 2;
 
 	/* Hack -- sometimes, only destroy a single object, if not a missile. */
-	if (rand_int(100) < 50)
+	if (randint0(100) < 50)
 	{
 		if ((st_ptr->stock[what].tval != TV_BOLT) && (st_ptr->stock[what].tval != TV_ARROW) && (st_ptr->stock[what].tval != TV_SHOT)) num = 1;
 	}
@@ -1260,7 +1260,7 @@ static void store_create(void)
 			/* Pick a level for object/magic.  Now depends partly
 			 * on player level.
 			 */
-			level = 5 + p_ptr->lev / 2 + rand_int(30);
+			level = 5 + p_ptr->lev / 2 + randint0(30);
 
 			/* Random object kind (biased towards given level) */
 			k_idx = get_obj_num(level);
@@ -1273,7 +1273,7 @@ static void store_create(void)
 		else
 		{
 			/* Hack -- Pick an object kind to sell */
-			k_idx = st_ptr->table[rand_int(st_ptr->table_num)];
+			k_idx = st_ptr->table[randint0(st_ptr->table_num)];
 
 			/* Hack -- fake level for apply_magic() */
 			level = rand_range(1, STORE_OBJ_LEVEL);
@@ -2664,7 +2664,7 @@ static void store_purchase(void)
 					int i;
 
 					/* Shuffle.  Made retiring more likely. */
-					if (rand_int(STORE_SHUFFLE) < 5)
+					if (randint0(STORE_SHUFFLE) < 5)
 					{
 						/* Message */
 						msg_print("The shopkeeper retires.");
@@ -3653,7 +3653,7 @@ void store_shuffle(int which)
 	/* Pick a new owner */
 	for (j = st_ptr->owner; j == st_ptr->owner; )
 	{
-		st_ptr->owner = (byte)rand_int(MAX_B_IDX);
+		st_ptr->owner = (byte)randint0(MAX_B_IDX);
 	}
 
 	/* Activate the new owner */
@@ -3789,7 +3789,7 @@ void store_init(int which)
 
 
 	/* Pick an owner */
-	st_ptr->owner = (byte)rand_int(MAX_B_IDX);
+	st_ptr->owner = (byte)randint0(MAX_B_IDX);
 
 	/* Activate the new owner */
 	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];

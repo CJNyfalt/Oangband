@@ -159,7 +159,7 @@ void do_cmd_eat_food(void)
 		{
 			if (!p_ptr->no_blind)
 			{
-				if (set_blind(p_ptr->blind + rand_int(200) + 200))
+				if (set_blind(p_ptr->blind + randint0(200) + 200))
 				{
 					ident = TRUE;
 				}
@@ -171,7 +171,7 @@ void do_cmd_eat_food(void)
 		{
 			if (!p_ptr->no_fear)
 			{
-				if (set_afraid(p_ptr->afraid + rand_int(10) + 10))
+				if (set_afraid(p_ptr->afraid + randint0(10) + 10))
 				{
 					ident = TRUE;
 				}
@@ -183,7 +183,7 @@ void do_cmd_eat_food(void)
 		{
 			if (!p_resist_pos(P_RES_CONFU))
 			{
-				if (set_confused(p_ptr->confused + rand_int(10) + 10))
+				if (set_confused(p_ptr->confused + randint0(10) + 10))
 				{
 					ident = TRUE;
 				}
@@ -195,7 +195,7 @@ void do_cmd_eat_food(void)
 		{
 			if (!p_resist_pos(P_RES_CHAOS))
 			{
-				if (set_image(p_ptr->image + rand_int(250) + 250))
+				if (set_image(p_ptr->image + randint0(250) + 250))
 				{
 					ident = TRUE;
 				}
@@ -207,7 +207,7 @@ void do_cmd_eat_food(void)
 		{
 			if (!p_ptr->free_act)
 			{
-				if (set_paralyzed(p_ptr->paralyzed + rand_int(10) + 10))
+				if (set_paralyzed(p_ptr->paralyzed + randint0(10) + 10))
 				{
 					ident = TRUE;
 				}
@@ -495,7 +495,7 @@ void do_cmd_quaff_potion(void)
 		{
 			if (!p_ptr->no_blind)
 			{
-				if (set_blind(p_ptr->blind + rand_int(100) + 100))
+				if (set_blind(p_ptr->blind + randint0(100) + 100))
 				{
 					ident = TRUE;
 				}
@@ -507,7 +507,7 @@ void do_cmd_quaff_potion(void)
 		{
 			if (!p_resist_pos(P_RES_CONFU))
 			{
-				if (set_confused(p_ptr->confused + rand_int(20) + 15))
+				if (set_confused(p_ptr->confused + randint0(20) + 15))
 				{
 					ident = TRUE;
 				}
@@ -519,7 +519,7 @@ void do_cmd_quaff_potion(void)
 		{
 			if (!p_ptr->free_act)
 			{
-				if (set_paralyzed(p_ptr->paralyzed + rand_int(4) + 4))
+				if (set_paralyzed(p_ptr->paralyzed + randint0(4) + 4))
 				{
 					ident = TRUE;
 				}
@@ -1188,7 +1188,7 @@ void do_cmd_read_scroll(void)
 		case SV_SCROLL_WORD_OF_RECALL:
 		{
 #if 1
-			word_recall(rand_int(20) + 15);
+			word_recall(randint0(20) + 15);
 #else
 			if (p_ptr->word_recall == 0)
 			{
@@ -1450,7 +1450,7 @@ void do_cmd_read_scroll(void)
 
 		case SV_SCROLL_ELE_ATTACKS:		/* -LM- */
 		{
-			k = rand_int(5);
+			k = randint0(5);
 
 			/* Give an elemental attack for 400 turns. */
 			if (k == 0) set_ele_attack(ATTACK_ACID, 400);
@@ -1654,7 +1654,7 @@ void do_cmd_use_staff(void)
 	else chance2 = chance - ((lev > 50) ? 50 : lev);
 
 	/* Give everyone a (slight) chance */
-	if ((chance2 < USE_DEVICE) && (rand_int(USE_DEVICE - chance2 + 1) == 0))
+	if ((chance2 < USE_DEVICE) && (randint0(USE_DEVICE - chance2 + 1) == 0))
 	{
 		chance2 = USE_DEVICE;
 	}
@@ -1767,7 +1767,7 @@ void do_cmd_use_staff(void)
 			}
 
 			/* Starbursts everywhere. */
-			do_starlight(rand_int(8) + 7, dam, FALSE);
+			do_starlight(randint0(8) + 7, dam, FALSE);
 
 			/* Hard not to identify. */
 			ident = TRUE;
@@ -2030,7 +2030,7 @@ void do_cmd_use_staff(void)
 			}
 
 			/* (large) Starbursts everywhere. */
-			do_starlight(rand_int(8) + 7, dam, TRUE);
+			do_starlight(randint0(8) + 7, dam, TRUE);
 
 			/* Hard not to identify. */
 			ident = TRUE;
@@ -2152,7 +2152,7 @@ void do_cmd_use_staff(void)
 
 	/* Make it possible to fully identify staffs through use. */
 	if ((object_known_p(o_ptr)) && (!k_ptr->known_effect) &&
-		(rand_int((check_ability(SP_DEVICE_EXPERT)) ? 25 : 35) == 0))
+		(randint0((check_ability(SP_DEVICE_EXPERT)) ? 25 : 35) == 0))
 	{
 		/* Mark all objects of that type as fully known. */
 		k_ptr->known_effect = TRUE;
@@ -2266,7 +2266,7 @@ void do_cmd_aim_wand(void)
 	else chance2 = chance - ((lev > 50) ? 50 : lev);
 
 	/* Give everyone a (slight) chance */
-	if ((chance2 < USE_DEVICE) && (rand_int(USE_DEVICE - chance2 + 1) == 0))
+	if ((chance2 < USE_DEVICE) && (randint0(USE_DEVICE - chance2 + 1) == 0))
 	{
 		chance2 = USE_DEVICE;
 	}
@@ -2306,7 +2306,7 @@ void do_cmd_aim_wand(void)
 
 
 	/* XXX Hack -- Wand of wonder can do anything before it */
-	if (sval == SV_WAND_WONDER) sval = rand_int(SV_WAND_WONDER);
+	if (sval == SV_WAND_WONDER) sval = randint0(SV_WAND_WONDER);
 
 	/* Analyze the wand */
 	switch (sval)
@@ -2662,11 +2662,11 @@ void do_cmd_aim_wand(void)
 		{
 			msg_print("You speak soft, beguiling words.");
 
-			if (rand_int(2) == 0)
+			if (randint0(2) == 0)
 			{
 				if (slow_monster(dir, plev * 2)) ident = TRUE;
 			}
-			if (rand_int(2) == 0)
+			if (randint0(2) == 0)
 			{
 				if (confuse_monster(dir, plev * 2)) ident = TRUE;
 			}
@@ -2738,7 +2738,7 @@ void do_cmd_aim_wand(void)
 
 	/* Make it possible to fully identify wands through use. */
 	if ((object_known_p(o_ptr)) && (!k_ptr->known_effect) &&
-		(rand_int((check_ability(SP_DEVICE_EXPERT)) ? 30 : 40) == 0))
+		(randint0((check_ability(SP_DEVICE_EXPERT)) ? 30 : 40) == 0))
 	{
 		/* Mark all objects of that type as fully known. */
 		k_ptr->known_effect = TRUE;
@@ -2853,7 +2853,7 @@ void do_cmd_zap_rod(void)
 	else chance2 = chance - ((lev > 50) ? 50 : lev);
 
 	/* Give everyone a (slight) chance */
-	if ((chance2 < USE_DEVICE) && (rand_int(USE_DEVICE - chance2 + 1) == 0))
+	if ((chance2 < USE_DEVICE) && (randint0(USE_DEVICE - chance2 + 1) == 0))
 	{
 		chance2 = USE_DEVICE;
 	}
@@ -2923,7 +2923,7 @@ void do_cmd_zap_rod(void)
 		case SV_ROD_RECALL:
 		{
 #if 1
-			word_recall(rand_int(20) + 15);
+			word_recall(randint0(20) + 15);
 #else
 			if (p_ptr->word_recall == 0)
 			{
@@ -3313,7 +3313,7 @@ void do_cmd_zap_rod(void)
 
 	/* Make it possible to fully identify rods through use. */
 	if ((object_known_p(o_ptr)) && (!k_ptr->known_effect) &&
-	    (rand_int((check_ability(SP_DEVICE_EXPERT)) ? 45 : 65) == 0))
+	    (randint0((check_ability(SP_DEVICE_EXPERT)) ? 45 : 65) == 0))
 	{
 		/* Mark all objects of that type as fully known. */
 		k_ptr->known_effect = TRUE;
@@ -3496,7 +3496,7 @@ void do_cmd_activate(void)
 			if (randint(3) >= 2) chance = USE_DEVICE * 2;
 		}
 		else if ((chance < USE_DEVICE) &&
-			(rand_int(USE_DEVICE - chance + 1) == 0))
+			(randint0(USE_DEVICE - chance + 1) == 0))
 		{
 			chance = USE_DEVICE;
 		}
@@ -3531,14 +3531,14 @@ void do_cmd_activate(void)
 		{
 			msg_print("The phial wells with clear light...");
 			lite_area(damroll(2, 15), 3);
-			o_ptr->timeout = rand_int(10) + 10;
+			o_ptr->timeout = randint0(10) + 10;
 			break;
 		}
 		case ACT_ELENDIL:
 		{
 			msg_print("The star shines brightly...");
 			map_area(0, 0, FALSE);
-			o_ptr->timeout = rand_int(40) + 40;
+			o_ptr->timeout = randint0(40) + 40;
 			break;
 		}
 		case ACT_THRAIN:
@@ -3550,7 +3550,7 @@ void do_cmd_activate(void)
 			(void)detect_traps(DETECT_RAD_DEFAULT, TRUE);
 			(void)detect_doors(DETECT_RAD_DEFAULT, FALSE);
 			(void)detect_stairs(DETECT_RAD_DEFAULT, FALSE);
-			o_ptr->timeout = rand_int(120) + 120;
+			o_ptr->timeout = randint0(120) + 120;
 			break;
 		}
 		case ACT_CARLAMMAS:
@@ -3560,28 +3560,28 @@ void do_cmd_activate(void)
 			if (banish_evil(60))
 				msg_print("You thrust your evil enemies back!");
 			(void)set_protevil(p_ptr->protevil + randint(25) + k);
-			o_ptr->timeout = rand_int(225) + 225;
+			o_ptr->timeout = randint0(225) + 225;
 			break;
 		}
 		case ACT_INGWE:
 		{
 			msg_print("The amulet floods the area with goodness...");
 			dispel_evil(p_ptr->lev * 4);
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_BOROMIR:
 		{
 			msg_print("You wind a mighty blast; your enemies tremble!");
 			(void)fear_monsters((3 * plev / 2) + 10);
-			o_ptr->timeout = rand_int(40) + 40;
+			o_ptr->timeout = randint0(40) + 40;
 			break;
 		}
 		case ACT_FARAMIR:
 		{
 			msg_print("You exterminate small life.");
 			(void)dispel_small_monsters(8);
-			o_ptr->timeout = rand_int(55) + 55;
+			o_ptr->timeout = randint0(55) + 55;
 			break;
 		}
 		case ACT_TULKAS:
@@ -3595,7 +3595,7 @@ void do_cmd_activate(void)
 			{
 				(void)set_fast(p_ptr->fast + 5);
 			}
-			o_ptr->timeout = rand_int(150) + 150;
+			o_ptr->timeout = randint0(150) + 150;
 			break;
 		}
 		case ACT_NARYA:
@@ -3603,7 +3603,7 @@ void do_cmd_activate(void)
 			msg_print("The ring glows deep red...");
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_FIRE, dir, 225, 3, FALSE);
-			o_ptr->timeout = rand_int(275) + 275;
+			o_ptr->timeout = randint0(275) + 275;
 			break;
 		}
 		case ACT_NENYA:
@@ -3611,7 +3611,7 @@ void do_cmd_activate(void)
 			msg_print("The ring glows bright white...");
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_COLD, dir, 250, 3, FALSE);
-			o_ptr->timeout = rand_int(325) + 325;
+			o_ptr->timeout = randint0(325) + 325;
 			break;
 		}
 		case ACT_VILYA:
@@ -3619,7 +3619,7 @@ void do_cmd_activate(void)
 			msg_print("The ring glows deep blue...");
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_ELEC, dir, 275, 3, FALSE);
-			o_ptr->timeout = rand_int(375) + 375;
+			o_ptr->timeout = randint0(375) + 375;
 			break;
 		}
 		case ACT_POWER:
@@ -3627,7 +3627,7 @@ void do_cmd_activate(void)
 			msg_print("The ring glows intensely black...");
 			if (!get_aim_dir(&dir)) return;
 			ring_of_power(dir);
-			o_ptr->timeout = rand_int(450) + 450;
+			o_ptr->timeout = randint0(450) + 450;
 			break;
 		}
 		/* The Stone of Lore is perilous, for the sake of game balance. */
@@ -3673,11 +3673,11 @@ void do_cmd_activate(void)
 			take_hit(damroll(1, 12), "perilous secrets");
 
 			/* Confusing. */
-			if (rand_int(5) == 0) (void)set_confused(p_ptr->confused +
+			if (randint0(5) == 0) (void)set_confused(p_ptr->confused +
 				randint(10));
 
 			/* Exercise a little care... */
-			if (rand_int(20) == 0) take_hit(damroll(4, 10), "perilous secrets");
+			if (randint0(20) == 0) take_hit(damroll(4, 10), "perilous secrets");
 			o_ptr->timeout = 0;
 			break;
 		}
@@ -3755,7 +3755,7 @@ void do_cmd_activate(void)
 			msg_print("A shrill wailing sound surrounds you.");
 			(void)set_protevil(p_ptr->protevil +
 				randint(25) + plev);
-			o_ptr->timeout = rand_int(200) + 200;
+			o_ptr->timeout = randint0(200) + 200;
 			break;
 		}
 		case ACT_ELEMENTS:
@@ -3795,7 +3795,7 @@ void do_cmd_activate(void)
 			msg_print("Your helm glows bright white...");
 			msg_print("An image forms in your mind...");
 			detect_all(DETECT_RAD_DEFAULT, TRUE);
-			o_ptr->timeout = rand_int(55) + 55;
+			o_ptr->timeout = randint0(55) + 55;
 			break;
 		}
 		case ACT_GONDOR:
@@ -3861,28 +3861,28 @@ void do_cmd_activate(void)
 			msg_print("Your gauntlets radiate magical energy...");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_MANA, dir, damroll(9, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_PAURNIMMEN:
 		{
 			msg_print("Your gauntlets are covered in frost...");
 			set_ele_attack(ATTACK_COLD, 50);
-			o_ptr->timeout = rand_int(50) + 100;
+			o_ptr->timeout = randint0(50) + 100;
 			break;
 		}
 		case ACT_PAURAEGEN:
 		{
 			msg_print("Your gauntlets are covered in sparks...");
 			set_ele_attack(ATTACK_ELEC, 40);
-			o_ptr->timeout = rand_int(50) + 100;
+			o_ptr->timeout = randint0(50) + 100;
 			break;
 		}
 		case ACT_PAURNEN:
 		{
 			msg_print("Your gauntlets are covered in acid...");
 			set_ele_attack(ATTACK_ACID, 30);
-			o_ptr->timeout = rand_int(50) + 100;
+			o_ptr->timeout = randint0(50) + 100;
 			break;
 		}
 		case ACT_FINGOLFIN:
@@ -3890,7 +3890,7 @@ void do_cmd_activate(void)
 			msg_print("Your cesti gleam brown and grey...");
 			if (!get_aim_dir(&dir)) return;
 			wall_to_mud(dir);
-			o_ptr->timeout = rand_int(3) + 3;
+			o_ptr->timeout = randint0(3) + 3;
 			break;
 		}
 
@@ -3931,7 +3931,7 @@ void do_cmd_activate(void)
 			msg_print("Your dagger is covered in fire...");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_FIRE, dir, damroll(6, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_NIMTHANC:
@@ -3939,7 +3939,7 @@ void do_cmd_activate(void)
 			msg_print("Your dagger is covered in frost...");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_COLD, dir, damroll(5, 8));
-			o_ptr->timeout = rand_int(6) + 6;
+			o_ptr->timeout = randint0(6) + 6;
 			break;
 		}
 		case ACT_DETHANC:
@@ -3947,7 +3947,7 @@ void do_cmd_activate(void)
 			msg_print("Your dagger is covered in sparks...");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_ELEC, dir, damroll(4, 8));
-			o_ptr->timeout = rand_int(5) + 5;
+			o_ptr->timeout = randint0(5) + 5;
 			break;
 		}
 		case ACT_RILIA:
@@ -3955,7 +3955,7 @@ void do_cmd_activate(void)
 			msg_print("Your dagger throbs deep green...");
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_POIS, dir, 12, 3, FALSE);
-			o_ptr->timeout = rand_int(4) + 4;
+			o_ptr->timeout = randint0(4) + 4;
 			break;
 		}
 		case ACT_BELANGIL:
@@ -3963,7 +3963,7 @@ void do_cmd_activate(void)
 			msg_print("Your dagger is covered in frost...");
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_COLD, dir, 3 * p_ptr->lev / 2, 2, FALSE);
-			o_ptr->timeout = rand_int(5) + 5;
+			o_ptr->timeout = randint0(5) + 5;
 			break;
 		}
 		case ACT_ARUNRUTH:
@@ -4027,7 +4027,7 @@ void do_cmd_activate(void)
 			msg_print("Your battle axe radiates deep purple...");
 			hp_player(damroll(4, 12));
 			(void)set_cut((p_ptr->cut / 2) - 50);
-			o_ptr->timeout = rand_int(3) + 3;
+			o_ptr->timeout = randint0(3) + 3;
 			break;
 		}
 		case ACT_ULMO:
@@ -4042,7 +4042,7 @@ void do_cmd_activate(void)
 		{
 			msg_print("Your scythe glows soft white...");
 #if 1
-			word_recall(rand_int(20) + 15);
+			word_recall(randint0(20) + 15);
 #else
 			if (p_ptr->word_recall == 0)
 			{
@@ -4087,7 +4087,7 @@ void do_cmd_activate(void)
 			{
 				(void)set_fast(p_ptr->fast + 5);
 			}
-			o_ptr->timeout = rand_int(100) + 100;
+			o_ptr->timeout = randint0(100) + 100;
 			break;
 		}
 		case ACT_ERIRIL:
@@ -4138,7 +4138,7 @@ void do_cmd_activate(void)
 			msg_print("You launch a bolt of fire.");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_FIRE, dir, damroll(3 + plev / 8, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_RANDOM_FIRE2:
@@ -4161,7 +4161,7 @@ void do_cmd_activate(void)
 			msg_print("You launch a bolt of frost.");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_COLD, dir, damroll(3 + plev / 8, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_RANDOM_COLD2:
@@ -4184,7 +4184,7 @@ void do_cmd_activate(void)
 			msg_print("You launch a bolt of acid.");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_ACID, dir, damroll(3 + plev / 8, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_RANDOM_ACID2:
@@ -4207,7 +4207,7 @@ void do_cmd_activate(void)
 			msg_print("You launch a bolt of electricity.");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_ELEC, dir, damroll(3 + plev / 8, 8));
-			o_ptr->timeout = rand_int(7) + 7;
+			o_ptr->timeout = randint0(7) + 7;
 			break;
 		}
 		case ACT_RANDOM_ELEC2:
@@ -4232,7 +4232,7 @@ void do_cmd_activate(void)
 			msg_print("You launch a poison dart.");
 			if (!get_aim_dir(&dir)) return;
 			fire_bolt(GF_POIS, dir, damroll(3 + plev / 10, 8));
-			o_ptr->timeout = rand_int(22) + 22;
+			o_ptr->timeout = randint0(22) + 22;
 			break;
 		}
 		case ACT_RANDOM_POIS2:
@@ -4331,7 +4331,7 @@ void do_cmd_activate(void)
 		{
 			msg_print("You reveal yourself in wrath; your enemies tremble!");
 			(void)fear_monsters((3 * plev / 2) + 5);
-			o_ptr->timeout = rand_int(120) + 120;
+			o_ptr->timeout = randint0(120) + 120;
 			break;
 		}
 		case ACT_RANDOM_HEAL1:
@@ -4461,7 +4461,7 @@ void do_cmd_activate(void)
 			{
 				(void)set_fast(p_ptr->fast + 5);
 			}
-			o_ptr->timeout = rand_int(120) + 120;
+			o_ptr->timeout = randint0(120) + 120;
 			break;
 		}
 		case ACT_RANDOM_TELEPORT_AWAY:
@@ -4534,11 +4534,11 @@ void do_cmd_activate(void)
 		case ACT_RANDOM_RECALL:
 		{
 #if 1
-			word_recall(rand_int(20) + 15);
+			word_recall(randint0(20) + 15);
 #else
 			if (p_ptr->word_recall == 0)
 			{
-				p_ptr->word_recall = rand_int(20) + 15;
+				p_ptr->word_recall = randint0(20) + 15;
 				msg_print("The air about you becomes charged...");
 			}
 			else
@@ -4754,7 +4754,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe acid.");
 				fire_arc(GF_ACID, dir, 150, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_BLUE:
@@ -4770,7 +4770,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe lightning.");
 				fire_arc(GF_ELEC, dir, 130, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_WHITE:
@@ -4786,7 +4786,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe frost.");
 				fire_arc(GF_COLD, dir, 140, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_RED:
@@ -4802,7 +4802,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe fire.");
 				fire_arc(GF_FIRE, dir, 160, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_GREEN:
@@ -4818,7 +4818,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe poison gas.");
 				fire_arc(GF_POIS, dir, 150, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_MULTIHUED:
@@ -4831,7 +4831,7 @@ void do_cmd_activate(void)
 			else
 			{
 				if (!get_aim_dir(&dir)) return;
-				chance = rand_int(5);
+				chance = randint0(5);
 				msg("You breathe %s.",
 				      ((chance == 1) ? "lightning" :
 				      ((chance == 2) ? "frost" :
@@ -4843,7 +4843,7 @@ void do_cmd_activate(void)
 				      ((chance == 4) ? GF_POIS : GF_FIRE)))),
 				      dir, 190, 10, 40);
 			}
-			o_ptr->timeout = rand_int(350) + 350;
+			o_ptr->timeout = randint0(350) + 350;
 			break;
 		}
 		case ACT_DRAGON_SHINING:
@@ -4856,13 +4856,13 @@ void do_cmd_activate(void)
 			else
 			{
 				if (!get_aim_dir(&dir)) return;
-				chance = rand_int(2);
+				chance = randint0(2);
 				msg("You breathe %s.",
 				      ((chance == 0 ? "light" : "darkness")));
 				fire_arc((chance == 0 ? GF_LITE : GF_DARK), dir,
 				      160, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_LAW:
@@ -4875,13 +4875,13 @@ void do_cmd_activate(void)
 			else
 			{
 				if (!get_aim_dir(&dir)) return;
-				chance = rand_int(2);
+				chance = randint0(2);
 				msg("You breathe %s.",
 				      ((chance == 1 ? "sound" : "shards")));
 				fire_arc((chance == 1 ? GF_SOUND : GF_SHARD),
 				      dir, 190, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_BRONZE:
@@ -4897,7 +4897,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe confusion.");
 				fire_arc(GF_CONFUSION, dir, 130, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_GOLD:
@@ -4913,7 +4913,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe sound.");
 				fire_arc(GF_SOUND, dir, 130, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_CHAOS:
@@ -4926,13 +4926,13 @@ void do_cmd_activate(void)
 			else
 			{
 				if (!get_aim_dir(&dir)) return;
-				chance = rand_int(2);
+				chance = randint0(2);
 				msg("You breathe %s.",
 				      ((chance == 1 ? "chaos" : "disenchantment")));
 				fire_arc((chance == 1 ? GF_CHAOS : GF_DISENCHANT),
 				      dir, 180, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_BALANCE:
@@ -4945,7 +4945,7 @@ void do_cmd_activate(void)
 			else
 			{
 				if (!get_aim_dir(&dir)) return;
-				chance = rand_int(4);
+				chance = randint0(4);
 				msg("You breathe %s.",
 				      ((chance == 1) ? "chaos" :
 				      ((chance == 2) ? "disenchantment" :
@@ -4955,7 +4955,7 @@ void do_cmd_activate(void)
 				      ((chance == 3) ? GF_SOUND : GF_SHARD))),
 				      dir, 210, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 		case ACT_DRAGON_POWER:
@@ -4971,7 +4971,7 @@ void do_cmd_activate(void)
 				msg_print("You breathe the elements.");
 				fire_arc(GF_MANA, dir, 240, 10, 40);
 			}
-			o_ptr->timeout = rand_int(300) + 300;
+			o_ptr->timeout = randint0(300) + 300;
 			break;
 		}
 
@@ -4981,7 +4981,7 @@ void do_cmd_activate(void)
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_ACID, dir, 45 + 3 * plev / 2, 3, FALSE);
 			(void)set_oppose_acid(p_ptr->oppose_acid + randint(20) + 20);
-			o_ptr->timeout = rand_int(100) + 50;
+			o_ptr->timeout = randint0(100) + 50;
 			break;
 		}
 		case ACT_RING_ELEC:
@@ -4989,7 +4989,7 @@ void do_cmd_activate(void)
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_ELEC, dir, 45 + 3 * plev / 2, 3, FALSE);
 			(void)set_oppose_elec(p_ptr->oppose_elec + randint(20) + 20);
-			o_ptr->timeout = rand_int(100) + 50;
+			o_ptr->timeout = randint0(100) + 50;
 			break;
 		}
 		case ACT_RING_FIRE:
@@ -4997,7 +4997,7 @@ void do_cmd_activate(void)
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_FIRE, dir, 45 + 3 * plev / 2, 3, FALSE);
 			(void)set_oppose_fire(p_ptr->oppose_fire + randint(20) + 20);
-			o_ptr->timeout = rand_int(100) + 50;
+			o_ptr->timeout = randint0(100) + 50;
 			break;
 		}
 		case ACT_RING_COLD:
@@ -5005,7 +5005,7 @@ void do_cmd_activate(void)
 			if (!get_aim_dir(&dir)) return;
 			fire_ball(GF_COLD, dir, 45 + 3 * plev / 2, 3, FALSE);
 			(void)set_oppose_cold(p_ptr->oppose_cold + randint(20) + 20);
-			o_ptr->timeout = rand_int(100) + 50;
+			o_ptr->timeout = randint0(100) + 50;
 			break;
 		}
 
@@ -5014,7 +5014,7 @@ void do_cmd_activate(void)
 		case ACT_AMULET_ESCAPING:
 		{
 			teleport_player(40,TRUE);
-			o_ptr->timeout = rand_int(40) + 40;
+			o_ptr->timeout = randint0(40) + 40;
 			break;
 		}
 
@@ -5059,7 +5059,7 @@ void do_cmd_activate(void)
 	 */
 	if (((o_ptr->tval == TV_DRAG_ARMOR) || (o_ptr->tval == TV_AMULET) ||
 	     (o_ptr->tval == TV_RING)) && (!artifact_p(o_ptr)) &&
-	    (!k_info[o_ptr->k_idx].known_effect) && (rand_int(25) == 0))
+	    (!k_info[o_ptr->k_idx].known_effect) && (randint0(25) == 0))
 	{
 		int chooser = 0;
 

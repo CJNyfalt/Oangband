@@ -3270,7 +3270,7 @@
  * Hack -- random number generation
  */
 #define randint(M) \
-	(rand_int(M) + 1)
+	(randint0(M) + 1)
 
 
 /*

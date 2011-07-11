@@ -231,7 +231,7 @@ void compact_monsters(int size)
 			if (r_ptr->flags1 & (RF1_UNIQUE)) chance = 99;
 
 			/* All monsters get a saving throw */
-			if (rand_int(100) < chance) continue;
+			if (randint0(100) < chance) continue;
 
 			/* Delete the monster */
 			delete_monster_idx(i);
@@ -460,7 +460,7 @@ s16b get_mon_num(int level)
 	if (p_ptr->depth != 0)
 	{
 		/* Occasional boost to maximum level */
-		if (rand_int(NASTY_MON) == 0)
+		if (randint0(NASTY_MON) == 0)
 		{
 			/* Pick a level bonus */
 			d = level / 10 + 1;
@@ -469,7 +469,7 @@ s16b get_mon_num(int level)
 			temp_level += ((d < 5) ? d : 5);
 
 			/* Occasional second boost */
-			if (rand_int(NASTY_MON) == 0)
+			if (randint0(NASTY_MON) == 0)
 			{
 				/* Pick a level bonus */
 				d = level / 10 + 1;
@@ -550,7 +550,7 @@ s16b get_mon_num(int level)
 	}
 
 	/* Pick a monster */
-	value = rand_int(alloc_race_total);
+	value = randint0(alloc_race_total);
 
 	/* Find the monster */
 	for (i = 0; i < alloc_race_size; i++)
@@ -592,7 +592,7 @@ s16b get_mon_num_quick(int level)
 
 
 	/* Pick a monster */
-	value = rand_int(alloc_race_total);
+	value = randint0(alloc_race_total);
 
 	/* Find the monster */
 	for (i = 0; i < alloc_race_size; i++)
@@ -1674,7 +1674,7 @@ static bool place_monster_one(int y, int x, int r_idx, bool slp)
 	else
 	{
 		/* Give a random starting energy */
-		n_ptr->energy = rand_int(50);
+		n_ptr->energy = randint0(50);
   	}
 
   	/* Place the monster in the dungeon */
@@ -1857,8 +1857,8 @@ static void place_monster_escort(int y, int x, int leader_idx, bool slp)
 
 
 	/* Calculate the number of escorts we want. */
-	if (r_ptr->flags1 & (RF1_ESCORTS)) escort_size = 6 + rand_int(15);
-	else escort_size = 2 + rand_int(7);
+	if (r_ptr->flags1 & (RF1_ESCORTS)) escort_size = 6 + randint0(15);
+	else escort_size = 2 + randint0(7);
 
 
 	/* Use the leader's monster type to restrict the escorts. */
@@ -2055,8 +2055,8 @@ bool alloc_monster(int dis, bool slp, bool quick)
 	while (TRUE)
 	{
 		/* Pick a location */
-		y = rand_int(DUNGEON_HGT);
-		x = rand_int(DUNGEON_WID);
+		y = randint0(DUNGEON_HGT);
+		x = randint0(DUNGEON_WID);
 
 		/* Require a grid that the monster can exist in. */
 		if (!cave_exist_mon(r_ptr, y, x, FALSE)) continue;
@@ -2283,7 +2283,7 @@ int summon_specific(int y1, int x1, bool scattered, int lev, int type, int num)
 		for (i = 0; i < (scattered ? 40 : 20); ++i)
 		{
 			/* Pick a distance */
-			if (scattered) d = rand_int(6) + 1;
+			if (scattered) d = randint0(6) + 1;
 			else d = (i / 10) + 1;
 
 			/* Pick a location (in line of sight) */
@@ -2514,7 +2514,7 @@ void update_smart_learn(int m_idx, int what)
 	if (r_ptr->flags2 & (RF2_STUPID)) return;
 
 	/* Not intelligent, only learn sometimes */
-	if (!(r_ptr->flags2 & (RF2_SMART)) && (rand_int(100) < 50)) return;
+	if (!(r_ptr->flags2 & (RF2_SMART)) && (randint0(100) < 50)) return;
 
 	/* XXX XXX XXX */
 

@@ -20,7 +20,7 @@
  * is fast, but slightly biased at high values, and second, the simple
  * "div" flavor, which is less fast (and potentially non-terminating)
  * but which is not biased and is much less subject to non-randomness
- * problems in the low bits.  Note the "rand_int()" macro in "z-rand.h",
+ * problems in the low bits.  Note the "randint0()" macro in "z-rand.h",
  * which must specify a "default" flavor.
  *
  * Note the use of the "simple" RNG, first you activate it via
@@ -253,7 +253,7 @@ s16b Rand_normal(int mean, int stand)
 	if (stand < 1) return (mean);
 
 	/* Roll for probability */
-	tmp = (s16b)rand_int(32768);
+	tmp = (s16b)randint0(32768);
 
 	/* Binary Search */
 	while (low < high) {
@@ -271,7 +271,7 @@ s16b Rand_normal(int mean, int stand)
 	offset = (long)stand * (long)low / RANDNOR_STD;
 
 	/* One half should be negative */
-	if (rand_int(100) < 50) return (mean - offset);
+	if (randint0(100) < 50) return (mean - offset);
 
 	/* One half should be positive */
 	return (mean + offset);
@@ -289,7 +289,7 @@ int damroll(int num, int sides)
 	if (sides <= 0) return 0;
 
 	for (i = 0; i < num; i++)
-		sum += (rand_int(sides));
+		sum += (randint0(sides));
 	return sum;
 }
 
@@ -297,7 +297,7 @@ int damroll(int num, int sides)
  * Generates a random signed long integer X where `A` <= X <= `B`.
  * The integer X falls along a uniform distribution.
  *
- * Note that "rand_range(0, N-1)" == "rand_int(N)".
+ * Note that "rand_range(0, N-1)" == "randint0(N)".
  */
 int rand_range(int A, int B)
 {

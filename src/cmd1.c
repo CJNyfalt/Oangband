@@ -42,7 +42,7 @@ void search(void)
 		for (x = (px - 1); x <= (px + 1); x++)
 		{
 			/* Sometimes, notice things */
-			if (rand_int(100) < chance)
+			if (randint0(100) < chance)
 			{
 				/* Invisible trap */
 				if (cave_feat[y][x] == FEAT_INVIS)
@@ -823,7 +823,7 @@ static int check_trap_hit(int power)
 	Rand_quick = FALSE;
 
 	/* Percentile dice */
-	k = rand_int(100);
+	k = randint0(100);
 
 	/* 5% minimum chance to hit, 5% minimum chance to miss */
 	if (k < 10) hit = (k < 5);
@@ -1002,7 +1002,7 @@ void hit_trap(int y, int x)
 					dam = damroll(2, 6);
 
 					/* Extra spike damage */
-					if (rand_int(100) < 85)
+					if (randint0(100) < 85)
 					{
 						bool was_poisoned;
 
@@ -1042,7 +1042,7 @@ void hit_trap(int y, int x)
 					dam = damroll(2, 6);
 
 					/* Extra spike damage */
-					if (rand_int(100) < 85)
+					if (randint0(100) < 85)
 					{
 						msg_print("You are impaled!");
 
@@ -1086,7 +1086,7 @@ void hit_trap(int y, int x)
 			if (check_trap_hit(50 + p_ptr->depth))
 			{
 				/* select a stat to drain. */
-				selection = rand_int(6);
+				selection = randint0(6);
 
 				Rand_quick = FALSE;
 
@@ -1251,7 +1251,7 @@ void hit_trap(int y, int x)
 				{
 					Rand_quick = FALSE;
 
-					(void)set_blind(p_ptr->blind + rand_int(30) + 15);
+					(void)set_blind(p_ptr->blind + randint0(30) + 15);
 
 					Rand_quick = TRUE;
 				}
@@ -1265,7 +1265,7 @@ void hit_trap(int y, int x)
 				{
 					Rand_quick = FALSE;
 
-					(void)set_confused(p_ptr->confused + rand_int(20) + 10);
+					(void)set_confused(p_ptr->confused + randint0(20) + 10);
 
 					Rand_quick = TRUE;
 				}
@@ -1289,7 +1289,7 @@ void hit_trap(int y, int x)
 				msg_print("You are surrounded by a strange white mist!");
 				if (!p_ptr->free_act)
 				{
-					(void)set_paralyzed(p_ptr->paralyzed + rand_int(10) + 5);
+					(void)set_paralyzed(p_ptr->paralyzed + randint0(10) + 5);
 				}
 			}
 
@@ -1366,8 +1366,8 @@ void hit_trap(int y, int x)
 				(void)destroy_level(FALSE);
 
 				/* the player is hard-hit. */
-				(void)set_confused(p_ptr->confused + rand_int(20) + 10);
-				(void)set_blind(p_ptr->blind + rand_int(30) + 15);
+				(void)set_confused(p_ptr->confused + randint0(20) + 10);
+				(void)set_blind(p_ptr->blind + randint0(30) + 15);
 				(void)set_stun(p_ptr->stun + randint(50) + 50);
 				dam = damroll(15,15);
 				take_hit(dam, name);
@@ -1410,7 +1410,7 @@ void hit_trap(int y, int x)
 		case FEAT_TRAP_HEAD + 0x07:
 		{
 			/* determine how dangerous the trap is allowed to be. */
-			nastyness = rand_int(100);
+			nastyness = randint0(100);
 
 			/* these are all one-time traps. */
 			cave_info[y][x] &= ~(CAVE_MARK);
@@ -1429,7 +1429,7 @@ void hit_trap(int y, int x)
 				for (i = 0; i < 20; i++)
 				{
 					/* Pick an item */
-					i = rand_int(INVEN_PACK - p_ptr->pack_size_reduce);
+					i = randint0(INVEN_PACK - p_ptr->pack_size_reduce);
 
 					/* Obtain the item */
 					o_ptr = &inventory[i];
@@ -1524,8 +1524,8 @@ void hit_trap(int y, int x)
 					msg_print("Your body starts to scramble...");
 
 					/* Pick a pair of stats */
-					ii = rand_int(6);
-					for (jj = ii; jj == ii; jj = rand_int(6)) /* loop */;
+					ii = randint0(6);
+					for (jj = ii; jj == ii; jj = randint0(6)) /* loop */;
 
 					max1 = p_ptr->stat_max[ii];
 					cur1 = p_ptr->stat_cur[ii];
@@ -1559,7 +1559,7 @@ void hit_trap(int y, int x)
 
 				if (!p_resist_pos(P_RES_CONFU))
 				{
-					(void)set_confused(p_ptr->confused + rand_int(20) + 10);
+					(void)set_confused(p_ptr->confused + randint0(20) + 10);
 				}
 				if (!p_resist_pos(P_RES_CHAOS))
 				{
@@ -2056,7 +2056,7 @@ void move_player(int dir, int do_pickup)
 
 				/* Spontaneous Searching */
 				if ((p_ptr->skill_fos > 49) ||
-				    (0 == rand_int(50 - p_ptr->skill_fos)))
+				    (0 == randint0(50 - p_ptr->skill_fos)))
 				{
 					search();
 				}
