@@ -92,6 +92,12 @@ u32b Rand_div(u32b m);
 s16b Rand_normal(int mean, int stand);
 
 
+/**
+ * Emulate a number `num` of dice rolls of dice with `sides` sides.
+ */
+int damroll(int num, int sides);
+
+
 #endif /* INCLUDED_Z_RAND_H */
 
 

@@ -2280,21 +2280,6 @@ void request_command(bool shopping)
 
 
 /*
- * Generates damage for "2d6" style dice rolls
- */
-unsigned int damroll(unsigned int num, unsigned int sides)
-{
-   unsigned int i = 0;
-   unsigned int sum = num;
-   for (i = 0; i < num; i++)
-   {
-	   sum += (rand_int(sides));
-   }
-   return (sum);
-}
-
-
-/*
  * Same as above, but always maximal
  */
 unsigned int maxroll(unsigned int num, unsigned int sides)

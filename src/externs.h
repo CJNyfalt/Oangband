@@ -854,7 +854,6 @@ extern bool get_check(const char * prompt);
 extern bool get_com(const char * prompt, char *command);
 extern void pause_line(int row);
 extern void request_command(bool shopping);
-extern unsigned int damroll(unsigned int num, unsigned int sides);
 extern unsigned int maxroll(unsigned int num, unsigned int sides);
 extern bool is_a_vowel(int ch);
 
