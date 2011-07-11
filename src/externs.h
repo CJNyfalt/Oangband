@@ -494,8 +494,13 @@ extern errr get_rnd_line(char *file_name, char *output);
 extern void signals_ignore_tstp(void);
 extern void signals_handle_tstp(void);
 extern void signals_init(void);
-extern void display_scores_aux(int from, int to, int note, high_score *score);
 extern void player_flags(u32b *f1, u32b *f2, u32b *f3, bool shape);
+
+/* score.c */
+extern errr enter_score(time_t *death_time);
+extern errr show_scores(void);
+extern errr predict_score(void);
+extern void top_twenty(void);
 
 /* generate.c */
 extern void destroy_level(bool new_level);

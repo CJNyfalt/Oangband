@@ -23,7 +23,7 @@ oangband_SOURCES = \
   main-gcu.c main-x11.c main.c \
   main-win.c \
   generate.c dungeon.c init1.c init2.c randart.c \
-  squelch.c info.c attack.c signals.c \
+  squelch.c info.c attack.c signals.c score.c \
   angband.h config.h defines.h externs.h h-basic.h \
   init.h ui-event.h \
   types.h z-form.h z-rand.h z-term.h z-util.h z-quark.h \
