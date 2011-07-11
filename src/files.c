@@ -3849,7 +3849,7 @@ static void close_game_aux(void)
 	  screen_save();
 
 	  /* Show the scores */
-	  top_twenty();
+	  show_scores();
 
 
 	  /* Load screen */

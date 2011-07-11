@@ -486,8 +486,6 @@ extern void do_cmd_suicide(void);
 extern void do_cmd_save_game(bool autosave);
 extern long total_points(void);
 extern void center_string(char *buf, const char * str);
-extern void display_scores(int from, int to);
-extern errr predict_score(void);
 extern void close_game(void);
 extern void exit_game_panic(void);
 extern errr get_rnd_line(char *file_name, char *output);
@@ -497,10 +495,9 @@ extern void signals_init(void);
 extern void player_flags(u32b *f1, u32b *f2, u32b *f3, bool shape);
 
 /* score.c */
-extern errr enter_score(time_t *death_time);
-extern errr show_scores(void);
-extern errr predict_score(void);
-extern void top_twenty(void);
+extern void enter_score(time_t *death_time);
+extern void show_scores(void);
+extern void predict_score(void);
 
 /* generate.c */
 extern void destroy_level(bool new_level);

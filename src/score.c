@@ -14,10 +14,7 @@
  *
  * Note that "string comparisons" are thus valid on "pts".
  */
-
-typedef struct high_score high_score;
-
-struct high_score
+typedef struct
 {
 	char what[8];		/* Version info (string) */
 
@@ -43,67 +40,82 @@ struct high_score
 	char max_dun[4];		/* Max Dungeon Level (number) */
 
 	char how[32];		/* Method of death (string) */
-};
+} high_score;
 
 
 
 /*
- * Seek score 'i' in the highscore file
+ * Read in a highscore file.
  */
-static int highscore_seek(int i)
+static size_t highscore_read(high_score scores[], size_t sz)
 {
-	/* Seek for the requested record */
-	return (fd_seek(highscore_fd, (unsigned long)(i) * sizeof(high_score)));
+	char fname[1024];
+	ang_file *scorefile;
+	size_t i;
+
+	/* Wipe current scores */
+	C_WIPE(scores, sz, high_score);
+
+	path_build(fname, sizeof(fname), ANGBAND_DIR_APEX, "scores.raw");
+	scorefile = file_open(fname, MODE_READ, -1);
+
+	if (!scorefile) return TRUE;
+
+	for (i = 0; i < sz &&
+		     file_read(scorefile, (char *)&scores[i], sizeof(high_score)) > 0;
+	     i++)
+		;
+
+	file_close(scorefile);
+
+	return i;
 }
-
-
-/*
- * Read one score from the highscore file
- */
-static errr highscore_read(high_score *score)
-{
-	/* Read the record, note failure */
-	return (fd_read(highscore_fd, (char*)(score), sizeof(high_score)));
-}
-
-
-/*
- * Write one score to the highscore file
- */
-static int highscore_write(high_score *score)
-{
-	/* Write the record, note failure */
-	return (fd_write(highscore_fd, (char*)(score), sizeof(high_score)));
-}
-
-
 
 
 /*
  * Just determine where a new score *would* be placed
  * Return the location (0 is best) or -1 on failure
  */
-static int highscore_where(high_score *score)
+static size_t highscore_where(const high_score *entry, const high_score scores[], size_t sz)
 {
-	int i;
-
-	high_score the_score;
-
-	/* Paranoia -- it may not have opened */
-	if (highscore_fd < 0) return (-1);
-
-	/* Go to the start of the highscore file */
-	if (highscore_seek(0)) return (-1);
+	size_t i;
 
 	/* Read until we get to a higher score */
-	for (i = 0; i < MAX_HISCORES; i++)
+	for (i = 0; i < sz; i++)
 	{
-		if (highscore_read(&the_score)) return (i);
-		if (strcmp(the_score.pts, score->pts) < 0) return (i);
+		long entry_pts = strtoul(entry->pts, NULL, 0);
+		long score_pts = strtoul(scores[i].pts, NULL, 0);
+
+		if (entry_pts >= score_pts)
+			return i;
+
+		if (scores[i].what[0] == '\0')
+			return i;
 	}
 
-	/* The "last" entry is always usable */
-	return (MAX_HISCORES - 1);
+	/* The last entry is always usable */
+	return sz - 1;
+}
+
+static size_t highscore_add(const high_score *entry, high_score scores[], size_t sz)
+{
+	size_t slot = highscore_where(entry, scores, sz);
+
+	memmove(&scores[slot+1], &scores[slot], sizeof(high_score) * (sz - 1 - slot));
+	memcpy(&scores[slot], entry, sizeof(high_score));
+
+	return slot;
+}
+
+static size_t highscore_count(const high_score scores[], size_t sz)
+{
+	size_t i;
+	for (i = 0; i < sz; i++)
+	{
+		if (scores[i].what[0] == '\0') break;
+	}
+
+	return i;
 }
 
 
@@ -111,43 +123,84 @@ static int highscore_where(high_score *score)
  * Actually place an entry into the high score file
  * Return the location (0 is best) or -1 on "failure"
  */
-static int highscore_add(high_score *score)
+static void highscore_write(const high_score scores[], size_t sz)
 {
-	int i, slot;
-	bool done = FALSE;
+	size_t n;
 
-	high_score the_score, tmpscore;
+	ang_file *lok;
+	ang_file *scorefile;
+
+	char old_name[1024];
+	char cur_name[1024];
+	char new_name[1024];
+	char lok_name[1024];
+
+	path_build(old_name, sizeof(old_name), ANGBAND_DIR_APEX, "scores.old");
+	path_build(cur_name, sizeof(cur_name), ANGBAND_DIR_APEX, "scores.raw");
+	path_build(new_name, sizeof(new_name), ANGBAND_DIR_APEX, "scores.new");
+	path_build(lok_name, sizeof(lok_name), ANGBAND_DIR_APEX, "scores.lok");
 
 
-	/* Paranoia -- it may not have opened */
-	if (highscore_fd < 0) return (-1);
+	/* Read in and add new score */
+	n = highscore_count(scores, sz);
 
-	/* Determine where the score should go */
-	slot = highscore_where(score);
 
-	/* Hack -- Not on the list */
-	if (slot < 0) return (-1);
+	/*** Lock scores ***/
 
-	/* Hack -- prepare to dump the new score */
-	the_score = (*score);
-
-	/* Slide all the scores down one */
-	for (i = slot; !done && (i < MAX_HISCORES); i++)
+	if (file_exists(lok_name))
 	{
-		/* Read the old guy, note errors */
-		if (highscore_seek(i)) return (-1);
-		if (highscore_read(&tmpscore)) done = TRUE;
-
-		/* Back up and dump the score we were holding */
-		if (highscore_seek(i)) return (-1);
-		if (highscore_write(&the_score)) return (-1);
-
-		/* Hack -- Save the old score, for the next pass */
-		the_score = tmpscore;
+		msg("Lock file in place for scorefile; not writing.");
+		return;
 	}
 
-	/* Return location used */
-	return (slot);
+	safe_setuid_grab();
+	lok = file_open(lok_name, MODE_WRITE, FTYPE_RAW);
+	file_lock(lok);
+	safe_setuid_drop();
+
+	if (!lok)
+	{
+		msg("Failed to create lock for scorefile; not writing.");
+		return;
+	}
+
+
+	/*** Open the new file for writing ***/
+
+	safe_setuid_grab();
+	scorefile = file_open(new_name, MODE_WRITE, FTYPE_RAW);
+	safe_setuid_drop();
+
+	if (!scorefile)
+	{
+		msg("Failed to open new scorefile for writing.");
+
+		file_close(lok);
+		file_delete(lok_name);
+		return;
+	}
+
+	file_write(scorefile, (const char *)scores, sizeof(high_score)*n);
+	file_close(scorefile);
+
+	/*** Now move things around ***/
+
+	safe_setuid_grab();
+
+	if (file_exists(old_name) && !file_delete(old_name))
+		msg("Couldn't delete old scorefile");
+
+	if (file_exists(cur_name) && !file_move(cur_name, old_name))
+		msg("Couldn't move old scores.raw out of the way");
+
+	if (!file_move(new_name, cur_name))
+		msg("Couldn't rename new scorefile to scores.raw");
+
+	/* Remove the lock */
+	file_close(lok);
+	file_delete(lok_name);
+
+	safe_setuid_drop();
 }
 
 
@@ -159,13 +212,11 @@ static int highscore_add(high_score *score)
  *
  * Mega-Hack -- allow "fake" entry at the given position.
  */
-void display_scores_aux(int from, int to, int note, high_score *score)
+static void display_scores_aux(const high_score scores[], int from, int to, int note)
 {
 	int i, j, k, n, place;
 	byte attr;
 	int wid, hgt;
-
-	high_score the_score;
 
 	char out_val[256];
 	char tmp_val[160];
@@ -178,27 +229,17 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 	per_screen = (hgt - 4) / 4;
 
 
-	/* Paranoia -- it may not have opened */
-	if (highscore_fd < 0) return;
-
-
 	/* Assume we will show the first 10 */
 	if (from < 0) from = 0;
 	if (to < 0) to = 10;
 	if (to > MAX_HISCORES) to = MAX_HISCORES;
 
 
-	/* Seek to the beginning */
-	if (highscore_seek(0)) return;
-
 	/* Hack -- Count the high scores */
 	for (i = 0; i < MAX_HISCORES; i++)
 	{
-		if (highscore_read(&the_score)) break;
+		if (!scores[i].what[0]) break;
 	}
-
-	/* Hack -- allow "fake" entry to be last */
-	if ((note == i) && score) i++;
 
 	/* Forget about the last entries */
 	if (i > to) i = to;
@@ -225,6 +266,8 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 		/* Dump per_screen entries */
 		for (j = k, n = 0; j < i && n < per_screen; place++, j++, n++)
 		{
+			const high_score *score = &scores[j];
+
 			int pr, pc, clev, mlev, cdun, mdun;
 
 			const char * user, *gold, *when, *aged;
@@ -232,39 +275,22 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 			/* Hack -- indicate death in yellow */
 			attr = (j == note) ? TERM_YELLOW : TERM_WHITE;
 
-			/* Mega-Hack -- insert a "fake" record */
-			if ((note == j) && score)
-			{
-				the_score = (*score);
-				attr = TERM_L_GREEN;
-				score = NULL;
-				note = -1;
-				j--;
-			}
-
-			/* Read a normal record */
-			else
-			{
-				/* Read the proper record */
-				if (highscore_seek(j)) break;
-				if (highscore_read(&the_score)) break;
-			}
 
 			/* Extract the race/class */
-			pr = atoi(the_score.p_r);
-			pc = atoi(the_score.p_c);
+			pr = atoi(score->p_r);
+			pc = atoi(score->p_c);
 
 			/* Extract the level info */
-			clev = atoi(the_score.cur_lev);
-			mlev = atoi(the_score.max_lev);
-			cdun = atoi(the_score.cur_dun);
-			mdun = atoi(the_score.max_dun);
+			clev = atoi(score->cur_lev);
+			mlev = atoi(score->max_lev);
+			cdun = atoi(score->cur_dun);
+			mdun = atoi(score->max_dun);
 
 			/* Hack -- extract the gold and such */
-			for (user = the_score.uid; isspace(*user); user++) /* loop */;
-			for (when = the_score.day; isspace(*when); when++) /* loop */;
-			for (gold = the_score.gold; isspace(*gold); gold++) /* loop */;
-			for (aged = the_score.turns; isspace(*aged); aged++) /* loop */;
+			for (user = score->uid; isspace(*user); user++) /* loop */;
+			for (when = score->day; isspace(*when); when++) /* loop */;
+			for (gold = score->gold; isspace(*gold); gold++) /* loop */;
+			for (aged = score->turns; isspace(*aged); aged++) /* loop */;
 
 			/* Clean up standard encoded form of "when" */
 			if ((*when == '@') && strlen(when) == 9)
@@ -276,7 +302,7 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 
 			/* Dump some info */
 			sprintf(out_val, "%3d.%9s  %s the %s %s, Level %d",
-				place, the_score.pts, the_score.who,
+				place, score->pts, score->who,
 				rp_name + rp_info[pr].name, cp_name + cp_info[pc].name,
 				clev);
 
@@ -288,13 +314,13 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 
 			/* Another line of info */
 			sprintf(out_val, "               Killed by %s on %s %d",
-				the_score.how, "Dungeon Level", cdun);
+				score->how, "Dungeon Level", cdun);
 
 			/* Hack -- some people die in the town */
 			if (!cdun)
 			{
 				sprintf(out_val, "               Killed by %s in the Town",
-					the_score.how);
+					score->how);
 			}
 
 			/* Append a "maximum level" */
@@ -323,70 +349,68 @@ void display_scores_aux(int from, int to, int note, high_score *score)
 
 
 /*
- * Hack -- Display the scores in a given range and quit.
- *
- * This function is only called from "main.c" when the user asks
- * to see the "high scores".
- */
-void display_scores(int from, int to)
-{
-	char buf[1024];
-
-	int wid, hgt;
-
-	/* Get size */
-	Term_get_size(&wid, &hgt);
-
-	/* Build the filename */
-	path_build(buf, 1024, ANGBAND_DIR_APEX, "scores.raw");
-
-	/* Open the binary high score file, for reading */
-	highscore_fd = fd_open(buf, O_RDONLY);
-
-	/* Paranoia -- No score file */
-	if (highscore_fd < 0) quit("Score file unavailable.");
-
-	/* Clear screen */
-	Term_clear();
-
-	/* Display the scores */
-	display_scores_aux(from, to, -1, NULL);
-
-	/* Shut the high score file */
-	fd_close(highscore_fd);
-
-	/* Forget the high score fd */
-	highscore_fd = -1;
-
-	/* Quit */
-	quit(NULL);
-}
-
-
-/*
  * Hack - save index of player's high score
  */
 static int score_idx = -1;
 
 
+static void build_score(high_score *entry, const char *died_from, time_t *death_time)
+{
+	/* Clear the record */
+	WIPE(entry, high_score);
+
+	/* Save the version */
+	sprintf(entry->what, "%u.%u.%u",
+	      O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH);
+
+	/* Calculate and save the points */
+	sprintf(entry->pts, "%9lu", (long)total_points());
+	entry->pts[9] = '\0';
+
+	/* Save the current gold */
+	sprintf(entry->gold, "%9lu", (long)p_ptr->au);
+	entry->gold[9] = '\0';
+
+	/* Save the current turn */
+	sprintf(entry->turns, "%9lu", (long)turn);
+	entry->turns[9] = '\0';
+
+	/* Save the date in standard encoded form (9 chars) */
+	if (death_time)
+		strftime(entry->day, 10, "@%Y%m%d", localtime(death_time));
+	else
+		my_strcpy(entry->day, "TODAY", sizeof(entry->day));
+
+	/* Save the player name (15 chars) */
+	sprintf(entry->who, "%-.15s", op_ptr->full_name);
+
+	/* Save the player info XXX XXX XXX */
+	sprintf(entry->uid, "%7u", player_uid);
+	sprintf(entry->sex, "%c", (p_ptr->psex ? 'm' : 'f'));
+	sprintf(entry->p_r, "%2d", p_ptr->prace);
+	sprintf(entry->p_c, "%2d", p_ptr->pclass);
+
+	/* Save the level and such */
+	sprintf(entry->cur_lev, "%3d", p_ptr->lev);
+	sprintf(entry->cur_dun, "%3d", p_ptr->depth);
+	sprintf(entry->max_lev, "%3d", p_ptr->max_lev);
+	sprintf(entry->max_dun, "%3d", p_ptr->max_depth);
+
+	/* Save the cause of death (31 chars) */
+	my_strcpy(entry->how, died_from, sizeof(entry->how));
+
+
+
+}
 
 /*
  * Enters a players name on a hi-score table, if "legal".
  *
  * Assumes "signals_ignore_tstp()" has been called.
  */
-errr enter_score(time_t *death_time)
+void enter_score(time_t *death_time)
 {
 	int j;
-
-	high_score the_score;
-
-
-	/* No score file */
-	if (highscore_fd < 0)
-	{
-	      return (0);
-	}
 
 	/* Wizard-mode pre-empts scoring */
 	if (p_ptr->noscore & 0x000F)
@@ -394,7 +418,7 @@ errr enter_score(time_t *death_time)
 	      msg_print("Score not registered for wizards.");
 	      message_flush();
 	      score_idx = -1;
-	      return (0);
+	      return;
 	}
 
 #ifndef SCORE_BORGS
@@ -405,7 +429,7 @@ errr enter_score(time_t *death_time)
 	      msg_print("Score not registered for borgs.");
 	      message_flush();
 	      score_idx = -1;
-	      return (0);
+	      return;
 	}
 #endif
 
@@ -417,7 +441,7 @@ errr enter_score(time_t *death_time)
 	      msg_print("Score not registered for cheaters.");
 	      message_flush();
 	      score_idx = -1;
-	      return (0);
+	      return;
 	}
 
 	/* Hack -- Interupted */
@@ -426,7 +450,7 @@ errr enter_score(time_t *death_time)
 	      msg_print("Score not registered due to interruption.");
 	      message_flush();
 	      score_idx = -1;
-	      return (0);
+	      return;
 	}
 
 	/* Hack -- Quitter */
@@ -435,112 +459,21 @@ errr enter_score(time_t *death_time)
 	      msg_print("Score not registered due to quitting.");
 	      message_flush();
 	      score_idx = -1;
-	      return (0);
+	      return;
 	}
-
-
-	/* Clear the record */
-	(void)WIPE(&the_score, high_score);
-
-	/* Save the version */
-	sprintf(the_score.what, "%u.%u.%u",
-	      O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH);
-
-	/* Calculate and save the points */
-	sprintf(the_score.pts, "%9lu", (long)total_points());
-	the_score.pts[9] = '\0';
-
-	/* Save the current gold */
-	sprintf(the_score.gold, "%9lu", (long)p_ptr->au);
-	the_score.gold[9] = '\0';
-
-	/* Save the current turn */
-	sprintf(the_score.turns, "%9lu", (long)turn);
-	the_score.turns[9] = '\0';
-
-#ifdef HIGHSCORE_DATE_HACK
-	/* Save the date in a hacked up form (9 chars) */
-	sprintf(the_score.day, "%-.6s %-.2s",
-	       ctime(&death_time) + 4, ctime(&death_time) + 22);
-#else
-	/* Save the date in standard encoded form (9 chars) */
-	strftime(the_score.day, 10, "@%Y%m%d", localtime(death_time));
-#endif
-
-	/* Save the player name (15 chars) */
-	sprintf(the_score.who, "%-.15s", op_ptr->full_name);
-
-	/* Save the player info XXX XXX XXX */
-	sprintf(the_score.uid, "%7u", player_uid);
-	sprintf(the_score.sex, "%c", (p_ptr->psex ? 'm' : 'f'));
-	sprintf(the_score.p_r, "%2d", p_ptr->prace);
-	sprintf(the_score.p_c, "%2d", p_ptr->pclass);
-
-	/* Save the level and such */
-	sprintf(the_score.cur_lev, "%3d", p_ptr->lev);
-	sprintf(the_score.cur_dun, "%3d", p_ptr->depth);
-	sprintf(the_score.max_lev, "%3d", p_ptr->max_lev);
-	sprintf(the_score.max_dun, "%3d", p_ptr->max_depth);
-
-	/* Save the cause of death (31 chars) */
-	sprintf(the_score.how, "%-.31s", p_ptr->died_from);
-
-
-	/* Lock (for writing) the highscore file, or fail */
-	if (fd_lock(highscore_fd, F_WRLCK)) return (1);
 
 	/* Add a new entry to the score list, see where it went */
-	score_idx = highscore_add(&the_score);
-
-	/* Unlock the highscore file, or fail */
-	if (fd_lock(highscore_fd, F_UNLCK)) return (1);
-
-
-	/* Success */
-	return (0);
-}
-
-
-
-/*
- * Enters a players name on a hi-score table, if "legal", and in any
- * case, displays some relevant portion of the high score list.
- *
- * Assumes "signals_ignore_tstp()" has been called.
- */
-void top_twenty(void)
-{
-	/* Clear screen */
-	Term_clear();
-
-	/* No score file */
-	if (highscore_fd < 0)
-	{
-		msg_print("Score file unavailable.");
-		message_flush();
-		return;
-	}
-
-	/* Player's score unavailable */
-	if (score_idx == -1)
-	{
-		display_scores_aux(0, 10, -1, NULL);
-		return;
-	}
-
-	/* Hack -- Display the top fifteen scores */
-	else if (score_idx < 10)
-	{
-		display_scores_aux(0, 15, score_idx, NULL);
-	}
-
-	/* Display the scores surrounding the player */
 	else
 	{
-		display_scores_aux(0, 5, score_idx, NULL);
-		display_scores_aux(score_idx - 2, score_idx + 7, score_idx, NULL);
-	}
+		high_score entry;
+		high_score scores[MAX_HISCORES];
 
+		build_score(&entry, p_ptr->died_from, death_time);
+
+		highscore_read(scores, N_ELEMENTS(scores));
+		highscore_add(&entry, scores, N_ELEMENTS(scores));
+		highscore_write(scores, N_ELEMENTS(scores));
+	}
 
 	/* Success */
 	return;
@@ -551,79 +484,60 @@ void top_twenty(void)
 /*
  * Predict the players location, and display it.
  */
-errr predict_score(void)
+void predict_score(void)
 {
 	int j;
-
 	high_score the_score;
 
-
-	/* No score file */
-	if (highscore_fd < 0)
-	{
-		msg_print("Score file unavailable.");
-		message_flush();
-		return (0);
-	}
+	high_score scores[MAX_HISCORES];
 
 
-	/* Save the version */
-	sprintf(the_score.what, "%u.%u.%u",
-		O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH);
+	/* Read scores, place current score */
+	highscore_read(scores, N_ELEMENTS(scores));
+	build_score(&the_score, "nobody (yet!)", NULL);
 
-	/* Calculate and save the points */
-	sprintf(the_score.pts, "%9lu", (long)total_points());
-
-	/* Save the current gold */
-	sprintf(the_score.gold, "%9lu", (long)p_ptr->au);
-
-	/* Save the current turn */
-	sprintf(the_score.turns, "%9lu", (long)turn);
-
-	/* Hack -- no time needed */
-	strcpy(the_score.day, "TODAY");
-
-	/* Save the player name (15 chars) */
-	sprintf(the_score.who, "%-.15s", op_ptr->full_name);
-
-	/* Save the player info XXX XXX XXX */
-	sprintf(the_score.uid, "%7u", player_uid);
-	sprintf(the_score.sex, "%c", (p_ptr->psex ? 'm' : 'f'));
-	sprintf(the_score.p_r, "%2d", p_ptr->prace);
-	sprintf(the_score.p_c, "%2d", p_ptr->pclass);
-
-	/* Save the level and such */
-	sprintf(the_score.cur_lev, "%3d", p_ptr->lev);
-	sprintf(the_score.cur_dun, "%3d", p_ptr->depth);
-	sprintf(the_score.max_lev, "%3d", p_ptr->max_lev);
-	sprintf(the_score.max_dun, "%3d", p_ptr->max_depth);
-
-	/* Hack -- no cause of death */
-	strcpy(the_score.how, "nobody (yet!)");
-
-
-	/* See where the entry would be placed */
-	j = highscore_where(&the_score);
-
+	if (p_ptr->is_dead)
+		j = highscore_where(&the_score, scores, N_ELEMENTS(scores));
+	else
+		j = highscore_add(&the_score, scores, N_ELEMENTS(scores));
 
 	/* Hack -- Display the top fifteen scores */
 	if (j < 10)
 	{
-		display_scores_aux(0, 15, j, &the_score);
+		display_scores_aux(scores, 0, 15, j);
 	}
 
 	/* Display some "useful" scores */
 	else
 	{
-		display_scores_aux(0, 5, -1, NULL);
-		display_scores_aux(j - 2, j + 7, j, &the_score);
+		display_scores_aux(scores, 0, 5, -1);
+		display_scores_aux(scores, j - 2, j + 7, j);
 	}
-
-
-	/* Success */
-	return (0);
 }
 
 
+/*
+ * Show scores.
+ */
+void show_scores(void)
+{
+	screen_save();
 
+	/* Display the scores */
+	if (character_generated)
+	{
+		predict_score();
+	}
+	else
+	{
+		high_score scores[MAX_HISCORES];
+		highscore_read(scores, N_ELEMENTS(scores));
+		display_scores_aux(scores, 0, MAX_HISCORES, -1);
+	}
+
+	screen_load();
+
+	/* Hack - Flush it */
+	Term_fresh();
+}
 

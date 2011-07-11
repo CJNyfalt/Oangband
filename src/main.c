@@ -398,7 +398,11 @@ int main(int argc, char *argv[])
 	init_angband();
 
 	/* Hack -- If requested, display scores and quit */
-	if (show_score > 0) display_scores(0, show_score);
+	if (show_score > 0)
+	{
+		show_scores();
+		quit(NULL);
+	}
 
 	/* Wait for response */
 	pause_line(23);
