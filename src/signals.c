@@ -3,6 +3,17 @@
  * Purpose: Handle various OS signals
  *
  * Copyright (c) 1997 Ben Harrison
+ *
+ * This work is free software; you can redistribute it and/or modify it
+ * under the terms of either:
+ *
+ * a) the GNU General Public License as published by the Free Software
+ *    Foundation, version 2, or
+ *
+ * b) the "Angband licence":
+ *    This software may be copied and distributed for educational, research,
+ *    and not for profit purposes provided that this copyright and statement
+ *    are included in all such copies.  Other copyrights may also apply.
  */
 
 #include "angband.h"
@@ -22,6 +33,9 @@
  */
 static void handle_signal_suspend(int sig)
 {
+	/* Protect errno from library calls in signal handler */
+	int save_errno = errno;
+
 	/* Disable handler */
 	(void)signal(sig, SIG_IGN);
 
@@ -49,6 +63,9 @@ static void handle_signal_suspend(int sig)
 
 	/* Restore handler */
 	(void)signal(sig, handle_signal_suspend);
+
+	/* Restore errno */
+	errno = save_errno;
 }
 
 
@@ -68,6 +85,9 @@ static void handle_signal_suspend(int sig)
  */
 static void handle_signal_simple(int sig)
 {
+	/* Protect errno from library calls in signal handler */
+	int save_errno = errno;
+
 	/* Disable handler */
 	(void)signal(sig, SIG_IGN);
 
@@ -84,9 +104,8 @@ static void handle_signal_simple(int sig)
 	if (p_ptr->is_dead)
 	{
 		/* Mark the savefile */
-		strcpy(p_ptr->died_from, "Abortion");
+		my_strcpy(p_ptr->died_from, "Abortion", sizeof(p_ptr->died_from));
 
-		/* Close stuff */
 		close_game();
 
 		/* Quit */
@@ -97,7 +116,7 @@ static void handle_signal_simple(int sig)
 	else if (signal_count >= 5)
 	{
 		/* Cause of "death" */
-		strcpy(p_ptr->died_from, "Interrupting");
+		my_strcpy(p_ptr->died_from, "Interrupting", sizeof(p_ptr->died_from));
 
 		/* Commit suicide */
 		p_ptr->is_dead = TRUE;
@@ -140,6 +159,9 @@ static void handle_signal_simple(int sig)
 
 	/* Restore handler */
 	(void)signal(sig, handle_signal_simple);
+
+	/* Restore errno */
+	errno = save_errno;
 }
 
 
@@ -173,22 +195,16 @@ static void handle_signal_abort(int sig)
 	p_ptr->panic_save = 1;
 
 	/* Panic save */
-	strcpy(p_ptr->died_from, "(panic save)");
+	my_strcpy(p_ptr->died_from, "(panic save)", sizeof(p_ptr->died_from));
 
 	/* Forbid suspend */
 	signals_ignore_tstp();
 
 	/* Attempt to save */
 	if (save_player())
-	{
 		Term_putstr(45, 23, -1, TERM_RED, "Panic save succeeded!");
-	}
-
-	/* Save failed */
 	else
-	{
 		Term_putstr(45, 23, -1, TERM_RED, "Panic save failed!");
-	}
 
 	/* Flush output */
 	Term_fresh();
@@ -290,6 +306,11 @@ void signals_init(void)
 	(void)signal(SIGEMT, handle_signal_abort);
 #endif
 
+/*
+ * SIGDANGER:
+ * This is not a common (POSIX, SYSV, BSD) signal, it is used by AIX(?) to
+ * signal that the system will soon be out of memory.
+ */
 #ifdef SIGDANGER
 	(void)signal(SIGDANGER, handle_signal_abort);
 #endif
@@ -307,6 +328,7 @@ void signals_init(void)
 #endif
 
 }
+
 
 #else	/* !WINDOWS */
 
@@ -332,10 +354,5 @@ void signals_init(void)
 {
 }
 
-
 #endif	/* !WINDOWS */
-
-
-
-
 
