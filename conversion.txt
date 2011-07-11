@@ -30,7 +30,9 @@ z-quark:
 - COMPLETE
 
 z-rand:
-- Not touched
+- Some progress
+- Missing a lot of new functions
+- New RNG core missing.
 
 z-term:
 - Good progress

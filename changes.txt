@@ -64,3 +64,4 @@ Coding changes
 has no sound files.)
 - Started cleanup of z-rand.
 - Moved damroll to z-rand.
+- Moved signals code to own file.
