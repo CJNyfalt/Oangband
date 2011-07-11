@@ -368,52 +368,47 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 
 static void build_score(high_score *entry, const char *died_from, time_t *death_time)
 {
-	/* Clear the record */
 	WIPE(entry, high_score);
 
 	/* Save the version */
-	sprintf(entry->what, "%u.%u.%u",
+	strnfmt(entry->what, sizeof(entry->what), "%u.%u.%u",
 	      O_VERSION_MAJOR, O_VERSION_MINOR, O_VERSION_PATCH);
 
 	/* Calculate and save the points */
-	sprintf(entry->pts, "%9lu", (long)total_points());
-	entry->pts[9] = '\0';
+	strnfmt(entry->pts, sizeof(entry->pts), "%9lu", (long)total_points());
 
 	/* Save the current gold */
-	sprintf(entry->gold, "%9lu", (long)p_ptr->au);
-	entry->gold[9] = '\0';
+	strnfmt(entry->gold, sizeof(entry->gold), "%9lu", (long)p_ptr->au);
 
 	/* Save the current turn */
-	sprintf(entry->turns, "%9lu", (long)turn);
-	entry->turns[9] = '\0';
+	strnfmt(entry->turns, sizeof(entry->turns), "%9lu", (long)turn);
 
 	/* Save the date in standard encoded form (9 chars) */
 	if (death_time)
-		strftime(entry->day, 10, "@%Y%m%d", localtime(death_time));
+		strftime(entry->day, sizeof(entry->day), "@%Y%m%d", localtime(death_time));
 	else
 		my_strcpy(entry->day, "TODAY", sizeof(entry->day));
 
 	/* Save the player name (15 chars) */
-	sprintf(entry->who, "%-.15s", op_ptr->full_name);
+	strnfmt(entry->who, sizeof(entry->who), "%-.15s", op_ptr->full_name);
 
 	/* Save the player info XXX XXX XXX */
-	sprintf(entry->uid, "%7u", player_uid);
-	sprintf(entry->sex, "%c", (p_ptr->psex ? 'm' : 'f'));
-	sprintf(entry->p_r, "%2d", p_ptr->prace);
-	sprintf(entry->p_c, "%2d", p_ptr->pclass);
+	strnfmt(entry->uid, sizeof(entry->uid), "%7u", player_uid);
+	strnfmt(entry->sex, sizeof(entry->sex), "%c", (p_ptr->psex ? 'm' : 'f'));
+	strnfmt(entry->p_r, sizeof(entry->p_r), "%2d", p_ptr->prace);
+	strnfmt(entry->p_c, sizeof(entry->p_c), "%2d", p_ptr->pclass);
 
 	/* Save the level and such */
-	sprintf(entry->cur_lev, "%3d", p_ptr->lev);
-	sprintf(entry->cur_dun, "%3d", p_ptr->depth);
-	sprintf(entry->max_lev, "%3d", p_ptr->max_lev);
-	sprintf(entry->max_dun, "%3d", p_ptr->max_depth);
+	strnfmt(entry->cur_lev, sizeof(entry->cur_lev), "%3d", p_ptr->lev);
+	strnfmt(entry->cur_dun, sizeof(entry->cur_dun), "%3d", p_ptr->depth);
+	strnfmt(entry->max_lev, sizeof(entry->max_lev), "%3d", p_ptr->max_lev);
+	strnfmt(entry->max_dun, sizeof(entry->max_dun), "%3d", p_ptr->max_depth);
 
 	/* Save the cause of death (31 chars) */
 	my_strcpy(entry->how, died_from, sizeof(entry->how));
-
-
-
 }
+
+
 
 /*
  * Enters a players name on a hi-score table, if "legal".
@@ -424,49 +419,46 @@ void enter_score(time_t *death_time)
 {
 	int j;
 
-	/* Wizard-mode pre-empts scoring */
-	if (p_ptr->noscore & 0x000F)
-	{
-		msg_print("Score not registered for wizards.");
-		message_flush();
-		return;
-	}
-
-#ifndef SCORE_BORGS
-
-	/* Borg-mode pre-empts scoring */
-	if (p_ptr->noscore & 0x00F0)
-	{
-		msg_print("Score not registered for borgs.");
-		message_flush();
-		return;
-	}
-#endif
-
 	/* Cheaters are not scored */
 	for (j = OPT_cheat_start; j < OPT_cheat_end+1; ++j)
 	{
 		if (!op_ptr->opt[j]) continue;
 
-		msg_print("Score not registered for cheaters.");
+		msg("Score not registered for cheaters.");
 		message_flush();
 		return;
 	}
 
-	/* Hack -- Interupted */
-	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Interrupting"))
+	/* Wizard-mode pre-empts scoring */
+	if (p_ptr->noscore & 0x000F)
 	{
-		msg_print("Score not registered due to interruption.");
+		msg("Score not registered for wizards.");
 		message_flush();
-		return;
+	}
+
+#ifndef SCORE_BORGS
+
+	/* Borg-mode pre-empts scoring */
+	else if (p_ptr->noscore & 0x00F0)
+	{
+		msg("Score not registered for borgs.");
+		message_flush();
+	}
+
+#endif /* SCORE_BORGS */
+
+	/* Hack -- Interupted */
+	else if (!p_ptr->total_winner && streq(p_ptr->died_from, "Interrupting"))
+	{
+		msg("Score not registered due to interruption.");
+		message_flush();
 	}
 
 	/* Hack -- Quitter */
-	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Quitting"))
+	else if (!p_ptr->total_winner && streq(p_ptr->died_from, "Quitting"))
 	{
-		msg_print("Score not registered due to quitting.");
+		msg("Score not registered due to quitting.");
 		message_flush();
-		return;
 	}
 
 	/* Add a new entry to the score list, see where it went */
