@@ -271,7 +271,7 @@ s16b Rand_normal(int mean, int stand)
 	offset = (long)stand * (long)low / RANDNOR_STD;
 
 	/* One half should be negative */
-	if (randint0(100) < 50) return (mean - offset);
+	if (one_in_(2)) return (mean - offset);
 
 	/* One half should be positive */
 	return (mean + offset);
@@ -284,12 +284,12 @@ s16b Rand_normal(int mean, int stand)
 int damroll(int num, int sides)
 {
 	int i;
-	int sum = num;
+	int sum = 0;
 
 	if (sides <= 0) return 0;
 
 	for (i = 0; i < num; i++)
-		sum += (randint0(sides));
+		sum += randint1(sides);
 	return sum;
 }
 
