@@ -236,19 +236,15 @@ static void highscore_write(const high_score scores[], size_t sz)
 
 /*
  * Display the scores in a given range.
- * Assumes the high score list is already open.
  * Only five entries per line, too much info.
  */
-static void display_scores_aux(const high_score scores[], int from, int to, int note)
+static void display_scores_aux(const high_score scores[], int from, int to, int highlight)
 {
-	int i, j, k, n, place;
-	byte attr;
 	int wid, hgt;
 
-	char out_val[256];
-	char tmp_val[160];
-
 	int per_screen;
+	int j, k, n, place;
+	int count;
 
 	/* Get size */
 	Term_get_size(&wid, &hgt);
@@ -263,18 +259,21 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 
 
 	/* Hack -- Count the high scores */
-	for (i = 0; i < MAX_HISCORES; i++)
+	for (count = 0; count < MAX_HISCORES; count++)
 	{
-		if (!scores[i].what[0]) break;
+		if (!scores[count].what[0]) break;
 	}
 
 	/* Forget about the last entries */
-	if (i > to) i = to;
+	if (count > to) count = to;
 
 
 	/* Show per_screen per page, until "done" */
-	for (k = from, place = k+1; k < i; k += per_screen)
+	for (k = from, place = k+1; k < count; k += per_screen)
 	{
+		char out_val[160];
+		char tmp_val[160];
+
 		/* Clear screen */
 		Term_clear();
 
@@ -291,16 +290,17 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 #endif
 
 		/* Dump per_screen entries */
-		for (j = k, n = 0; j < i && n < per_screen; place++, j++, n++)
+		for (j = k, n = 0; j < count && n < per_screen; place++, j++, n++)
 		{
 			const high_score *score = &scores[j];
 
-			int pr, pc, clev, mlev, cdun, mdun;
+			byte attr;
 
-			const char * user, *gold, *when, *aged;
+			int pr, pc, clev, mlev, cdun, mdun;
+			const char *user, *gold, *when, *aged;
 
 			/* Hack -- indicate death in yellow */
-			attr = (j == note) ? TERM_YELLOW : TERM_WHITE;
+			attr = (j == highlight) ? TERM_YELLOW : TERM_WHITE;
 
 
 			/* Extract the race/class */
@@ -314,10 +314,10 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 			mdun = atoi(score->max_dun);
 
 			/* Hack -- extract the gold and such */
-			for (user = score->uid; isspace(*user); user++) /* loop */;
-			for (when = score->day; isspace(*when); when++) /* loop */;
-			for (gold = score->gold; isspace(*gold); gold++) /* loop */;
-			for (aged = score->turns; isspace(*aged); aged++) /* loop */;
+			for (user = score->uid; isspace((unsigned char)*user); user++) /* loop */;
+			for (when = score->day; isspace((unsigned char)*when); when++) /* loop */;
+			for (gold = score->gold; isspace((unsigned char)*gold); gold++) /* loop */;
+			for (aged = score->turns; isspace((unsigned char)*aged); aged++) /* loop */;
 
 			/* Clean up standard encoded form of "when" */
 			if ((*when == '@') && strlen(when) == 9)
@@ -328,39 +328,35 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 			}
 
 			/* Dump some info */
-			sprintf(out_val, "%3d.%9s  %s the %s %s, Level %d",
+			strnfmt(out_val, sizeof(out_val),
+				"%3d.%9s  %s the %s %s, Level %d",
 				place, score->pts, score->who,
 				rp_name + rp_info[pr].name, cp_name + cp_info[pc].name,
 				clev);
 
 			/* Append a "maximum level" */
-			if (mlev > clev) strcat(out_val, format(" (Max %d)", mlev));
+			if (mlev > clev) my_strcat(out_val, format(" (Max %d)", mlev), sizeof(out_val));
 
 			/* Dump the first line */
 			c_put_str(attr, out_val, n*4 + 2, 0);
 
-			/* Another line of info */
-			sprintf(out_val, "               Killed by %s on %s %d",
-				score->how, "Dungeon Level", cdun);
 
-			/* Hack -- some people die in the town */
+			/* Died where? */
 			if (!cdun)
-			{
-				sprintf(out_val, "               Killed by %s in the Town",
-					score->how);
-			}
+				strnfmt(out_val, sizeof(out_val), "Killed by %s in the town", score->how);
+			else
+				strnfmt(out_val, sizeof(out_val), "Killed by %s on dungeon level %d", score->how, cdun);
 
 			/* Append a "maximum level" */
-			if (mdun > cdun) strcat(out_val, format(" (Max %d)", mdun));
+			if (mdun > cdun)
+				my_strcat(out_val, format(" (Max %d)", mdun), sizeof(out_val));
 
 			/* Dump the info */
-			c_put_str(attr, out_val, n*4 + 3, 0);
+			c_put_str(attr, out_val, n*4 + 3, 15);
 
 			/* And still another line of info */
-			sprintf(out_val,
-				"               (User %s, Date %s, Gold %s, Turn %s).",
-				user, when, gold, aged);
-			c_put_str(attr, out_val, n*4 + 4, 0);
+			strnfmt(out_val, sizeof(out_val), "(User %s, Date %s, Gold %s, Turn %s).", user, when, gold, aged);
+			c_put_str(attr, out_val, n*4 + 4, 15);
 		}
 
 
@@ -372,8 +368,9 @@ static void display_scores_aux(const high_score scores[], int from, int to, int 
 		/* Hack -- notice Escape */
 		if (j == ESCAPE) break;
 	}
-}
 
+	return;
+}
 
 static void build_score(high_score *entry, const char *died_from, time_t *death_time)
 {
