@@ -47,19 +47,25 @@
 	((A) + (rand_int(1+(B)-(A))))
 
 /*
- * Generate a random long integer X where A-D<=X<=A+D
+ * Generate a random signed long integer X where "A - D <= X <= A + D" holds.
+ * Note that "rand_spread(A, D)" == "rand_range(A - D, A + D)"
+ *
  * The integer X falls along a uniform distribution.
- * Note: rand_spread(A,D) == rand_range(A-D,A+D)
  */
-#define rand_spread(A,D) \
-	((A) + (rand_int(1+(D)+(D))) - (D))
+#define rand_spread(A, D) ((A) + (rand_int(1 + (D) + (D))) - (D))
 
 
 
 /**** Available Variables ****/
 
-
+/**
+ * Whether we are currently using the "quick" method or not.
+ */
 extern bool Rand_quick;
+
+/**
+ * The state used by the "quick" RNG.
+ */
 extern u32b Rand_value;
 extern u16b Rand_place;
 extern u32b Rand_state[RAND_DEG];
@@ -67,13 +73,25 @@ extern u32b Rand_state[RAND_DEG];
 
 /**** Available Functions ****/
 
+/**
+ * Initialise the RNG state with the given seed.
+ */
+void Rand_state_init(u32b seed);
 
-extern void Rand_state_init(u32b seed);
-extern u32b Rand_mod(u32b m);
-extern u32b Rand_div(u32b m);
-extern s16b Rand_normal(int mean, int stand);
+/**
+ * Generates a random unsigned long integer X where "0 <= X < M" holds.
+ *
+ * The integer X falls along an uniform distribution.
+ */
+u32b Rand_div(u32b m);
+
+/**
+ * Generate a signed random integer within `stand` standard deviations of
+ * `mean`, following a normal distribution.
+ */
+s16b Rand_normal(int mean, int stand);
 
 
-#endif
+#endif /* INCLUDED_Z_RAND_H */
 
 
