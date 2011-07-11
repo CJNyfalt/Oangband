@@ -65,6 +65,15 @@ typedef struct
 
 
 /*
+ * Hack -- Calculates the total number of points earned
+ */
+static long total_points(void)
+{
+	return (p_ptr->max_exp + (100 * p_ptr->max_depth));
+}
+
+
+/*
  * Read in a highscore file.
  */
 static size_t highscore_read(high_score scores[], size_t sz)
@@ -430,7 +439,7 @@ void enter_score(time_t *death_time)
 	}
 
 	/* Wizard-mode pre-empts scoring */
-	if (p_ptr->noscore & 0x000F)
+	if (p_ptr->noscore & (NOSCORE_WIZARD | NOSCORE_DEBUG | NOSCORE_DEATH))
 	{
 		msg("Score not registered for wizards.");
 		message_flush();
@@ -439,7 +448,7 @@ void enter_score(time_t *death_time)
 #ifndef SCORE_BORGS
 
 	/* Borg-mode pre-empts scoring */
-	else if (p_ptr->noscore & 0x00F0)
+	else if (p_ptr->noscore & NOSCORE_BORG)
 	{
 		msg("Score not registered for borgs.");
 		message_flush();

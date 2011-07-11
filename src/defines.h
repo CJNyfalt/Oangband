@@ -1262,6 +1262,14 @@
 #define GRAPHICS_ADAM_BOLT      2
 #define GRAPHICS_DAVID_GERVAIS  3
 #define GRAPHICS_PSEUDO         4
+#define GRAPHICS_NOMAD          5
+
+/* player_type.noscore flags */
+#define NOSCORE_DEATH		0x0001
+#define NOSCORE_WIZARD		0x0002
+#define NOSCORE_DEBUG		0x0008
+#define NOSCORE_BORG		0x0010
+
 
 /*** Activation Indexes.  Max is 255. -LM- ***/
 /* Special Artifact activations. */

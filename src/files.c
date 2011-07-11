@@ -3151,17 +3151,6 @@ void do_cmd_save_game(bool autosave)
 
 
 /*
- * Hack -- Calculates the total number of points earned
- */
-long total_points(void)
-{
-	long score = (p_ptr->max_exp + (100 * p_ptr->max_depth));
-
-	return (score);
-}
-
-
-/*
  * Gets a personalized string for ghosts.  Code originally from get_name. -LM-
  */
 static char *get_personalized_string(byte choice)

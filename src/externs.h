@@ -483,7 +483,6 @@ extern void process_player_name(bool sf);
 extern void get_name(void);
 extern void do_cmd_suicide(void);
 extern void do_cmd_save_game(bool autosave);
-extern long total_points(void);
 extern void center_string(char *buf, const char * str);
 extern void close_game(void);
 extern void exit_game_panic(void);

@@ -66,3 +66,4 @@ has no sound files.)
 - Moved damroll to z-rand.
 - Moved signals code to own file.
 - Moved score code to own file.
+- Added NOSCORE defines.

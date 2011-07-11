@@ -1192,7 +1192,7 @@ static void process_world(void)
 static bool enter_wizard_mode(void)
 {
 	/* Ask first time */
-	if (!(p_ptr->noscore & 0x0002))
+	if (!(p_ptr->noscore & NOSCORE_WIZARD))
 	{
 		/* Mention effects */
 		msg_print("You are about to enter 'wizard' mode for the very first time!");
@@ -1206,7 +1206,7 @@ static bool enter_wizard_mode(void)
 		}
 
 		/* Mark savefile */
-		p_ptr->noscore |= 0x0002;
+		p_ptr->noscore |= NOSCORE_WIZARD;
 	}
 
 	/* Success */
@@ -1225,7 +1225,7 @@ static bool verify_debug_mode(void)
 	static int verify = 1;
 
 	/* Ask first time, unless the savefile is already in debug mode. */
-	if (verify && verify_special && (!(p_ptr->noscore & 0x0008)))
+	if (verify && verify_special && (!(p_ptr->noscore & NOSCORE_DEBUG)))
 	{
 		/* Mention effects */
 		msg_print("You are about to use the dangerous, unsupported, debug commands!");
@@ -1244,7 +1244,7 @@ static bool verify_debug_mode(void)
 	verify = 0;
 
 	/* Mark savefile */
-	p_ptr->noscore |= 0x0008;
+	p_ptr->noscore |= NOSCORE_DEBUG;
 
 	/* Okay */
 	return (TRUE);
@@ -1288,7 +1288,7 @@ static bool verify_borg_mode(void)
 	verify = 0;
 
 	/* Mark savefile */
-	p_ptr->noscore |= 0x0010;
+	p_ptr->noscore |= NOSCORE_BORG;
 
 	/* Okay */
 	return (TRUE);
@@ -3089,7 +3089,7 @@ void play_game(bool new_game)
 				p_ptr->age++;
 
 				/* Mark savefile */
-				p_ptr->noscore |= 0x0001;
+				p_ptr->noscore |= NOSCORE_DEATH;
 
 				/* Message */
 				msg_print("You invoke wizard mode and cheat death.");
