@@ -293,5 +293,18 @@ int damroll(int num, int sides)
 	return sum;
 }
 
+/**
+ * Generates a random signed long integer X where `A` <= X <= `B`.
+ * The integer X falls along a uniform distribution.
+ *
+ * Note that "rand_range(0, N-1)" == "rand_int(N)".
+ */
+int rand_range(int A, int B)
+{
+	if (A == B) return A;
+	assert(A < B);
+
+	return A + (s32b)Rand_div(1 + B - A);
+}
 
 

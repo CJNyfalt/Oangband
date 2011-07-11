@@ -39,14 +39,6 @@
 	((s32b)(Rand_div(M)))
 
 /*
- * Generates a random long integer X where A<=X<=B
- * The integer X falls along a uniform distribution.
- * Note: rand_range(0,N-1) == rand_int(N)
- */
-#define rand_range(A,B) \
-	((A) + (rand_int(1+(B)-(A))))
-
-/*
  * Generate a random signed long integer X where "A - D <= X <= A + D" holds.
  * Note that "rand_spread(A, D)" == "rand_range(A - D, A + D)"
  *
@@ -67,6 +59,10 @@ extern bool Rand_quick;
  * The state used by the "quick" RNG.
  */
 extern u32b Rand_value;
+
+/**
+ * The state used by the "complex" RNG.
+ */
 extern u16b Rand_place;
 extern u32b Rand_state[RAND_DEG];
 
@@ -96,6 +92,14 @@ s16b Rand_normal(int mean, int stand);
  * Emulate a number `num` of dice rolls of dice with `sides` sides.
  */
 int damroll(int num, int sides);
+
+/**
+ * Generates a random signed long integer X where "A <= X <= B"
+ * Note that "rand_range(0, N-1)" == "randint0(N)".
+ *
+ * The integer X falls along a uniform distribution.
+ */
+int rand_range(int A, int B);
 
 
 #endif /* INCLUDED_Z_RAND_H */
