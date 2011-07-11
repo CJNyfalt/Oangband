@@ -4025,8 +4025,6 @@ static errr enter_score(void)
 	      return (0);
 	}
 
-#ifndef SCORE_WIZARDS
-
 	/* Wizard-mode pre-empts scoring */
 	if (p_ptr->noscore & 0x000F)
 	{
@@ -4035,8 +4033,6 @@ static errr enter_score(void)
 	      score_idx = -1;
 	      return (0);
 	}
-
-#endif
 
 #ifndef SCORE_BORGS
 
@@ -4050,8 +4046,6 @@ static errr enter_score(void)
 	}
 #endif
 
-#ifndef SCORE_CHEATERS
-
 	/* Cheaters are not scored */
 	for (j = OPT_cheat_start; j < OPT_cheat_end+1; ++j)
 	{
@@ -4062,8 +4056,6 @@ static errr enter_score(void)
 	      score_idx = -1;
 	      return (0);
 	}
-
-#endif
 
 	/* Hack -- Interupted */
 	if (!p_ptr->total_winner && streq(p_ptr->died_from, "Interrupting"))

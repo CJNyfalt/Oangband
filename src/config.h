@@ -174,25 +174,9 @@
 
 
 /*
- * OPTION: Handle signals
- */
-#define HANDLE_SIGNALS
-
-
-/*
- * Allow "Wizards" to yield "high scores"
- */
-/* #define SCORE_WIZARDS */
-
-/*
  * Allow "Borgs" to yield "high scores"
  */
 /* #define SCORE_BORGS */
-
-/*
- * Allow "Cheaters" to yield "high scores"
- */
-/* #define SCORE_CHEATERS */
 
 
 
@@ -231,28 +215,6 @@
  * OPTION: Allow the use of "graphics" in various places
  */
 /* #define USE_GRAPHICS TNB */
-
-
-/*
- * OPTION: Hack -- Macintosh stuff
- */
-#ifdef MACINTOSH
-
-/* Do not handle signals */
-# undef HANDLE_SIGNALS
-
-#endif
-
-
-/*
- * OPTION: Hack -- Windows stuff
- */
-#ifdef WINDOWS
-
-/* Do not handle signals */
-# undef HANDLE_SIGNALS
-
-#endif
 
 
 /*
