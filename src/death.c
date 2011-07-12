@@ -1,4 +1,9 @@
-
+/*
+ * File: death.c
+ * Purpose: Handle the UI bits that happen after the character dies.
+ *
+ * Copyright (c) 1987 - 2007 Angband contributors
+ */
 #include "angband.h"
 
 /*
@@ -231,28 +236,26 @@ static void make_bones(void)
 
 
 /*
- * Display a "tomb-stone"
+ * Display the tombstone
  */
 static void print_tomb(void)
 {
-	const char * p;
+	const char *p;
 
 	char tmp[160];
 
+	ang_file *fp;
 	char buf[1024];
 
-	FILE *fp;
 
 	time_t ct = time((time_t)0);
 
 	/* Clear screen */
 	Term_clear();
 
-	/* Build the filename */
-	path_build(buf, 1024, ANGBAND_DIR_FILE, "dead.txt");
-
-	/* Open the News file */
-	fp = my_fopen(buf, "r");
+	/* Open the death file */
+	path_build(buf, sizeof(buf), ANGBAND_DIR_FILE, "dead.txt");
+	fp = file_open(buf, MODE_READ, -1);
 
 	/* Dump */
 	if (fp)
@@ -260,14 +263,13 @@ static void print_tomb(void)
 		int i=0;
 
 		/* Dump the file to the screen */
-		while (0 == my_fgets(fp, buf, 1024))
+		while (file_getl(fp, buf, sizeof(buf)))
 		{
 			/* Display and advance */
 			put_str(buf, i++, 0);
 		}
 
-		/* Close */
-		my_fclose(fp);
+		file_close(fp);
 	}
 
 
@@ -324,7 +326,7 @@ static void print_tomb(void)
 
 
 /*
- * Hack - Know inventory and home items upon death
+ * Know inventory and home items upon death
  */
 static void death_knowledge(void)
 {
@@ -338,33 +340,33 @@ static void death_knowledge(void)
 	/* Hack -- Know everything in the inven/equip */
 	for (i = 0; i < INVEN_TOTAL; i++)
 	{
-	      o_ptr = &inventory[i];
+		o_ptr = &inventory[i];
 
-	      /* Skip non-objects */
-	      if (!o_ptr->k_idx) continue;
+		/* Skip non-objects */
+		if (!o_ptr->k_idx) continue;
 
-	      /* Aware and Known */
-	      object_aware(o_ptr);
-	      object_known(o_ptr);
+		/* Aware and Known */
+		object_aware(o_ptr);
+		object_known(o_ptr);
 
-	      /* Fully known */
-	      o_ptr->ident |= (IDENT_MENTAL);
+		/* Fully known */
+		o_ptr->ident |= (IDENT_MENTAL);
 	}
 
 	/* Hack -- Know everything in the home */
 	for (i = 0; i < st_ptr->stock_num; i++)
 	{
-	      o_ptr = &st_ptr->stock[i];
+		o_ptr = &st_ptr->stock[i];
 
-	      /* Skip non-objects */
-	      if (!o_ptr->k_idx) continue;
+		/* Skip non-objects */
+		if (!o_ptr->k_idx) continue;
 
-	      /* Aware and Known */
-	      object_aware(o_ptr);
-	      object_known(o_ptr);
+		/* Aware and Known */
+		object_aware(o_ptr);
+		object_known(o_ptr);
 
-	      /* Fully known */
-	      o_ptr->ident |= (IDENT_MENTAL);
+		/* Fully known */
+		o_ptr->ident |= (IDENT_MENTAL);
 	}
 
 	/* Hack -- Recalculate bonuses */
@@ -451,21 +453,21 @@ static void show_info(void)
 	/* Equipment -- if any */
 	if (p_ptr->equip_cnt)
 	{
-	      Term_clear();
-	      item_tester_full = TRUE;
-	      show_equip();
-	      prt("You are using: -more-", 0, 0);
-	      if (inkey() == ESCAPE) return;
+		Term_clear();
+		item_tester_full = TRUE;
+		show_equip();
+		prt("You are using: -more-", 0, 0);
+		if (inkey() == ESCAPE) return;
 	}
 
 	/* Inventory -- if any */
 	if (p_ptr->inven_cnt)
 	{
-	      Term_clear();
-	      item_tester_full = TRUE;
-	      show_inven();
-	      prt("You are carrying: -more-", 0, 0);
-	      if (inkey() == ESCAPE) return;
+		Term_clear();
+		item_tester_full = TRUE;
+		show_inven();
+		prt("You are carrying: -more-", 0, 0);
+		if (inkey() == ESCAPE) return;
 	}
 
 
@@ -473,43 +475,43 @@ static void show_info(void)
 	/* Home -- if anything there */
 	if (st_ptr->stock_num)
 	{
-	      /* Display contents of the home */
-	      for (k = 0, i = 0; i < st_ptr->stock_num; k++)
-	      {
-		     /* Clear screen */
-		     Term_clear();
+		/* Display contents of the home */
+		for (k = 0, i = 0; i < st_ptr->stock_num; k++)
+		{
+			/* Clear screen */
+			Term_clear();
 
-		     /* Show 12 items */
-		     for (j = 0; (j < 12) && (i < st_ptr->stock_num); j++, i++)
-		     {
-			    byte attr;
+			/* Show 12 items */
+			for (j = 0; (j < 12) && (i < st_ptr->stock_num); j++, i++)
+			{
+				byte attr;
 
-			    char o_name[80];
-			    char tmp_val[80];
+				char o_name[80];
+				char tmp_val[80];
 
-			    /* Get the object */
-			    o_ptr = &st_ptr->stock[i];
+				/* Get the object */
+				o_ptr = &st_ptr->stock[i];
 
-			    /* Print header, clear line */
-			    sprintf(tmp_val, "%c) ", I2A(j));
-			    prt(tmp_val, j+2, 4);
+				/* Print header, clear line */
+				sprintf(tmp_val, "%c) ", I2A(j));
+				prt(tmp_val, j+2, 4);
 
-			    /* Get the object description */
-			    object_desc(o_name, o_ptr, TRUE, 3);
+				/* Get the object description */
+				object_desc(o_name, o_ptr, TRUE, 3);
 
-			    /* Get the inventory color */
-			    attr = tval_to_attr[o_ptr->tval & 0x7F];
+				/* Get the inventory color */
+				attr = tval_to_attr[o_ptr->tval & 0x7F];
 
-			    /* Display the object */
-			    c_put_str(attr, o_name, j+2, 7);
-		     }
+				/* Display the object */
+				c_put_str(attr, o_name, j+2, 7);
+			}
 
-		     /* Caption */
-		     prt(format("Your home contains (page %d): -more-", k+1), 0, 0);
+			/* Caption */
+			prt(format("Your home contains (page %d): -more-", k+1), 0, 0);
 
-		     /* Wait for it */
-		     if (inkey() == ESCAPE) return;
-	      }
+			/* Wait for it */
+			if (inkey() == ESCAPE) return;
+		}
 	}
 }
 
@@ -568,134 +570,134 @@ static void death_examine(void)
  */
 void close_game_aux(void)
 {
-  int ch;
+	int ch;
 
-  const char * p;
+	const char * p;
 
-  /* Flush all input keys */
-  flush();
+	/* Flush all input keys */
+	flush();
 
-  /* Dump bones file */
-  make_bones();
+	/* Dump bones file */
+	make_bones();
 
-  /* Prompt */
-  p = "['i' for info, 'f' to file, 't' for scores, 'x' to examine, or ESC]";
+	/* Prompt */
+	p = "['i' for info, 'f' to file, 't' for scores, 'x' to examine, or ESC]";
 
-  /* Handle retirement */
-  if (p_ptr->total_winner) kingly();
+	/* Handle retirement */
+	if (p_ptr->total_winner) kingly();
 
-  /* Get time of death */
-  (void)time(&death_time);
+	/* Get time of death */
+	(void)time(&death_time);
 
-  /* You are dead */
-  print_tomb();
+	/* You are dead */
+	print_tomb();
 
-  /* Hack - Know everything upon death */
-  death_knowledge();
+	/* Hack - Know everything upon death */
+	death_knowledge();
 
-  /* Enter player in high score list */
-  enter_score(&death_time);
+	/* Enter player in high score list */
+	enter_score(&death_time);
 
-  /* Flush all input keys */
-  flush();
+	/* Flush all input keys */
+	flush();
 
-  /* Flush messages */
-  message_flush();
+	/* Flush messages */
+	message_flush();
 
-  /* Forever */
-  while (1)
-    {
-      /* Describe options */
-      Term_putstr(2, 23, -1, TERM_WHITE, p);
-
-      /* Query */
-      ch = inkey();
-
-      /* Exit */
-      if (ch == ESCAPE)
+	/* Forever */
+	while (1)
 	{
-	  if (get_check("Do you want to quit? ")) break;
-	}
+		/* Describe options */
+		Term_putstr(2, 23, -1, TERM_WHITE, p);
 
-      /* File dump */
-      else if (ch == 'f')
-	{
-	  char ftmp[80];
+		/* Query */
+		ch = inkey();
 
-	  sprintf(ftmp, "%s.txt", op_ptr->base_name);
-
-	  if (get_string("File name: ", ftmp, 80))
-	    {
-	      if (ftmp[0] && (ftmp[0] != ' '))
+		/* Exit */
+		if (ch == ESCAPE)
 		{
-		  errr err;
-
-		  /* Save screen */
-		  screen_save();
-
-		  /* Dump a character file */
-		  err = file_character(ftmp, FALSE);
-
-		  /* Load screen */
-		  screen_load();
-
-		  /* Check result */
-		  if (err)
-		    {
-		      msg_print("Character dump failed!");
-		    }
-					else
-					  {
-					    msg_print("Character dump successful.");
-					  }
-
-		  /* Flush messages */
-		  message_flush();
+			if (get_check("Do you want to quit? ")) break;
 		}
-	    }
+
+		/* File dump */
+		else if (ch == 'f')
+		{
+			char ftmp[80];
+
+			sprintf(ftmp, "%s.txt", op_ptr->base_name);
+
+			if (get_string("File name: ", ftmp, 80))
+			{
+				if (ftmp[0] && (ftmp[0] != ' '))
+				{
+					errr err;
+
+					/* Save screen */
+					screen_save();
+
+					/* Dump a character file */
+					err = file_character(ftmp, FALSE);
+
+					/* Load screen */
+					screen_load();
+
+					/* Check result */
+					if (err)
+					{
+						msg_print("Character dump failed!");
+					}
+					else
+					{
+						msg_print("Character dump successful.");
+					}
+
+					/* Flush messages */
+					message_flush();
+				}
+			}
+		}
+
+		/* Show more info */
+		else if (ch == 'i')
+		{
+			/* Save screen */
+			screen_save();
+
+			/* Show the character */
+			show_info();
+
+			/* Load screen */
+			screen_load();
+		}
+
+		/* Show top scores */
+		else if (ch == 't')
+		{
+			/* Save screen */
+			screen_save();
+
+			/* Show the scores */
+			show_scores();
+
+
+			/* Load screen */
+			screen_load();
+		}
+
+		/* Examine an item */
+		else if (ch == 'x')
+		{
+			death_examine();
+		}
 	}
 
-      /* Show more info */
-      else if (ch == 'i')
+
+	/* Save dead player */
+	if (!save_player())
 	{
-	  /* Save screen */
-	  screen_save();
-
-	  /* Show the character */
-	  show_info();
-
-	  /* Load screen */
-	  screen_load();
+		msg_print("death save failed!");
+		message_flush();
 	}
-
-      /* Show top scores */
-      else if (ch == 't')
-	{
-	  /* Save screen */
-	  screen_save();
-
-	  /* Show the scores */
-	  show_scores();
-
-
-	  /* Load screen */
-	  screen_load();
-	}
-
-      /* Examine an item */
-      else if (ch == 'x')
-	{
-	  death_examine();
-	}
-    }
-
-
-  /* Save dead player */
-  if (!save_player())
-    {
-      msg_print("death save failed!");
-      message_flush();
-    }
 
 }
 
