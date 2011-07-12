@@ -219,3 +219,95 @@ static const menu_skin menu_skin_scroll =
 	scroll_get_tag,
 	scroll_process_direction
 };
+
+
+/*** Multi-column menus ***/
+
+/* Find the position of a cursor given a screen address */
+static int columns_get_cursor(int row, int col, int n, int top, region *loc)
+{
+	int rows_per_page = loc->page_rows;
+	int colw = loc->width / (n + rows_per_page - 1) / rows_per_page;
+	int cursor = row + rows_per_page * (col - loc->col) / colw;
+
+	if (cursor < 0) cursor = 0;	/* assert: This should never happen */
+	if (cursor >= n) cursor = n - 1;
+
+	return cursor;
+}
+
+static void display_columns(menu_type *menu, int cursor, int *top, region *loc)
+{
+	int c, r;
+	int w, h;
+	int n = menu->filter_list ? menu->filter_count : menu->count;
+	int col = loc->col;
+	int row = loc->row;
+	int rows_per_page = loc->page_rows;
+	int cols = (n + rows_per_page - 1) / rows_per_page;
+	int colw = 23;
+
+	Term_get_size(&w, &h);
+
+	if ((colw * cols) > (w - col))
+		colw = (w - col) / cols;
+
+	for (c = 0; c < cols; c++)
+	{
+		for (r = 0; r < rows_per_page; r++)
+		{
+			int pos = c * rows_per_page + r;
+			bool is_cursor = (pos == cursor);
+
+			if (pos < n)
+				display_menu_row(menu, pos, 0, is_cursor,
+						 row + r, col + c * colw, colw);
+		}
+	}
+
+	if (menu->cursor >= 0)
+		Term_gotoxy(col + (cursor / rows_per_page) * colw,
+			    row + (cursor % rows_per_page) - *top);
+}
+
+static char column_get_tag(menu_type *menu, int pos)
+{
+	if (menu->selections)
+		return menu->selections[pos];
+
+	return 0;
+}
+
+static ui_event column_process_direction(menu_type *m, int dir)
+{
+	ui_event out = EVENT_EMPTY;
+
+	int n = m->filter_list ? m->filter_count : m->count;
+
+	region *loc = &m->active;
+	int rows_per_page = loc->page_rows;
+	int cols = (n + rows_per_page - 1) / rows_per_page;
+
+	if (ddx[dir])
+		m->cursor += ddx[dir] * rows_per_page;
+	if (ddy[dir])
+		m->cursor += ddy[dir];
+
+	/* Adjust to the correct locations (roughly) */
+	if (m->cursor > n)
+		m->cursor = m->cursor % rows_per_page;
+	else if (m->cursor < 0)
+		m->cursor = (rows_per_page * cols) + m->cursor;
+
+	out.type = EVT_MOVE;
+	return out;
+}
+
+/* Virtual function table for multi-column menu skin */
+static const menu_skin menu_skin_column =
+{
+	columns_get_cursor,
+	display_columns,
+	column_get_tag,
+	column_process_direction
+};
