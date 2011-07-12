@@ -35,6 +35,7 @@ confusion and fear), to encourage their use.
 - Added more basic colors, to get the same number a V.
 - Only allow change of /lib/user with command-line option.
 - Removed hilite_player option. (Always off)
+- Moved crown to external file.
 
 Coding changes
 ==============

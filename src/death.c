@@ -381,6 +381,13 @@ static void death_knowledge(void)
  */
 static void kingly(void)
 {
+	char buf[1024];
+	ang_file *fp;
+
+	int wid, hgt;
+	int i = 2;
+	int width = 0;
+
 	/* Hack -- retire in town */
 	p_ptr->depth = 0;
 
@@ -396,27 +403,30 @@ static void kingly(void)
 	/* Hack -- Instant Gold */
 	p_ptr->au += 10000000L;
 
+	path_build(buf, sizeof(buf), ANGBAND_DIR_FILE, "crown.txt");
+	fp = file_open(buf, MODE_READ, -1);
+
+
 	/* Clear screen */
 	Term_clear();
+	Term_get_size(&wid, &hgt);
 
-	/* Display a crown */
-	put_str("#", 1, 34);
-	put_str("#####", 2, 32);
-	put_str("#", 3, 34);
-	put_str(",,,  $$$  ,,,", 4, 28);
-	put_str(",,=$   \"$$$$$\"   $=,,", 5, 24);
-	put_str(",$$        $$$        $$,", 6, 22);
-	put_str("*>         <*>         <*", 7, 22);
-	put_str("$$         $$$         $$", 8, 22);
-	put_str("\"$$        $$$        $$\"", 9, 22);
-	put_str("\"$$       $$$       $$\"", 10, 23);
-	put_str("*#########*#########*", 11, 24);
-	put_str("*#########*#########*", 12, 24);
+	if (fp)
+	{
+		/* Get us the first line of file, which tells us how long the */
+		/* longest line is */
+		file_getl(fp, buf, sizeof(buf));
+		sscanf(buf, "%d", &width);
+		if (!width) width = 25;
 
-	/* Display a message */
-	put_str("Veni, Vidi, Vici!", 15, 26);
-	put_str("I came, I saw, I conquered!", 16, 21);
-	put_str(format("All Hail the Mighty %s!", sp_ptr->winner), 17, 22);
+		/* Dump the file to the screen */
+		while (file_getl(fp, buf, sizeof(buf)))
+			put_str(buf, i++, (wid/2) - (width/2));
+
+		file_close(fp);
+	}
+
+	put_str(format("All Hail the Mighty %s!", sp_ptr->winner), i, 22);
 
 	/* Flush input */
 	flush();
@@ -438,6 +448,7 @@ static void show_info(void)
 
 	store_type *st_ptr = &store[STORE_HOME];
 
+	screen_save();
 
 	/* Display player */
 	display_player(0);
@@ -493,7 +504,7 @@ static void show_info(void)
 				o_ptr = &st_ptr->stock[i];
 
 				/* Print header, clear line */
-				sprintf(tmp_val, "%c) ", I2A(j));
+				strnfmt(tmp_val, sizeof(tmp_val), "%c) ", I2A(j));
 				prt(tmp_val, j+2, 4);
 
 				/* Get the object description */
@@ -513,6 +524,8 @@ static void show_info(void)
 			if (inkey() == ESCAPE) return;
 		}
 	}
+
+	screen_load();
 }
 
 
@@ -528,7 +541,7 @@ static void death_examine(void)
 
 	char o_name[80];
 
-	const char * q, *s;
+	const char *q, *s;
 
 
 	/* Start out in "display" mode */
@@ -572,7 +585,7 @@ void close_game_aux(void)
 {
 	int ch;
 
-	const char * p;
+	const char *p;
 
 	/* Flush all input keys */
 	flush();
@@ -695,7 +708,7 @@ void close_game_aux(void)
 	/* Save dead player */
 	if (!save_player())
 	{
-		msg_print("death save failed!");
+		msg("death save failed!");
 		message_flush();
 	}
 
