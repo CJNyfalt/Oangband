@@ -376,10 +376,12 @@ static void death_knowledge(void)
 	handle_stuff();
 }
 
+
+
 /*
- * Change the player into a Winner
+ * Display the winner crown
  */
-static void kingly(void)
+static void display_winner(void)
 {
 	char buf[1024];
 	ang_file *fp;
@@ -388,26 +390,10 @@ static void kingly(void)
 	int i = 2;
 	int width = 0;
 
-	/* Hack -- retire in town */
-	p_ptr->depth = 0;
-
-	/* Fake death */
-	strcpy(p_ptr->died_from, "Ripe Old Age");
-
-	/* Restore the experience */
-	p_ptr->exp = p_ptr->max_exp;
-
-	/* Restore the level */
-	p_ptr->lev = p_ptr->max_lev;
-
-	/* Hack -- Instant Gold */
-	p_ptr->au += 10000000L;
 
 	path_build(buf, sizeof(buf), ANGBAND_DIR_FILE, "crown.txt");
 	fp = file_open(buf, MODE_READ, -1);
 
-
-	/* Clear screen */
 	Term_clear();
 	Term_get_size(&wid, &hgt);
 
@@ -596,8 +582,26 @@ void close_game_aux(void)
 	/* Prompt */
 	p = "['i' for info, 'f' to file, 't' for scores, 'x' to examine, or ESC]";
 
-	/* Handle retirement */
-	if (p_ptr->total_winner) kingly();
+	/* Retire in the town in a good state */
+	if (p_ptr->total_winner)
+	{
+		/* Hack -- retire in town */
+		p_ptr->depth = 0;
+
+		/* Fake death */
+		my_strcpy(p_ptr->died_from, "Ripe Old Age", sizeof(p_ptr->died_from));
+
+		/* Restore the experience */
+		p_ptr->exp = p_ptr->max_exp;
+
+		/* Restore the level */
+		p_ptr->lev = p_ptr->max_lev;
+
+		/* Hack -- Instant Gold */
+		p_ptr->au += 10000000L;
+
+		display_winner();
+	}
 
 	/* Get time of death */
 	(void)time(&death_time);
@@ -611,10 +615,8 @@ void close_game_aux(void)
 	/* Enter player in high score list */
 	enter_score(&death_time);
 
-	/* Flush all input keys */
+	/* Flush all input and output */
 	flush();
-
-	/* Flush messages */
 	message_flush();
 
 	/* Forever */
@@ -704,16 +706,10 @@ void close_game_aux(void)
 		}
 	}
 
-
 	/* Save dead player */
 	if (!save_player())
 	{
 		msg("death save failed!");
 		message_flush();
 	}
-
 }
-
-
-
-
