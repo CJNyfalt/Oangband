@@ -169,4 +169,12 @@ typedef union {
 /** Easy way to initialise a ui_event without seeing the gory bits. */
 #define EVENT_EMPTY		{ 0 }
 
+
+/*** Functions ***/
+
+void test_to_ascii(char *buf, const char *str);
+
+void ascii_to_text(char *buf, const char *str);
+
+
 #endif /* INCLUDED_UI_EVENT_H */
