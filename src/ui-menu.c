@@ -141,3 +141,81 @@ static int scrolling_get_cursor(int row, int col, int n, int top, region *loc)
 
 	return cursor;
 }
+
+
+/* Display current view of a skin */
+static void display_scrolling(menu_type *menu, int cursor, int *top, region *loc)
+{
+	int col = loc->col;
+	int row = loc->row;
+	int rows_per_page = loc->page_rows;
+	int n = menu->filter_list ? menu->filter_count : menu->count;
+	int i;
+
+	/* Keep a certain distance from the top when possible */
+	if ((cursor <= *top) && (*top > 0))
+		*top = cursor - 1;
+
+	/* Keep a certain distance from the bottom when possible */
+	if (cursor >= *top + (rows_per_page - 1))
+		*top = cursor - (rows_per_page - 1) + 1;
+
+	/* Limit the top to legal places */
+	*top = MIN(*top, n - rows_per_page);
+	*top = MAX(*top, 0);
+
+	for (i = 0; i < rows_per_page; i++)
+	{
+		/* Blank all lines */
+		Term_erase(col, row + i, loc->width);
+		if (i < n)
+		{
+			/* Redraw the line if it's within the number of menu items */
+			bool is_curs = (i == cursor - *top);
+			display_menu_row(menu, i + *top, *top, is_curs, row + i, col,
+					 loc->width);
+		}
+	}
+
+	if (menu->cursor >= 0)
+		Term_gotoxy(col, row + cursor - *top);
+}
+
+static char scroll_get_tag(menu_type *menu, int pos)
+{
+	if (menu->selections)
+		return menu->selections[pos - menu->top];
+
+	return 0;
+}
+
+static ui_event scroll_process_direction(menu_type *m, int dir)
+{
+	ui_event out = EVENT_EMPTY;
+
+	/* Reject diagonals */
+	if (ddx[dir] && ddy[dir])
+		;
+
+	/* Forward/back */
+	else if (ddx[dir])
+		out.type = ddx[dir] < 0 ? EVT_ESCAPE : EVT_SELECT;
+
+	/* Move up or down to the next valid & visible row */
+	else if (ddy[dir])
+	{
+		m->cursor += ddy[dir];
+		out.type = EVT_MOVE;
+	}
+
+	return out;
+}
+
+/* Virtual function table for scrollable menu skin */
+static const menu_skin menu_skin_scroll =
+{
+	scrolling_get_cursor,
+	display_scrolling,
+	scroll_get_tag,
+	scroll_process_direction
+};
