@@ -468,6 +468,9 @@ extern void do_cmd_activate(void);
 extern void do_cmd_bear_shape(void);
 extern void do_cmd_unchange(void);
 
+/* death.c */
+extern void close_game_aux(void);
+
 /* dungeon.c */
 extern void play_game(bool new_game);
 

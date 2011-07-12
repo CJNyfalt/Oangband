@@ -67,3 +67,4 @@ has no sound files.)
 - Moved signals code to own file.
 - Moved score code to own file.
 - Added NOSCORE defines.
+- Moved death code to own file.
