@@ -172,7 +172,13 @@ typedef union {
 
 /*** Functions ***/
 
-void test_to_ascii(char *buf, const char *str);
+/** Given a string (and that string's length), return the corresponding keycode */
+keycode_t keycode_find_code(const char *str, size_t len);
+
+/** Given a keycode, return its description */
+const char *keycode_find_desc(keycode_t kc);
+
+void text_to_ascii(char *buf, const char *str);
 
 void ascii_to_text(char *buf, const char *str);
 
