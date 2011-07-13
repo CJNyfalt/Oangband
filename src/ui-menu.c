@@ -311,3 +311,149 @@ static const menu_skin menu_skin_column =
 	column_get_tag,
 	column_process_direction
 };
+
+
+/* ================== GENERIC HELPER FUNCTIONS ============== */
+
+static bool is_valid_row(menu_type *menu, int cursor)
+{
+	int oid;
+	int count = menu->filter_list ? menu->filter_count : menu->count;
+
+	if (cursor < 0 || cursor >= count)
+		return FALSE;
+
+	oid = menu->filter_list ? menu->filter_list[cursor] : cursor;
+
+	if (menu->row_funcs->valid_row)
+		return menu->row_funcs->valid_row(menu, oid);
+
+	return TRUE;
+}
+
+/*
+ * Return a new position in the menu based on the key
+ * pressed and the flags and various handler functions.
+ */
+static int get_cursor_key(menu_type *menu, int top, struct keypress key)
+{
+	int i;
+	int n = menu->filter_list ? menu->filter_count : menu->count;
+
+	if (menu->flags & MN_CASELESS_TAGS)
+		key.code = toupper((unsigned char) key.code);
+
+	if (menu->flags & MN_NO_TAGS)
+	{
+		return -1;
+	}
+	else if (menu->flags & MN_REL_TAGS)
+	{
+		for (i = 0; i < n; i++)
+		{
+			char c = menu->skin->get_tag(menu, i);
+
+			if ((menu->flags & MN_CASELESS_TAGS) && c)
+				c = toupper((unsigned char) c);
+
+			if (c && c == (char)key.code)
+				return i + menu->top;
+		}
+	}
+	else if (!(menu->flags & MN_PVT_TAGS) && menu->selections)
+	{
+		for (i = 0; menu->selections[i]; i++)
+		{
+			char c = menu->selections[i];
+
+			if (menu->flags & MN_CASELESS_TAGS)
+				c = toupper((unsigned char) c);
+
+			if (c == (char)key.code)
+				return i;
+		}
+	}
+	else if (menu->row_funcs->get_tag)
+	{
+		for (i = 0; i < n; i++)
+		{
+			int oid = menu->filter_list ? menu->filter_list[i] : i;
+			char c = menu->row_funcs->get_tag(menu, oid);
+
+			if ((menu->flags & MN_CASELESS_TAGS) && c)
+				c = toupper((unsigned char) c);
+
+			if (c && c == (char)key.code)
+				return i;
+		}
+	}
+
+	return -1;
+}
+
+/* Modal display of menu */
+static void display_menu_row(menu_type *menu, int pos, int top,
+			     bool cursor, int row, int col, int width)
+{
+	int flags = menu->flags;
+	char sel = 0;
+	int oid = pos;
+
+	if (menu->filter_list)
+		oid = menu->filter_list[oid];
+
+	if (menu->row_funcs->valid_row && menu->row_funcs->valid_row(menu, oid) == 2)
+		return;
+
+	if (!(flags & MN_NO_TAGS))
+	{
+		if (flags & MN_REL_TAGS)
+			sel = menu->skin->get_tag(menu, pos);
+		else if (menu->selections && !(flags & MN_PVT_TAGS))
+			sel = menu->selections[pos];
+		else if (menu->row_funcs->get_tag)
+			sel = menu->row_funcs->get_tag(menu, oid);
+	}
+
+	if (sel)
+	{
+		/* TODO: CHECK FOR VALID */
+		byte color = curs_attrs[CURS_KNOWN][0 != (cursor)];
+		Term_putstr(col, row, 3, color, format("%c) ", sel));
+		col += 3;
+		width -= 3;
+	}
+
+	menu->row_funcs->display_row(menu, oid, cursor, row, col, width);
+}
+
+void menu_refresh(menu_type *menu, bool reset_screen)
+{
+	int oid = menu->cursor;
+	region *loc = &menu->active;
+
+	if (reset_screen) {
+		screen_load();
+		screen_save();
+	}
+
+	if (menu->filter_list && menu->cursor >= 0)
+		oid = menu->filter_list[oid];
+
+	if (menu->title)
+		Term_putstr(menu->boundary.col, menu->boundary.row,
+			    loc->width, TERM_WHITE, menu->title);
+
+	if (menu->header)
+		Term_putstr(loc->col, loc->row - 1, loc->width,
+			    TERM_WHITE, menu->header);
+
+	if (menu->prompt)
+		Term_putstr(menu->boundary.col, loc->row + loc->page_rows,
+			    loc->width, TERM_WHITE, menu->prompt);
+
+	if (menu->browse_hook && oid >= 0)
+		menu->browse_hook(oid, menu->menu_data, loc);
+
+	menu->skin->display_list(menu, menu->cursor, &menu->top, loc);
+}
