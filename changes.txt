@@ -70,3 +70,4 @@ has no sound files.)
 - Added NOSCORE defines.
 - Moved death code to own file.
 - Added z-textblock.
+- Added ui.c & ui.h.

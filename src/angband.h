@@ -30,6 +30,7 @@
 #include "z-msg.h"
 #include "z-textblock.h"
 #include "ui-event.h"
+#include "ui.h"
 
 /*
  * Include the high-level includes.
