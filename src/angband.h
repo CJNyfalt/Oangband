@@ -28,6 +28,7 @@
 #include "z-term.h"
 #include "z-quark.h"
 #include "z-msg.h"
+#include "z-textblock.h"
 #include "ui-event.h"
 
 /*

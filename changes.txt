@@ -69,3 +69,4 @@ has no sound files.)
 - Moved score code to own file.
 - Added NOSCORE defines.
 - Moved death code to own file.
+- Added z-textblock.
