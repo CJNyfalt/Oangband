@@ -744,3 +744,85 @@ void menu_ensure_cursor_valid(menu_type *m)
 	 * on the last row */
 	m->cursor = count - 1;
 }
+
+/* ======================== MENU INITIALIZATION ==================== */
+
+static bool menu_calc_size(menu_type *menu)
+{
+	/* Calculate term-relative positions */
+	menu->active = region_calculate(menu->boundary);
+
+	if (menu->title)
+	{
+		menu->active.row += 2;
+		menu->active.page_rows -= 2;
+		menu->active.col += 4;
+	}
+
+	if (menu->header)
+	{
+		menu->active.row++;
+		menu->active.page_rows--;
+	}
+
+	if (menu->prompt)
+	{
+		if (menu->active.page_rows > 1) {
+			menu->active.page_rows--;
+		} else {
+			int offset = strlen(menu->prompt) + 2;
+			menu->active.col += offset;
+			menu->active.width -= offset;
+		}
+	}
+
+	return (menu->active.width > 0 && menu->active.page_rows > 0);
+}
+
+bool menu_layout(menu_type *m, const region *loc)
+{
+	m->boundary = *loc;
+	return menu_calc_size(m);
+}
+
+void menu_setpriv(menu_type *menu, int count, void *data)
+{
+	menu->count = count;
+	menu->menu_data = data;
+
+	menu_ensure_cursor_valid(menu);
+}
+
+void *menu_priv(menu_type *menu)
+{
+	return menu->menu_data;
+}
+
+void menu_init(menu_type *menu, skin_id skin_id, const menu_iter *iter)
+{
+	const menu_skin *skin = menu_find_skin(skin_id);
+	assert(skin && "menu skin not found!");
+	assert(iter && "menu iter not found!");
+
+	/* Wipe the struct */
+	memset(menu, 0, sizeof(*menu));
+
+	/* Menu-specific initialisation */
+	menu->row_funcs = iter;
+	menu->skin = skin;
+	menu->cursor = 0;
+}
+
+menu_type *menu_new(skin_id skin_id, const menu_iter *iter)
+{
+	menu_type *m = mem_alloc(sizeof(*m));
+	menu_init(m, skin_id, iter);
+	return m;
+}
+
+menu_type *menu_new_action(menu_action *acts, size_t n)
+{
+	menu_type *m = menu_new(MN_SKIN_SCROLL, menu_find_iter(MN_ITER_ACTIONS));
+	menu_setpriv(m, n, acts);
+	return m;
+}
