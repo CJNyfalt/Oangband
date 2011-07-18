@@ -670,3 +670,77 @@ ui_event menu_select(menu_type *menu, int notify, bool popup)
 		screen_load();
 	return in;
 }
+
+
+/* ================== MENU ACCESSORS ================ */
+
+/**
+ * Return the menu iter struct for a given iter ID.
+ */
+const menu_iter *menu_find_iter(menu_iter_id id)
+{
+	switch (id)
+	{
+		case MN_ITER_ACTIONS:
+			return &menu_iter_actions;
+
+		case MN_ITER_STRINGS:
+			return &menu_iter_strings;
+	}
+
+	return NULL;
+}
+
+/*
+ * Return the skin behaviour struct for a given skin ID.
+ */
+static const menu_skin *menu_find_skin(skin_id id)
+{
+	switch (id)
+	{
+		case MN_SKIN_SCROLL:
+			return &menu_skin_scroll;
+
+		case MN_SKIN_COLUMNS:
+			return &menu_skin_column;
+	}
+
+	return NULL;
+}
+
+
+void menu_set_filter(menu_type *menu, const int filter_list[], int n)
+{
+	menu->filter_list = filter_list;
+	menu->filter_count = n;
+
+	menu_ensure_cursor_valid(menu);
+}
+
+void menu_release_filter(menu_type *menu)
+{
+	menu->filter_list = NULL;
+	menu->filter_count = 0;
+
+	menu_ensure_cursor_valid(menu);
+
+}
+
+void menu_ensure_cursor_valid(menu_type *m)
+{
+	int row;
+	int count = m->filter_list ? m->filter_count : m->count;
+
+	for (row = m->cursor; row < count; row++)
+	{
+		if (is_valid_row(m, row))
+		{
+			m->cursor = row;
+			return;
+		}
+	}
+
+	/* If we've run off the end, without finding a valid row, put cursor
+	 * on the last row */
+	m->cursor = count - 1;
+}
