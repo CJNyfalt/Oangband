@@ -457,3 +457,216 @@ void menu_refresh(menu_type *menu, bool reset_screen)
 
 	menu->skin->display_list(menu, menu->cursor, &menu->top, loc);
 }
+
+
+/*** MENU RUNNING AND INPUT HANDLING CODE ***/
+
+/*
+ * Handle mouse input in a menu.
+ *
+ * Mouse output is either moving, selecting, escaping, or nothing.  Returns
+ * TRUE if something changes as a result of the click.
+ */
+bool menu_handle_mouse(menu_type *menu, const ui_event *in,
+		       ui_event *out)
+{
+	int new_cursor;
+
+	if (!region_inside(&menu->active, in))
+	{
+		/* A click to the left of the active region is 'back' */
+		if (!region_inside(&menu->active, in) &&
+		    in->mouse.x < menu->active.col)
+			out->type = EVT_ESCAPE;
+	}
+	else
+	{
+		int count = menu->filter_list ? menu->filter_count : menu->count;
+
+		new_cursor = menu->skin->get_cursor(in->mouse.y, in->mouse.x,
+						    count, menu->top, &menu->active);
+
+		if (is_valid_row(menu, new_cursor))
+		{
+			if (new_cursor == menu->cursor || !(menu->flags & MN_DBL_TAP))
+				out->type = EVT_SELECT;
+			else
+				out->type = EVT_MOVE;
+
+			menu->cursor = new_cursor;
+		}
+	}
+
+	return out->type != EVT_NONE;
+}
+
+
+/**
+ * Handle any menu command keys / SELECT events.
+ *
+ * Returns TRUE if the key was handled at all (including if it's not handled
+ * and just ignored).
+ */
+static bool menu_handle_action(menu_type *m, const ui_event *in)
+{
+	if (m->row_funcs->row_handler)
+	{
+		int oid = m->cursor;
+		if (m->filter_list)
+			oid = m->filter_list[m->cursor];
+
+		return m->row_funcs->row_handler(m, in, oid);
+	}
+
+	return FALSE;
+}
+
+
+/**
+ * Handle navigation keypresses.
+ *
+ * Returns TRUE if the key was intelligible as navigation, regardless of
+ * whether any action was taken.
+ */
+bool menu_handle_keypress(menu_type *menu, const ui_event *in,
+			  ui_event *out)
+{
+	bool eat = FALSE;
+	int count = menu->filter_list ? menu->filter_count : menu->count;
+
+	/* Get the new cursor position from the menu item tags */
+	int new_cursor = get_cursor_key(menu, menu->top, in->key);
+	if (new_cursor >= 0 && is_valid_row(menu, new_cursor))
+	{
+		if (!(menu->flags & MN_DBL_TAP) || new_cursor == menu->cursor)
+			out->type = EVT_SELECT;
+		else
+			out->type = EVT_MOVE;
+
+		menu->cursor = new_cursor;
+	}
+
+	/* Escape stops us here */
+	else if (in->key.code == ESCAPE)
+		out->type = EVT_ESCAPE;
+
+	/* Menus with no rows can't be navigated or used, so eat all keypresses */
+	else if (count <= 0)
+		eat = TRUE;
+
+	/* Try existing, known keys */
+	else if (in->key.code == ' ')
+	{
+		int rows = menu->active.page_rows;
+		int total = count;
+
+		if (rows < total)
+		{
+			/* Go to start of next page */
+			menu->cursor += menu->active.page_rows;
+			if (menu->cursor >= total - 1) menu->cursor = 0;
+			menu->top = menu->cursor;
+
+			out->type = EVT_MOVE;
+		}
+		else
+		{
+			eat = TRUE;
+		}
+	}
+
+	else if (in->key.code == '\n' || in->key.code == '\r')
+		out->type = EVT_SELECT;
+
+	/* Try directional movement */
+	else
+	{
+		int dir = target_dir(in->key);
+
+		if (dir)
+		{
+			*out = menu->skin->process_dir(menu, dir);
+
+			if (out->type == EVT_MOVE)
+			{
+				while (!is_valid_row(menu, menu->cursor))
+				{
+					/* Loop around */
+					if (menu->cursor > count - 1)
+						menu->cursor = 0;
+					else if (menu->cursor < 0)
+						menu->cursor = count - 1;
+					else
+						menu->cursor += ddy[dir];
+				}
+
+				assert(menu->cursor >= 0);
+				assert(menu->cursor < count);
+			}
+		}
+	}
+
+	return eat;
+}
+
+
+/*
+ * Run a menu.
+ *
+ * If popup is true, the screen is saved before the menu is drawn, and
+ * restored afterwards. Each time a popup menu is redrawn, it resets the
+ * screen before redrawing.
+ */
+ui_event menu_select(menu_type *menu, int notify, bool popup)
+{
+	ui_event in = EVENT_EMPTY;
+	bool no_act = (menu->flags & MN_NO_ACTION) ? TRUE : FALSE;
+
+	assert(menu->active.width != 0 && menu->active.page_rows != 0);
+
+	notify |= (EVT_SELECT | EVT_ESCAPE);
+	if (popup)
+		screen_save();
+
+	/* Stop on first unhandled event */
+	while (!(in.type & notify))
+	{
+		ui_event out = EVENT_EMPTY;
+
+		menu_refresh(menu, popup);
+		in = inkey_ex();
+
+		/* Handle mouse & keyboard commands */
+		if (in.type == EVT_MOUSE) {
+			menu_handle_mouse(menu, &in, &out);
+		} else if (in.type == EVT_KBRD) {
+			if (!no_act && menu->cmd_keys &&
+			    strchr(menu->cmd_keys, (char)in.key.code) &&
+			    menu_handle_action(menu, &in))
+				continue;
+
+			menu_handle_keypress(menu, &in, &out);
+		} else if (in.type == EVT_RESIZE) {
+			menu_calc_size(menu);
+			if (menu->row_funcs->resize)
+				menu->row_funcs->resize(menu);
+		}
+
+		/* XXX should redraw menu here if cursor has moved */
+
+		/* If we've selected an item, then send that event out */
+		if (out.type == EVT_SELECT && !no_act && menu_handle_action(menu, &out))
+			continue;
+
+		/* Notify about the outgoing type */
+		if (notify & out.type) {
+			if (popup)
+				screen_load();
+			return out;
+		}
+	}
+
+	if (popup)
+		screen_load();
+	return in;
+}
