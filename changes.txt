@@ -71,3 +71,5 @@ has no sound files.)
 - Moved death code to own file.
 - Added z-textblock.
 - Added ui.c & ui.h.
+- Hopefully fixed bug where specialties were not set correctly when
+first loaded.

@@ -3957,6 +3957,13 @@ void update_stuff(void)
 		calc_torch();
 	}
 
+	/* Needs to go first */
+	if (p_ptr->update & (PU_SPECIALTY))
+	{
+		p_ptr->update &= ~(PU_SPECIALTY);
+		calc_specialty();
+	}
+
 	if (p_ptr->update & (PU_HP))
 	{
 		p_ptr->update &= ~(PU_HP);
@@ -3967,12 +3974,6 @@ void update_stuff(void)
 	{
 		p_ptr->update &= ~(PU_MANA);
 		calc_mana();
-	}
-
-	if (p_ptr->update & (PU_SPECIALTY))
-	{
-		p_ptr->update &= ~(PU_SPECIALTY);
-		calc_specialty();
 	}
 
 
