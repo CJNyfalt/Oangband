@@ -230,7 +230,7 @@ static const char *inkey_next = NULL;
  * This special function hook allows the "Borg" (see elsewhere) to take
  * control of the "inkey()" function, and substitute in fake keypresses.
  */
-char (*inkey_hack)(int flush_first) = NULL;
+struct keypress (*inkey_hack)(int flush_first) = NULL;
 
 #endif /* ALLOW_BORG */
 
@@ -270,9 +270,8 @@ char (*inkey_hack)(int flush_first) = NULL;
  * Mega-Hack -- Note the use of "inkey_hack" to allow the "Borg" to steal
  * control of the keyboard from the user.
  */
-char inkey(void)
+ui_event inkey_ex(void)
 {
-	char ch = 0;
 	bool cursor_state;
 	ui_event kk;
 	ui_event ke = EVENT_EMPTY;
@@ -288,18 +287,18 @@ char inkey(void)
 		inkey_xtra = FALSE;
 	}
 
-
 	/* Hack -- Use the "inkey_next" pointer */
 	if (inkey_next && *inkey_next)
 	{
 		/* Get next character, and advance */
-		ch = *inkey_next++;
+		ke.key.code = *inkey_next++;
+		ke.type = EVT_KBRD;
 
 		/* Cancel the various "global parameters" */
 		inkey_flag = inkey_scan = FALSE;
 
 		/* Accept result */
-		return (ch);
+		return (ke);
 	}
 
 	/* Forget pointer */
@@ -308,13 +307,14 @@ char inkey(void)
 #ifdef ALLOW_BORG
 
 	/* Mega-Hack -- Use the special hook */
-	if (inkey_hack && ((ch = (*inkey_hack)(inkey_xtra)) != 0))
+	if (inkey_hack && ((ke.key = (*inkey_hack)(inkey_xtra)) != 0))
 	{
 		/* Cancel the various "global parameters" */
 		inkey_flag = inkey_scan = FALSE;
+		ke.type = EVT_KBRD;
 
 		/* Accept result */
-		return (ch);
+		return (ke);
 	}
 
 #endif /* ALLOW_BORG */
@@ -333,14 +333,12 @@ char inkey(void)
 
 
 	/* Get a key */
-	while (!ch)
+	while (ke.type == EVT_NONE)
 	{
 		/* Hack -- Handle "inkey_scan" */
 		if (inkey_scan &&
 		    (0 != Term_inkey(&kk, FALSE, FALSE)))
-		{
 			break;
-		}
 
 
 		/* Hack -- Flush output once when no key ready */
@@ -369,23 +367,10 @@ char inkey(void)
 		/* Get a key (see above) */
 		ke = inkey_aux();
 
-		if (ke.type == EVT_ESCAPE || ke.type == EVT_KBRD)
-		{
-			if (ke.type == EVT_ESCAPE) {
-				ke.type = EVT_KBRD;
-				ke.key.code = ESCAPE;
-				ke.key.mods = 0;
-			}
-
-			ch = ke.key.code;
-		}
-
-
-
 
 		/* Treat back-quote as escape */
-		if (ch == '`')
-			ch = ESCAPE;
+		if (ke.key.code == '`')
+			ke.key.code = ESCAPE;
 	}
 
 
@@ -402,9 +387,29 @@ char inkey(void)
 
 
 	/* Return the keypress */
-	return (ch);
+	return (ke);
 }
 
+/*
+ * Get a "keypress" from the user.
+ */
+char inkey(void)
+{
+	ui_event ke = EVENT_EMPTY;
+
+	/* Only accept a keypress */
+	while (ke.type != EVT_ESCAPE && ke.type != EVT_KBRD)
+		ke = inkey_ex();
+
+	/* Paranoia */
+	if (ke.type == EVT_ESCAPE) {
+		ke.type = EVT_KBRD;
+		ke.key.code = ESCAPE;
+		ke.key.mods = 0;
+	}
+
+	return ke.key.code;
+}
 
 
 
