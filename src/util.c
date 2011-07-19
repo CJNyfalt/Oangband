@@ -179,7 +179,7 @@ static char inkey_aux(void)
 	int w = 0;
 
 	ui_event ke;
-	char ch;
+	char ch = 0;
 
 	/* Wait for a keypress */
 	if (TRUE)
@@ -303,13 +303,13 @@ char inkey(void)
 
 
 	/* Hack -- Use the "inkey_next" pointer */
-	if (inkey_next && *inkey_next && !inkey_xtra)
+	if (inkey_next && *inkey_next)
 	{
 		/* Get next character, and advance */
 		ch = *inkey_next++;
 
 		/* Cancel the various "global parameters" */
-		inkey_xtra = inkey_flag = inkey_scan = FALSE;
+		inkey_flag = inkey_scan = FALSE;
 
 		/* Accept result */
 		return (ch);
@@ -318,14 +318,13 @@ char inkey(void)
 	/* Forget pointer */
 	inkey_next = NULL;
 
-
 #ifdef ALLOW_BORG
 
 	/* Mega-Hack -- Use the special hook */
 	if (inkey_hack && ((ch = (*inkey_hack)(inkey_xtra)) != 0))
 	{
 		/* Cancel the various "global parameters" */
-		inkey_xtra = inkey_flag = inkey_scan = FALSE;
+		inkey_flag = inkey_scan = FALSE;
 
 		/* Accept result */
 		return (ch);
@@ -385,8 +384,8 @@ char inkey(void)
 
 
 		/* Treat back-quote as escape */
-		if (ch == '`') ch = ESCAPE;
-
+		if (ch == '`')
+			ch = ESCAPE;
 	}
 
 
@@ -399,7 +398,7 @@ char inkey(void)
 
 
 	/* Cancel the various "global parameters" */
-	inkey_xtra = inkey_flag = inkey_scan = FALSE;
+	inkey_flag = inkey_scan = FALSE;
 
 
 	/* Return the keypress */
