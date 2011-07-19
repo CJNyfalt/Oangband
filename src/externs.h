@@ -822,6 +822,8 @@ extern void store_init(int which);
 /* util.c */
 extern errr check_modification_date(const char *raw_file, const char * emplate_file);
 extern void flush(void);
+extern ui_event inkey_ex(void);
+extern void anykey(void);
 extern char inkey(void);
 extern void bell(const char * reason);
 extern void sound(int val);

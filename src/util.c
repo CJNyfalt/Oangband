@@ -390,6 +390,19 @@ ui_event inkey_ex(void)
 	return (ke);
 }
 
+
+/*
+ * Get a keypress or mouse click from the user.
+ */
+void anykey(void)
+{
+	ui_event ke = EVENT_EMPTY;
+
+	/* Only accept a keypress or mouse click */
+	while (ke.type != EVT_MOUSE && ke.type != EVT_KBRD)
+		ke = inkey_ex();
+}
+
 /*
  * Get a "keypress" from the user.
  */
