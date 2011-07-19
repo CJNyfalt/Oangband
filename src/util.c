@@ -207,100 +207,6 @@ int macro_find_exact(const char * pat)
 
 
 /*
- * Find the first macro (if any) which contains the given pattern
- */
-static int macro_find_check(const char * pat)
-{
-	int i;
-
-	/* Nothing possible */
-	if (!macro__use[(byte)(pat[0])])
-	{
-		return (-1);
-	}
-
-	/* Scan the macros */
-	for (i = 0; i < macro__num; ++i)
-	{
-		/* Skip macros which do not contain the pattern */
-		if (!prefix(macro__pat[i], pat)) continue;
-
-		/* Found one */
-		return (i);
-	}
-
-	/* Nothing */
-	return (-1);
-}
-
-
-/*
- * Find the first macro (if any) which contains the given pattern and more
- */
-static int macro_find_maybe(const char * pat)
-{
-	int i;
-
-	/* Nothing possible */
-	if (!macro__use[(byte)(pat[0])])
-	{
-		return (-1);
-	}
-
-	/* Scan the macros */
-	for (i = 0; i < macro__num; ++i)
-	{
-		/* Skip macros which do not contain the pattern */
-		if (!prefix(macro__pat[i], pat)) continue;
-
-		/* Skip macros which exactly match the pattern XXX XXX */
-		if (streq(macro__pat[i], pat)) continue;
-
-		/* Found one */
-		return (i);
-	}
-
-	/* Nothing */
-	return (-1);
-}
-
-
-/*
- * Find the longest macro (if any) which starts with the given pattern
- */
-static int macro_find_ready(const char * pat)
-{
-	int i, t, n = -1, s = -1;
-
-	/* Nothing possible */
-	if (!macro__use[(byte)(pat[0])])
-	{
-		return (-1);
-	}
-
-	/* Scan the macros */
-	for (i = 0; i < macro__num; ++i)
-	{
-		/* Skip macros which are not contained by the pattern */
-		if (!prefix(pat, macro__pat[i])) continue;
-
-		/* Obtain the length of this macro */
-		t = strlen(macro__pat[i]);
-
-		/* Only track the "longest" pattern */
-		if ((n >= 0) && (s > t)) continue;
-
-		/* Track the entry */
-		n = i;
-		s = t;
-	}
-
-	/* Result */
-	return (n);
-}
-
-
-/*
  * Add a macro definition (or redefinition).
  *
  * We should use "act == NULL" to "remove" a macro, but this might make it
@@ -388,23 +294,6 @@ void flush(void)
 
 
 
-/*
- * Local variable -- we are inside a "macro action"
- *
- * Do not match any macros until "ascii 30" is found.
- */
-static bool parse_macro = FALSE;
-
-
-/*
- * Local variable -- we are inside a "macro trigger"
- *
- * Strip all keypresses until a low ascii value is found.
- */
-static bool parse_under = FALSE;
-
-
-
 
 /*
  * Helper function called only from "inkey()"
@@ -451,11 +340,10 @@ static char inkey_aux(void)
  * Mega-Hack -- special "inkey_next" pointer.  XXX XXX XXX
  *
  * This special pointer allows a sequence of keys to be "inserted" into
- * the stream of keys returned by "inkey()".  This key sequence will not
- * trigger any macros, and cannot be bypassed by the Borg.  It is used
- * in Angband to handle "keymaps".
+ * the stream of keys returned by "inkey()".  This key sequence cannot be
+ * bypassed by the Borg.  We use it to implement keymaps.
  */
-static const char * inkey_next = NULL;
+static const char *inkey_next = NULL;
 
 
 #ifdef ALLOW_BORG
@@ -480,10 +368,9 @@ char (*inkey_hack)(int flush_first) = NULL;
  * before this function returns.  Thus they function just like normal
  * parameters, except that most calls to this function can ignore them.
  *
- * If "inkey_xtra" is TRUE, then all pending keypresses will be flushed,
- * and any macro processing in progress will be aborted.  This flag is
- * set by the "flush()" function, which does not actually flush anything
- * itself, but rather, triggers delayed input flushing via "inkey_xtra".
+ * If "inkey_xtra" is TRUE, then all pending keypresses will be flushed.
+ * This is set by flush(), which doesn't actually flush anything itself
+ * but uses that flag to trigger delayed flushing.
  *
  * If "inkey_scan" is TRUE, then we will immediately return "zero" if no
  * keypress is available, instead of waiting for a keypress.
@@ -504,8 +391,6 @@ char (*inkey_hack)(int flush_first) = NULL;
  * Mega-Hack -- This function is used as the entry point for clearing the
  * "signal_count" variable, and of the "character_saved" variable.
  *
- * Hack -- Note the use of "inkey_next" to allow "keymaps" to be processed.
- *
  * Mega-Hack -- Note the use of "inkey_hack" to allow the "Borg" to steal
  * control of the keyboard from the user.
  */
@@ -519,6 +404,13 @@ char inkey(void)
 	bool done = FALSE;
 
 	term *old = Term;
+
+	/* Delayed flush */
+	if (inkey_xtra) {
+		Term_flush();
+		inkey_next = NULL;
+		inkey_xtra = FALSE;
+	}
 
 
 	/* Hack -- Use the "inkey_next" pointer */
@@ -551,20 +443,6 @@ char inkey(void)
 	}
 
 #endif /* ALLOW_BORG */
-
-
-	/* Hack -- handle delayed "flush()" */
-	if (inkey_xtra)
-	{
-		/* End "macro action" */
-		parse_macro = FALSE;
-
-		/* End "macro trigger" */
-		parse_under = FALSE;
-
-		/* Forget old keypresses */
-		Term_flush();
-	}
 
 
 	/* Get the cursor state */
