@@ -31,9 +31,6 @@
 ?:[EQU $SYS gcu]
 %:font-gcu.prf
 
-?:[EQU $SYS ami]
-%:font-ami.prf
-
 ?:[EQU $SYS mac]
 %:font-mac.prf
 
@@ -45,12 +42,6 @@
 
 ?:[EQU $SYS ibm]
 %:font-ibm.prf
-
-?:[EQU $SYS emx]
-%:font-emx.prf
-
-?:[EQU $SYS acn]
-%:font-acn.prf
 
 ?:1
 

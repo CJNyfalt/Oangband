@@ -140,7 +140,6 @@ extern bool use_transparency;
 extern int image_count;
 extern s16b signal_count;
 extern bool msg_flag;
-extern bool inkey_base;
 extern bool inkey_xtra;
 extern bool inkey_scan;
 extern bool inkey_flag;

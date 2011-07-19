@@ -22,9 +22,6 @@
 ?:[EQU $SYS gcu]
 %:graf-gcu.prf
 
-?:[EQU $SYS ami]
-%:graf-ami.prf
-
 ?:[EQU $SYS mac]
 %:graf-mac.prf
 
@@ -33,12 +30,6 @@
 
 ?:[EQU $SYS ibm]
 %:graf-ibm.prf
-
-?:[EQU $SYS emx]
-%:graf-emx.prf
-
-?:[EQU $SYS acn]
-%:graf-acn.prf
 
 ?:1
 
