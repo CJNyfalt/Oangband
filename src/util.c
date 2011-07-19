@@ -408,152 +408,41 @@ static bool parse_under = FALSE;
 
 /*
  * Helper function called only from "inkey()"
- *
- * This function does almost all of the "macro" processing.
- *
- * We use the "Term_key_push()" function to handle "failed" macros, as well
- * as "extra" keys read in while choosing the proper macro, and also to hold
- * the action for the macro, plus a special "ascii 30" character indicating
- * that any macro action in progress is complete.  Embedded macros are thus
- * illegal, unless a macro action includes an explicit "ascii 30" character,
- * which would probably be a massive hack, and might break things.
- *
- * Only 500 (0+1+2+...+29+30) milliseconds may elapse between each key in
- * the macro trigger sequence.  If a key sequence forms the "prefix" of a
- * macro trigger, 500 milliseconds must pass before the key sequence is
- * known not to be that macro trigger.  XXX XXX XXX
  */
 static char inkey_aux(void)
 {
-	int k = 0, n, p = 0, w = 0;
+	int w = 0;
 
 	char ch;
 
-	const char * pat, *act;
-
-	char buf[1024];
 
 	/* Wait for a keypress */
-	(void)(Term_inkey(&ch, TRUE, TRUE));
-
-	/* End "macro action" */
-	if (ch == 30) parse_macro = FALSE;
-
-	/* Inside "macro action" */
-	if (ch == 30) return (ch);
-
-	/* Inside "macro action" */
-	if (parse_macro) return (ch);
-
-	/* Inside "macro trigger" */
-	if (parse_under) return (ch);
-
-
-	/* Save the first key, advance */
-	buf[p++] = ch;
-	buf[p] = '\0';
-
-
-	/* Check for possible macro */
-	k = macro_find_check(buf);
-
-	/* No macro pending */
-	if (k < 0) return (ch);
-
-
-	/* Wait for a macro, or a timeout */
-	while (TRUE)
+	if (TRUE)
 	{
-		/* Check for pending macro */
-		k = macro_find_maybe(buf);
+		(void)(Term_inkey(&ch, TRUE, TRUE));
+	}
+	else
+	{
+		w = 0;
 
-		/* No macro pending */
-		if (k < 0) break;
-
-		/* Check for (and remove) a pending key */
-		if (0 == Term_inkey(&ch, FALSE, TRUE))
-		{
-			/* Append the key */
-			buf[p++] = ch;
-			buf[p] = '\0';
-
-			/* Restart wait */
-			w = 0;
-		}
-
-		/* No key ready */
-		else
+		/* Wait only as long as macro activation would wait*/
+		while (Term_inkey(&ch, FALSE, TRUE) != 0)
 		{
 			/* Increase "wait" */
-			w += 10;
+			w++;
 
 			/* Excessive delay */
-			if (w >= 100) break;
+			if (w >= 100)
+			{
+				return (0);
+			}
 
 			/* Delay */
-			Term_xtra(TERM_XTRA_DELAY, w);
+			Term_xtra(TERM_XTRA_DELAY, 10);
 		}
 	}
 
-
-	/* Check for available macro */
-	k = macro_find_ready(buf);
-
-	/* No macro available */
-	if (k < 0)
-	{
-		/* Push all the keys back on the queue */
-		while (p > 0)
-		{
-			/* Push the key, notice over-flow */
-			if (Term_key_push(buf[--p])) return (0);
-		}
-
-		/* Wait for (and remove) a pending key */
-		(void)Term_inkey(&ch, TRUE, TRUE);
-
-		/* Return the key */
-		return (ch);
-	}
-
-
-	/* Get the pattern */
-	pat = macro__pat[k];
-
-	/* Get the length of the pattern */
-	n = strlen(pat);
-
-	/* Push the "extra" keys back on the queue */
-	while (p > n)
-	{
-		/* Push the key, notice over-flow */
-		if (Term_key_push(buf[--p])) return (0);
-	}
-
-
-	/* Begin "macro action" */
-	parse_macro = TRUE;
-
-	/* Push the "end of macro action" key */
-	if (Term_key_push(30)) return (0);
-
-
-	/* Access the macro action */
-	act = macro__act[k];
-
-	/* Get the length of the action */
-	n = strlen(act);
-
-	/* Push the macro "action" onto the key queue */
-	while (n > 0)
-	{
-		/* Push the key, notice over-flow */
-		if (Term_key_push(act[--n])) return (0);
-	}
-
-
-	/* Hack -- Force "inkey()" to call us again */
-	return (0);
+	return (ch);
 }
 
 
