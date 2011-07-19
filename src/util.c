@@ -488,12 +488,6 @@ char (*inkey_hack)(int flush_first) = NULL;
  * If "inkey_scan" is TRUE, then we will immediately return "zero" if no
  * keypress is available, instead of waiting for a keypress.
  *
- * If "inkey_base" is TRUE, then all macro processing will be bypassed.
- * If "inkey_base" and "inkey_scan" are both TRUE, then this function will
- * not return immediately, but will wait for a keypress for as long as the
- * normal macro matching code would, allowing the direct entry of macro
- * triggers.  The "inkey_base" flag is extremely dangerous!
- *
  * If "inkey_flag" is TRUE, then we are waiting for a command in the main
  * map interface, and we shouldn't show a cursor.
  *
@@ -501,21 +495,7 @@ char (*inkey_hack)(int flush_first) = NULL;
  * refresh (once) the window which was active when this function was called.
  *
  * Note that "back-quote" is automatically converted into "escape" for
- * convenience on machines with no "escape" key.  This is done after the
- * macro matching, so the user can still make a macro for "backquote".
- *
- * Note the special handling of "ascii 30" (ctrl-caret, aka ctrl-shift-six)
- * and "ascii 31" (ctrl-underscore, aka ctrl-shift-minus), which are used to
- * provide support for simple keyboard "macros".  These keys are so strange
- * that their loss as normal keys will probably be noticed by nobody.  The
- * "ascii 30" key is used to indicate the "end" of a macro action, which
- * allows recursive macros to be avoided.  The "ascii 31" key is used by
- * some of the "main-xxx.c" files to introduce macro trigger sequences.
- *
- * Hack -- we use "ascii 29" (ctrl-right-bracket) as a special "magic" key,
- * which can be used to give a variety of "sub-commands" which can be used
- * any time.  These sub-commands could include commands to take a picture of
- * the current screen, to start/stop recording a macro action, etc.
+ * convenience on machines with no "escape" key.
  *
  * If "angband_term[0]" is not active, we will make it active during this
  * function, so that the various "main-xxx.c" files can assume that input
@@ -548,7 +528,7 @@ char inkey(void)
 		ch = *inkey_next++;
 
 		/* Cancel the various "global parameters" */
-		inkey_base = inkey_xtra = inkey_flag = inkey_scan = FALSE;
+		inkey_xtra = inkey_flag = inkey_scan = FALSE;
 
 		/* Accept result */
 		return (ch);
@@ -564,7 +544,7 @@ char inkey(void)
 	if (inkey_hack && ((ch = (*inkey_hack)(inkey_xtra)) != 0))
 	{
 		/* Cancel the various "global parameters" */
-		inkey_base = inkey_xtra = inkey_flag = inkey_scan = FALSE;
+		inkey_xtra = inkey_flag = inkey_scan = FALSE;
 
 		/* Accept result */
 		return (ch);
@@ -598,11 +578,12 @@ char inkey(void)
 	/* Hack -- Activate main screen */
 	Term_activate(term_screen);
 
+
 	/* Get a key */
 	while (!ch)
 	{
 		/* Hack -- Handle "inkey_scan" */
-		if (!inkey_base && inkey_scan &&
+		if (inkey_scan &&
 		    (0 != Term_inkey(&kk, FALSE, FALSE)))
 		{
 			break;
@@ -631,108 +612,16 @@ char inkey(void)
 			done = TRUE;
 		}
 
-		/* Hack -- Handle "inkey_base" */
-		if (inkey_base)
-		{
-			int w = 0;
-
-			/* Wait forever */
-			if (!inkey_scan)
-			{
-				/* Wait for (and remove) a pending key */
-				if (0 == Term_inkey(&ch, TRUE, TRUE))
-				{
-					/* Done */
-					break;
-				}
-
-				/* Oops */
-				break;
-			}
-
-			/* Wait */
-			while (TRUE)
-			{
-				/* Check for (and remove) a pending key */
-				if (0 == Term_inkey(&ch, FALSE, TRUE))
-				{
-					/* Done */
-					break;
-				}
-
-				/* No key ready */
-				else
-				{
-					/* Increase "wait" */
-					w += 10;
-
-					/* Excessive delay */
-					if (w >= 100) break;
-
-					/* Delay */
-					Term_xtra(TERM_XTRA_DELAY, w);
-				}
-			}
-
-			/* Done */
-			break;
-		}
-
 
 		/* Get a key (see above) */
 		ch = inkey_aux();
 
 
-		/* Handle "control-right-bracket" */
-		if (ch == 29)
-		{
-			/* Strip this key */
-			ch = 0;
-
-			/* Continue */
-			continue;
-		}
-
-
 		/* Treat back-quote as escape */
 		if (ch == '`') ch = ESCAPE;
 
-
-		/* End "macro trigger" */
-		if (parse_under && (ch <= 32))
-		{
-			/* Strip this key */
-			ch = 0;
-
-			/* End "macro trigger" */
-			parse_under = FALSE;
-		}
-
-
-		/* Handle "control-caret" */
-		if (ch == 30)
-		{
-			/* Strip this key */
-			ch = 0;
-		}
-
-		/* Handle "control-underscore" */
-		else if (ch == 31)
-		{
-			/* Strip this key */
-			ch = 0;
-
-			/* Begin "macro trigger" */
-			parse_under = TRUE;
-		}
-
-		/* Inside "macro trigger" */
-		else if (parse_under)
-		{
-			/* Strip this key */
-			ch = 0;
-		}
 	}
+
 
 	/* Hack -- restore the term */
 	Term_activate(old);
@@ -743,7 +632,7 @@ char inkey(void)
 
 
 	/* Cancel the various "global parameters" */
-	inkey_base = inkey_xtra = inkey_flag = inkey_scan = FALSE;
+	inkey_xtra = inkey_flag = inkey_scan = FALSE;
 
 
 	/* Return the keypress */
