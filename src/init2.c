@@ -4158,9 +4158,6 @@ static errr init_other(void)
 
 	/*** Prepare the various "bizarre" arrays ***/
 
-	/* Initialize the "macro" package */
-	(void)macro_init();
-
 	/* Initialize the "quark" package */
 	(void)quarks_init();
 

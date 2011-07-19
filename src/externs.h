@@ -173,9 +173,6 @@ extern char *mp_c;
 extern byte *mp_ta;
 extern char *mp_tc;
 extern char savefile[1024];
-extern s16b macro__num;
-extern const char * *macro__pat;
-extern const char * *macro__act;
 extern term *angband_term[TERM_WIN_MAX];
 extern char angband_term_name[TERM_WIN_MAX][16];
 extern byte angband_color_table[MAX_COLORS][4];
@@ -824,9 +821,6 @@ extern void store_init(int which);
 
 /* util.c */
 extern errr check_modification_date(const char *raw_file, const char * emplate_file);
-extern int macro_find_exact(const char * pat);
-extern errr macro_add(char *pat, char *act);
-extern errr macro_init(void);
 extern void flush(void);
 extern char inkey(void);
 extern void bell(const char * reason);

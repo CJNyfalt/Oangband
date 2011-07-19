@@ -295,12 +295,6 @@
  */
 #define SMELL_STRENGTH 60
 
-/*
- * OPTION: Maximum number of macros (see "io.c")
- * Default: assume at most 256 macros
- */
-#define MACRO_MAX	256
-
 
 /*** Oangband Themed Levels ***/
 

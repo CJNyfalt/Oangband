@@ -177,22 +177,6 @@ char savefile[1024];
 
 
 /*
- * Number of active macros.
- */
-s16b macro__num;
-
-/*
- * Array of macro patterns [MACRO_MAX]
- */
-const char * *macro__pat;
-
-/*
- * Array of macro actions [MACRO_MAX]
- */
-const char * *macro__act;
-
-
-/*
  * The array[TERM_WIN_MAX] of window pointers
  */
 term *angband_term[TERM_WIN_MAX];

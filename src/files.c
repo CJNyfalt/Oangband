@@ -190,11 +190,8 @@ s16b tokenize(char *buf, s16b num, char **tokens)
  * Specify the attribute values for inventory "objects" by kind tval
  *   E:<tv>:<a>
  *
- * Define a macro action, given an encoded macro action
+ * Define an action, given an encoded macro action
  *   A:<str>
- *
- * Create a macro, given an encoded macro trigger
- *   P:<str>
  *
  * Create a keymap, given an encoded keymap trigger
  *   C:<num>:<str>
@@ -342,15 +339,6 @@ errr process_pref_file_command(char *buf)
 	else if (buf[0] == 'A')
 	{
 		text_to_ascii(macro_buffer, buf+2);
-		return (0);
-	}
-
-	/* Process "P:<str>" -- create macro */
-	else if (buf[0] == 'P')
-	{
-		char tmp[1024];
-		text_to_ascii(tmp, buf+2);
-		macro_add(tmp, macro_buffer);
 		return (0);
 	}
 
