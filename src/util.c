@@ -174,12 +174,11 @@ void flush(void)
 /*
  * Helper function called only from "inkey()"
  */
-static char inkey_aux(void)
+static ui_event inkey_aux(void)
 {
 	int w = 0;
 
 	ui_event ke;
-	char ch = 0;
 
 	/* Wait for a keypress */
 	if (TRUE)
@@ -199,7 +198,8 @@ static char inkey_aux(void)
 			/* Excessive delay */
 			if (w >= 100)
 			{
-				return (0);
+				ui_event empty = EVENT_EMPTY;
+				return empty;
 			}
 
 			/* Delay */
@@ -207,20 +207,7 @@ static char inkey_aux(void)
 		}
 	}
 
-	if (ke.type == EVT_ESCAPE || ke.type == EVT_KBRD)
-	{
-		if (ke.type == EVT_ESCAPE) {
-			ke.type = EVT_KBRD;
-			ke.key.code = ESCAPE;
-			ke.key.mods = 0;
-		}
-
-		ch = ke.key.code;
-	}
-
-
-
-	return (ch);
+	return (ke);
 }
 
 
@@ -285,10 +272,10 @@ char (*inkey_hack)(int flush_first) = NULL;
  */
 char inkey(void)
 {
-
 	char ch = 0;
 	bool cursor_state;
 	ui_event kk;
+	ui_event ke = EVENT_EMPTY;
 
 	bool done = FALSE;
 
@@ -380,7 +367,20 @@ char inkey(void)
 
 
 		/* Get a key (see above) */
-		ch = inkey_aux();
+		ke = inkey_aux();
+
+		if (ke.type == EVT_ESCAPE || ke.type == EVT_KBRD)
+		{
+			if (ke.type == EVT_ESCAPE) {
+				ke.type = EVT_KBRD;
+				ke.key.code = ESCAPE;
+				ke.key.mods = 0;
+			}
+
+			ch = ke.key.code;
+		}
+
+
 
 
 		/* Treat back-quote as escape */
