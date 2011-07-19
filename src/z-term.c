@@ -2086,13 +2086,10 @@ errr Term_event_push(const ui_event *ke)
  *
  * Remove the keypress if "take" is true.
  */
-errr Term_inkey(char *ch, bool wait, bool take)
+errr Term_inkey(ui_event *ch, bool wait, bool take)
 {
-	ui_event ke;
-
 	/* Assume no key */
-	(*ch) = '\0';
-	memset(&ke, 0, sizeof ke);
+	memset(ch, 0, sizeof *ch);
 
 	/* Hack -- get bored */
 	if (!Term->never_bored)
@@ -2127,18 +2124,7 @@ errr Term_inkey(char *ch, bool wait, bool take)
 	if (Term->key_head == Term->key_tail) return (1);
 
 	/* Extract the next keypress */
-	ke = Term->key_queue[Term->key_tail];
-
-	if (ke.type == EVT_ESCAPE || ke.type == EVT_KBRD)
-	{
-		if (ke.type == EVT_ESCAPE) {
-			ke.type = EVT_KBRD;
-			ke.key.code = ESCAPE;
-			ke.key.mods = 0;
-		}
-
-		(*ch) = ke.key.code;
-	}
+	(*ch) = Term->key_queue[Term->key_tail];
 
 	/* If requested, advance the queue, wrap around if necessary */
 	if (take && (++Term->key_tail == Term->key_size)) Term->key_tail = 0;

@@ -353,7 +353,7 @@ extern errr Term_mousepress(int x, int y, char button);
 extern errr Term_keypress(keycode_t k, byte mods);
 extern errr Term_key_push(int k);
 extern errr Term_event_push(const ui_event *ke);
-extern errr Term_inkey(char *ch, bool wait, bool take);
+extern errr Term_inkey(ui_event *ch, bool wait, bool take);
 
 extern errr Term_save(void);
 extern errr Term_load(void);

@@ -178,20 +178,20 @@ static char inkey_aux(void)
 {
 	int w = 0;
 
+	ui_event ke;
 	char ch;
-
 
 	/* Wait for a keypress */
 	if (TRUE)
 	{
-		(void)(Term_inkey(&ch, TRUE, TRUE));
+		(void)(Term_inkey(&ke, TRUE, TRUE));
 	}
 	else
 	{
 		w = 0;
 
 		/* Wait only as long as macro activation would wait*/
-		while (Term_inkey(&ch, FALSE, TRUE) != 0)
+		while (Term_inkey(&ke, FALSE, TRUE) != 0)
 		{
 			/* Increase "wait" */
 			w++;
@@ -206,6 +206,19 @@ static char inkey_aux(void)
 			Term_xtra(TERM_XTRA_DELAY, 10);
 		}
 	}
+
+	if (ke.type == EVT_ESCAPE || ke.type == EVT_KBRD)
+	{
+		if (ke.type == EVT_ESCAPE) {
+			ke.type = EVT_KBRD;
+			ke.key.code = ESCAPE;
+			ke.key.mods = 0;
+		}
+
+		ch = ke.key.code;
+	}
+
+
 
 	return (ch);
 }
@@ -272,10 +285,10 @@ char (*inkey_hack)(int flush_first) = NULL;
  */
 char inkey(void)
 {
-	char kk;
 
 	char ch = 0;
 	bool cursor_state;
+	ui_event kk;
 
 	bool done = FALSE;
 
