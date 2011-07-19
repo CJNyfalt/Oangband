@@ -17,7 +17,7 @@ oangband_SOURCES = \
   object1.c object2.c monster1.c monster2.c \
   xtra1.c xtra2.c spells1.c spells2.c \
   monmove.c monattk.c save.c files.c \
-  cmd1.c cmd2.c cmd3.c cmd4.c cmd5.c cmd6.c \
+  cmd0.c cmd1.c cmd2.c cmd3.c cmd4.c cmd5.c cmd6.c \
   store.c birth.c load2.c death.c \
   wizard1.c wizard2.c ui-event.c ui.c \
   main-gcu.c main-x11.c main.c \

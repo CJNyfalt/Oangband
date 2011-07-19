@@ -369,6 +369,9 @@ extern void object_kind_track(int k_idx);
 extern void disturb(int seriousness, int unused_flag);
 extern bool is_quest(int level);
 
+/* cmd0.c */
+extern void request_command(bool shopping);
+
 /* cmd1.c */
 extern void search(void);
 extern byte py_pickup(int pickup);
@@ -822,6 +825,7 @@ extern void store_init(int which);
 /* util.c */
 extern errr check_modification_date(const char *raw_file, const char * emplate_file);
 extern void flush(void);
+extern const char *inkey_next;
 extern ui_event inkey_ex(void);
 extern void anykey(void);
 extern char inkey(void);
@@ -849,7 +853,6 @@ extern s16b get_quantity(const char * prompt, int max);
 extern bool get_check(const char * prompt);
 extern bool get_com(const char * prompt, char *command);
 extern void pause_line(int row);
-extern void request_command(bool shopping);
 extern unsigned int maxroll(unsigned int num, unsigned int sides);
 extern bool is_a_vowel(int ch);
 

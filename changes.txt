@@ -74,3 +74,4 @@ has no sound files.)
 - Added ui.c & ui.h.
 - Hopefully fixed bug where specialties were not set correctly when
 first loaded.
+- Added cmd0.c, and moved request_command there.
