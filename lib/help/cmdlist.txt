@@ -44,7 +44,7 @@ mation about any command, consult the help file "cmddesc.txt".
  y  (unused)                             Y  (unused)
  z  Zap a rod                            Z  (unused)
  !  (unused)                            ^A  (special - debug command)
- @  Interact with macros                ^B  (unused)
+ @  Interact with keymaps               ^B  (unused)
  #  (unused)                            ^C  (special - break)
  $  User interface                      ^D  (unused)
  %  Interact with visuals               ^E  Toggle choice window
@@ -105,7 +105,7 @@ mation about any command, consult the help file "cmddesc.txt".
  y  (walk - north west)                  Y  (run - north west)
  z  Aim a wand (Zap)                     Z  Use a staff (Zap)
  !  (unused)                            ^A  (special - debug command)
- @  Interact with macros                ^B  (alter - south west)
+ @  Interact with keymaps               ^B  (alter - south west)
  #  Toggle search mode                  ^C  (special - break)
  $  (unused)                            ^D  Destroy item
  %  Interact with visuals               ^E  Toggle choice window

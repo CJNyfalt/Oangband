@@ -517,11 +517,11 @@ Interact with options (=)
      special sub-windows (not available on all platforms).  See the help file 
      "optdesc.txt" for more information.
 
-Interact with macros (@)
-     Allow you to interact with macros.  You may load or save macros from user 
+Interact with keymaps (@)
+     Allow you to interact with keymaps.  You may load or save keymaps from user 
      pref files, create macros of various types, or define keymaps.  You must 
      define a "current action", shown at the bottom of the screen, before you 
-     attempt to use any of the "create macro" commands, which use that "current 
+     attempt to use any of the "create keymap" commands, which use that "current 
      action" as their action.
 
 Interact with visuals (%)
