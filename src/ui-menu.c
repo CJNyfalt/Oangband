@@ -32,6 +32,13 @@ const char lower_case[] = "abcdefghijklmnopqrstuvwxyz";
 const char upper_case[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char all_letters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+/* forward declarations */
+static void display_menu_row(menu_type *menu, int pos, int top,
+			     bool cursor, int row, int col, int width);
+static bool menu_calc_size(menu_type *menu);
+static bool is_valid_row(menu_type *menu, int cursor);
+
+
 /* Display an event, with possible preference overrides */
 static void display_action_aux(menu_action *act, byte color, int row, int col, int wid)
 {
@@ -826,3 +833,114 @@ menu_type *menu_new_action(menu_action *acts, size_t n)
 	menu_setpriv(m, n, acts);
 	return m;
 }
+
+
+/*** Dynamic menu handling ***/
+
+struct menu_entry {
+	char *text;
+	int value;
+
+	struct menu_entry *next;
+};
+
+static void dynamic_display(menu_type *m, int oid, bool cursor,
+			    int row, int col, int width)
+{
+	struct menu_entry *entry;
+	byte color = curs_attrs[CURS_KNOWN][0 != cursor];
+
+	for (entry = menu_priv(m); oid; oid--) {
+		entry = entry->next;
+		assert(entry);
+	}
+
+	Term_putstr(col, row, width, color, entry->text);
+}
+
+static const menu_iter dynamic_iter = {
+	NULL,	/* tag */
+	NULL,	/* valid */
+	dynamic_display,
+	NULL,	/* handler */
+	NULL	/* resize */
+};
+
+menu_type *menu_dynamic_new(void)
+{
+	menu_type *m = menu_new(MN_SKIN_SCROLL, &dynamic_iter);
+	menu_setpriv(m, 0, NULL);
+	return m;
+}
+
+void menu_dynamic_add(menu_type *m, const char *text, int value)
+{
+	struct menu_entry *head = menu_priv(m);
+	struct menu_entry *new = mem_zalloc(sizeof *new);
+
+	assert(m->row_funcs == &dynamic_iter);
+
+	new->text = string_make(text);
+	new->value = value;
+
+	if (head) {
+		struct menu_entry *tail = head;
+		while (1) {
+			if (tail->next)
+				tail = tail->next;
+			else
+				break;
+		}
+
+		tail->next = new;
+		menu_setpriv(m, m->count + 1, head);
+	} else {
+		menu_setpriv(m, m->count + 1, new);
+	}
+}
+
+size_t menu_dynamic_longest_entry(menu_type *m)
+{
+	size_t biggest = 0;
+	size_t current;
+
+	struct menu_entry *entry;
+
+	for (entry = menu_priv(m); entry; entry = entry->next) {
+		current = strlen(entry->text);
+		if (current > biggest)
+			biggest = current;
+	}
+
+	return biggest;
+}
+
+int menu_dynamic_select(menu_type *m)
+{
+	ui_event e = menu_select(m, 0, TRUE);
+	struct menu_entry *entry;
+	int cursor = m->cursor;
+
+	if (e.type == EVT_ESCAPE)
+		return -1;
+
+	for (entry = menu_priv(m); cursor; cursor--) {
+		entry = entry->next;
+		assert(entry);
+	}
+
+	return entry->value;
+}
+
+void menu_dynamic_free(menu_type *m)
+{
+	struct menu_entry *entry = menu_priv(m);
+	if (entry) {
+		struct menu_entry *next = entry->next;
+		string_free(entry->text);
+		mem_free(entry);
+		entry = next;
+	}
+	mem_free(m);
+}
+
