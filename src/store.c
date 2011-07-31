@@ -15,7 +15,16 @@
 
 #include "angband.h"
 
+/* Some local constants */
+#define STORE_TURNOVER	9		/* Normal shop turnover, per day */
+#define STORE_OBJ_LEVEL	5		/* Magic Level for normal stores */
 
+
+/* Randomly select one of the entries in an array */
+#define ONE_OF(x)	x[randint0(N_ELEMENTS(x))]
+
+
+/*** Flavour text stuff ***/
 
 #define MAX_COMMENT_1	6
 
@@ -222,9 +231,7 @@ static void say_comment_6(void)
  * Messages for reacting to purchase prices.
  */
 
-#define MAX_COMMENT_7A	4
-
-static const char * comment_7a[MAX_COMMENT_7A] =
+static const char *comment_worthless[] =
 {
 	"Arrgghh!",
 	"You bastard!",
@@ -232,9 +239,7 @@ static const char * comment_7a[MAX_COMMENT_7A] =
 	"The shopkeeper howls in agony!"
 };
 
-#define MAX_COMMENT_7B	4
-
-static const char * comment_7b[MAX_COMMENT_7B] =
+static const char *comment_bad[] =
 {
 	"Pamawitz!",
 	"You fiend!",
@@ -242,9 +247,7 @@ static const char * comment_7b[MAX_COMMENT_7B] =
 	"The shopkeeper glares at you."
 };
 
-#define MAX_COMMENT_7C	4
-
-static const char * comment_7c[MAX_COMMENT_7C] =
+static const char *comment_good[] =
 {
 	"Cool!",
 	"You've made my day!",
@@ -252,9 +255,7 @@ static const char * comment_7c[MAX_COMMENT_7C] =
 	"The shopkeeper laughs loudly."
 };
 
-#define MAX_COMMENT_7D	4
-
-static const char * comment_7d[MAX_COMMENT_7D] =
+static const char *comment_great[] =
 {
 	"Yipee!",
 	"I think I'll retire!",
@@ -272,43 +273,19 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
 {
 	/* Item was worthless, but we bought it */
 	if ((value <= 0) && (price > value))
-	{
-		/* Comment */
-		msgt(MSG_STORE1, comment_7a[randint0(MAX_COMMENT_7A)]);
-
-		/* Sound */
-		sound(SOUND_STORE1);
-	}
+		msgt(MSG_STORE1, "%s", ONE_OF(comment_worthless));
 
 	/* Item was cheaper than we thought, and we paid more than necessary */
 	else if ((value < guess) && (price > value))
-	{
-		/* Comment */
-		msgt(MSG_STORE2, comment_7b[randint0(MAX_COMMENT_7B)]);
-
-		/* Sound */
-		sound(SOUND_STORE2);
-	}
+		msgt(MSG_STORE2, "%s", ONE_OF(comment_bad));
 
 	/* Item was a good bargain, and we got away with it */
 	else if ((value > guess) && (value < (4 * guess)) && (price < value))
-	{
-		/* Comment */
-		msgt(MSG_STORE3, comment_7c[randint0(MAX_COMMENT_7C)]);
-
-		/* Sound */
-		sound(SOUND_STORE3);
-	}
+		msgt(MSG_STORE3, "%s", ONE_OF(comment_good));
 
 	/* Item was a great bargain, and we got away with it */
 	else if ((value > guess) && (price < value))
-	{
-		/* Comment */
-		msgt(MSG_STORE4, comment_7d[randint0(MAX_COMMENT_7D)]);
-
-		/* Sound */
-		sound(SOUND_STORE4);
-	}
+		msgt(MSG_STORE4, "%s", ONE_OF(comment_great));
 }
 
 
