@@ -1,3 +1,6 @@
+#ifndef INCLUDED_TYPES_H
+#define INCLUDED_TYPES_H
+
 /* File: types.h */
 
 /* Definitions for a large number of types and arrays.  This file controls
@@ -38,7 +41,7 @@
  * other places, to prevent the creation of inconsistant data.
  */
 
-
+#include "defines.h"
 
 /**** Available Types ****/
 
@@ -87,8 +90,6 @@ typedef struct object_type object_type;
 typedef struct monster_type monster_type;
 typedef struct alloc_entry alloc_entry;
 typedef struct quest quest;
-typedef struct owner_type owner_type;
-typedef struct store_type store_type;
 typedef struct magic_type magic_type;
 typedef struct player_magic player_magic;
 typedef struct player_sex player_sex;
@@ -675,61 +676,6 @@ struct quest
 
 
 /*
- * A store owner
- */
-struct owner_type
-{
-	u32b owner_name;		/* Name */
-        u32b unused;		/* Unused */
-
-	s16b max_cost;		/* Purse limit */
-
-	int max_inflate;		/* Initial Inflation */
-	int min_inflate;		/* Final Offer Inflation */
-
-	byte haggle_per;		/* Haggle unit */
-
-	byte insult_max;		/* Insult limit */
-
-	byte owner_race;		/* Owner race */
-
-};
-
-
-
-
-/*
- * A store, with an owner, various state flags, a current stock
- * of items, and a table of items that are often purchased.
- */
-struct store_type
-{
-	byte owner;				/* Owner index */
-	byte extra;				/* Unused for now */
-
-	s16b insult_cur;		/* Insult counter */
-
-	s16b good_buy;			/* Number of "good" buys */
-	s16b bad_buy;			/* Number of "bad" buys */
-
-	s32b store_open;		/* Closed until this turn */
-
-	s32b store_wrap;		/* Unused for now */
-
-	s16b table_num;			/* Table -- Number of entries */
-	s16b table_size;		/* Table -- Total Size of Array */
-	s16b *table;			/* Table -- Legal item kinds */
-
-	s16b stock_num;			/* Stock -- Number of entries */
-	s16b stock_size;		/* Stock -- Total Size of Array */
-	object_type *stock;		/* Stock -- Actual stock items */
-};
-
-
-
-
-
-/*
  * Spell information.  Index only controls effects; position in spellbook
  * is controlled by values in the array "book_start_index".
  */
@@ -1262,3 +1208,5 @@ struct chest_drops
 
 	char choices;		/* Number of distinct possibilities */
 };
+
+#endif /* INCLUDED_TYPES_H */

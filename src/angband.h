@@ -31,6 +31,7 @@
 #include "z-textblock.h"
 #include "ui-event.h"
 #include "ui.h"
+#include "store.h"
 
 /*
  * Include the high-level includes.

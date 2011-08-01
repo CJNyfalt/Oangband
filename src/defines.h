@@ -146,22 +146,6 @@
 #define DETECT_RAD_MAP          255
 
 /*
- * Total number of stores (see "store.c", etc)
- */
-#define MAX_STORES	9
-
-/*
- * Store number of the player's home (see "store.c", etc)
- * Taken from Sangband.
- */
-#define STORE_HOME 		7
-
-/*
- * Store number of the Black Market
- */
-#define STORE_BLACKM 		6
-
-/*
  * Maximum number of player "sex" types (see "table.c", etc)
  */
 #define MAX_SEXES            2
@@ -318,17 +302,6 @@
  * Current number of defined themes.  The maximum theoretical number is 32.
  */
 #define THEME_MAX		6
-
-
-/*
- * Store constants
- */
-#define STORE_INVEN_MAX	24		/* Max number of discrete objs in inven */
-#define STORE_CHOICES	32		/* Number of items to choose stock from */
-#define STORE_MIN_KEEP	6		/* Min slots to "always" keep full */
-#define STORE_MAX_KEEP	18		/* Max slots to "always" keep full */
-#define STORE_SHUFFLE	20		/* 1/Chance (per day) of an owner changing */
-#define STORE_TURNS		1000	/* Number of turns between turnovers */
 
 
 /*

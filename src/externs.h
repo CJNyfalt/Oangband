@@ -815,13 +815,6 @@ extern bool trap_creation(void);
 extern bool destroy_doors_touch(void);
 extern bool sleep_monsters_touch(int dam);
 
-/* store.c */
-extern void display_home_inventory_remote(void);
-extern void do_cmd_store(void);
-extern void store_shuffle(int which);
-extern void store_maint(int which);
-extern void store_init(int which);
-
 /* util.c */
 extern errr check_modification_date(const char *raw_file, const char * emplate_file);
 extern void flush(void);
