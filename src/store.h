@@ -11,24 +11,21 @@
 #define STORE_CHOICES	32		/* Number of items to choose stock from */
 
 
-
-
-/*
- * Total number of stores (see "store.c", etc)
- */
-#define MAX_STORES	9
-
-/*
- * Store number of the player's home (see "store.c", etc)
- * Taken from Sangband.
- */
-#define STORE_HOME 		7
-
-/*
- * Store number of the Black Market
- */
-#define STORE_BLACKM 		6
-
+/* List of store indices */
+enum
+{
+	STORE_NONE	= -1,
+	STORE_GENERAL	= 0,
+	STORE_ARMOR	= 1,
+	STORE_WEAPON	= 2,
+	STORE_TEMPLE	= 3,
+	STORE_ALCHEMY	= 4,
+	STORE_MAGIC	= 5,
+	STORE_BLACKM 	= 6,
+	STORE_HOME	= 7,
+	STORE_BOOK	= 8,
+	MAX_STORES	= 9
+};
 
 
 typedef struct owner_type owner_type;

@@ -318,7 +318,7 @@ static store_type *st_ptr = NULL;
 static owner_type *ot_ptr = NULL;
 
 
-/*** Check if s store will buy an object ***/
+/*** Check if a store will buy an object ***/
 
 /*
  * Determine if the current store will purchase the given object
@@ -334,7 +334,7 @@ static bool store_will_buy(object_type *o_ptr)
 	switch (store_num)
 	{
 		/* General Store */
-		case 0:
+		case STORE_GENERAL:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -356,7 +356,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* Armoury */
-		case 1:
+		case STORE_ARMOR:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -378,7 +378,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* Weapon Shop */
-		case 2:
+		case STORE_WEAPON:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -399,7 +399,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* Temple */
-		case 3:
+		case STORE_TEMPLE:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -432,7 +432,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* Alchemist */
-		case 4:
+		case STORE_ALCHEMY:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -447,7 +447,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* Magic Shop */
-		case 5:
+		case STORE_MAGIC:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
@@ -465,7 +465,7 @@ static bool store_will_buy(object_type *o_ptr)
 		}
 
 		/* The Bookseller */
-		case 8:
+		case STORE_BOOK:
 		{
 			/* Analyze the type */
 			switch (o_ptr->tval)
