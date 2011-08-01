@@ -317,6 +317,182 @@ static store_type *st_ptr = NULL;
  */
 static owner_type *ot_ptr = NULL;
 
+
+/*** Check if s store will buy an object ***/
+
+/*
+ * Determine if the current store will purchase the given object
+ *
+ * Note that a shop-keeper must refuse to buy "worthless" objects
+ */
+static bool store_will_buy(object_type *o_ptr)
+{
+	/* Hack -- The Home is simple */
+	if (store_num == STORE_HOME) return (TRUE);
+
+	/* Switch on the store */
+	switch (store_num)
+	{
+		/* General Store */
+		case 0:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_FOOD:
+				case TV_LITE:
+				case TV_FLASK:
+				case TV_SPIKE:
+				case TV_SHOT:
+				case TV_ARROW:
+				case TV_BOLT:
+				case TV_DIGGING:
+				case TV_CLOAK:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* Armoury */
+		case 1:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_BOOTS:
+				case TV_GLOVES:
+				case TV_CROWN:
+				case TV_HELM:
+				case TV_SHIELD:
+				case TV_CLOAK:
+				case TV_SOFT_ARMOR:
+				case TV_HARD_ARMOR:
+				case TV_DRAG_ARMOR:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* Weapon Shop */
+		case 2:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_SHOT:
+				case TV_BOLT:
+				case TV_ARROW:
+				case TV_BOW:
+				case TV_DIGGING:
+				case TV_HAFTED:
+				case TV_POLEARM:
+				case TV_SWORD:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* Temple */
+		case 3:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_SCROLL:
+				case TV_POTION:
+				case TV_HAFTED:
+				break;
+
+				/* Hack -- The temple will buy known blessed swords and
+				 * polearms.
+				 */
+				case TV_SWORD:
+				case TV_POLEARM:
+				{
+					u32b f1, f2, f3;
+
+					/* Extract the item flags */
+					object_flags(o_ptr, &f1, &f2, &f3);
+
+					if (f3 & (TR3_BLESSED) && object_known_p(o_ptr))
+						break;
+					else return (FALSE);
+				}
+
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* Alchemist */
+		case 4:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_SCROLL:
+				case TV_POTION:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* Magic Shop */
+		case 5:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_AMULET:
+				case TV_RING:
+				case TV_STAFF:
+				case TV_WAND:
+				case TV_ROD:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+
+		/* The Bookseller */
+		case 8:
+		{
+			/* Analyze the type */
+			switch (o_ptr->tval)
+			{
+				case TV_MAGIC_BOOK:
+				case TV_PRAYER_BOOK:
+				case TV_DRUID_BOOK:
+				case TV_NECRO_BOOK:
+				break;
+				default:
+				return (FALSE);
+			}
+			break;
+		}
+	}
+
+	/* Ignore "worthless" items XXX XXX XXX */
+	if (object_value(o_ptr) <= 0) return (FALSE);
+
+	/* Assume okay */
+	return (TRUE);
+}
+
+
+
+/*** Basics: pricing, generation, etc. ***/
+
 /*
  * Determine the price of an object (qty one) in a store.  Altered in
  * Oangband.
@@ -715,177 +891,6 @@ static bool store_check_num(object_type *o_ptr)
 	return (FALSE);
 }
 
-
-
-
-/*
- * Determine if the current store will purchase the given object
- *
- * Note that a shop-keeper must refuse to buy "worthless" objects
- */
-static bool store_will_buy(object_type *o_ptr)
-{
-	/* Hack -- The Home is simple */
-	if (store_num == STORE_HOME) return (TRUE);
-
-	/* Switch on the store */
-	switch (store_num)
-	{
-		/* General Store */
-		case 0:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_FOOD:
-				case TV_LITE:
-				case TV_FLASK:
-				case TV_SPIKE:
-				case TV_SHOT:
-				case TV_ARROW:
-				case TV_BOLT:
-				case TV_DIGGING:
-				case TV_CLOAK:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* Armoury */
-		case 1:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_BOOTS:
-				case TV_GLOVES:
-				case TV_CROWN:
-				case TV_HELM:
-				case TV_SHIELD:
-				case TV_CLOAK:
-				case TV_SOFT_ARMOR:
-				case TV_HARD_ARMOR:
-				case TV_DRAG_ARMOR:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* Weapon Shop */
-		case 2:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_SHOT:
-				case TV_BOLT:
-				case TV_ARROW:
-				case TV_BOW:
-				case TV_DIGGING:
-				case TV_HAFTED:
-				case TV_POLEARM:
-				case TV_SWORD:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* Temple */
-		case 3:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_SCROLL:
-				case TV_POTION:
-				case TV_HAFTED:
-				break;
-
-				/* Hack -- The temple will buy known blessed swords and
-				 * polearms.
-				 */
-				case TV_SWORD:
-				case TV_POLEARM:
-				{
-					u32b f1, f2, f3;
-
-					/* Extract the item flags */
-					object_flags(o_ptr, &f1, &f2, &f3);
-
-					if (f3 & (TR3_BLESSED) && object_known_p(o_ptr))
-						break;
-					else return (FALSE);
-				}
-
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* Alchemist */
-		case 4:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_SCROLL:
-				case TV_POTION:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* Magic Shop */
-		case 5:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_AMULET:
-				case TV_RING:
-				case TV_STAFF:
-				case TV_WAND:
-				case TV_ROD:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-
-		/* The Bookseller */
-		case 8:
-		{
-			/* Analyze the type */
-			switch (o_ptr->tval)
-			{
-				case TV_MAGIC_BOOK:
-				case TV_PRAYER_BOOK:
-				case TV_DRUID_BOOK:
-				case TV_NECRO_BOOK:
-				break;
-				default:
-				return (FALSE);
-			}
-			break;
-		}
-	}
-
-	/* Ignore "worthless" items XXX XXX XXX */
-	if (object_value(o_ptr) <= 0) return (FALSE);
-
-	/* Assume okay */
-	return (TRUE);
-}
 
 
 
