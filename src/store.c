@@ -851,22 +851,22 @@ static void store_object_absorb(object_type *o_ptr, object_type *j_ptr)
  * it cannot hold.  Before, one could "nuke" objects this way, by
  * adding them to a pile which was already full.
  */
-static bool store_check_num(object_type *o_ptr)
+static bool store_check_num(struct store_type *store, object_type *o_ptr)
 {
 	int i;
 	object_type *j_ptr;
 
 	/* Free space is always usable */
-	if (st_ptr->stock_num < st_ptr->stock_size) return TRUE;
+	if (store->stock_num < store->stock_size) return TRUE;
 
 	/* The "home" acts like the player */
 	if (store_num == STORE_HOME)
 	{
 		/* Check all the objects */
-		for (i = 0; i < st_ptr->stock_num; i++)
+		for (i = 0; i < store->stock_num; i++)
 		{
 			/* Get the existing object */
-			j_ptr = &st_ptr->stock[i];
+			j_ptr = &store->stock[i];
 
 			/* Can the new object be combined with the old one? */
 			if (object_similar(j_ptr, o_ptr)) return (TRUE);
@@ -877,10 +877,10 @@ static bool store_check_num(object_type *o_ptr)
 	else
 	{
 		/* Check all the objects */
-		for (i = 0; i < st_ptr->stock_num; i++)
+		for (i = 0; i < store->stock_num; i++)
 		{
 			/* Get the existing object */
-			j_ptr = &st_ptr->stock[i];
+			j_ptr = &store->stock[i];
 
 			/* Can the new object be combined with the old one? */
 			if (store_object_similar(j_ptr, o_ptr)) return (TRUE);
@@ -893,9 +893,8 @@ static bool store_check_num(object_type *o_ptr)
 
 
 
-
 /*
- * Add an object to the inventory of the "Home"
+ * Add an object to the inventory of the Home.
  *
  * In all cases, return the slot (or -1) where the object was placed.
  *
@@ -2848,7 +2847,7 @@ static void store_sell(void)
 	object_desc(o_name, i_ptr, TRUE, 3);
 
 	/* Is there room in the store (or the home?) */
-	if (!store_check_num(i_ptr))
+	if (!store_check_num(st_ptr, i_ptr))
 	{
 		if (store_num == STORE_HOME)
 		{
@@ -3505,7 +3504,7 @@ void do_cmd_store(void)
 			}
 
 			/* Hack -- Flee from the home */
-			else if (!store_check_num(o_ptr))
+			else if (!store_check_num(st_ptr, o_ptr))
 			{
 				/* Message */
 				msg_print("Your pack is so full that you flee your home...");
