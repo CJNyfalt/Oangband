@@ -1103,7 +1103,7 @@ static void store_item_increase(struct store_type *store, int item, int num)
 
 
 /*
- * Remove a slot if it is empty
+ * Remove a slot if it is empty, in store 'st'.
  */
 static void store_item_optimize(struct store_type *store, int item)
 {
@@ -1134,21 +1134,22 @@ static void store_item_optimize(struct store_type *store, int item)
 
 
 /*
- * Attempt to delete (some of) a random object from the store
- * Hack -- we attempt to "maintain" piles of items when possible.
+ * Delete an object from store 'st', or, if it is a stack, perhaps only
+ * partially delete it.
  */
-static void store_delete(void)
+static void store_delete_index(struct store_type *store, int what)
 {
-	int what, num;
+	int num;
+	object_type *o_ptr;
 
 	/* Paranoia */
-	if (st_ptr->stock_num <= 0) return;
+	if (store->stock_num <= 0) return;
 
-	/* Pick a random slot */
-	what = randint0(st_ptr->stock_num);
+	/* Get the object */
+	o_ptr = &store->stock[what];
 
 	/* Determine how many objects are in the slot */
-	num = st_ptr->stock[what].number;
+	num = o_ptr->number;
 
 	/* Hack -- sometimes, only destroy half the objects */
 	if (randint0(100) < 50) num = (num + 1) / 2;
@@ -1156,19 +1157,40 @@ static void store_delete(void)
 	/* Hack -- sometimes, only destroy a single object, if not a missile. */
 	if (randint0(100) < 50)
 	{
-		if ((st_ptr->stock[what].tval != TV_BOLT) && (st_ptr->stock[what].tval != TV_ARROW) && (st_ptr->stock[what].tval != TV_SHOT)) num = 1;
+		if ((o_ptr->tval != TV_BOLT) && (o_ptr->tval != TV_ARROW) && (o_ptr->tval != TV_SHOT)) num = 1;
 	}
 
 	/* Hack -- decrement the maximum timeouts and total charges of rods and wands. */
-	if ((st_ptr->stock[what].tval == TV_ROD) || (st_ptr->stock[what].tval == TV_WAND))
+	if ((o_ptr->tval == TV_ROD) || (o_ptr->tval == TV_WAND))
 	{
-		st_ptr->stock[what].pval -= num * st_ptr->stock[what].pval / st_ptr->stock[what].number;
+		o_ptr->pval -= num * o_ptr->pval / o_ptr->number;
 
 	}
 
-	/* Actually destroy (part of) the object */
-	store_item_increase(st_ptr, what, -num);
-	store_item_optimize(st_ptr, what);
+	/* Delete the item */
+	store_item_increase(store, what, -num);
+	store_item_optimize(store, what);
+}
+
+
+
+/*
+ * Delete a random object from store 'st', or, if it is a stack, perhaps only
+ * partially delete it.
+ *
+ * This function is used when store maintainance occurs, and is designed to
+ * imitate non-PC purchasers making purchases from the store.
+ */
+static void store_delete_random(struct store_type *store)
+{
+	int what;
+
+	if (store->stock_num <= 0) return;
+
+	/* Pick a random slot */
+	what = randint0(store->stock_num);
+
+	store_delete_index(store, what);
 }
 
 
@@ -3730,7 +3752,7 @@ void store_maint(int which)
 	if (j < 0) j = 0;
 
 	/* Destroy objects until only "j" slots are left */
-	while (st_ptr->stock_num > j) store_delete();
+	while (st_ptr->stock_num > j) store_delete_random(st_ptr);
 
 
 	/* Choose the number of slots to fill */
