@@ -1105,13 +1105,13 @@ static void store_item_increase(struct store_type *store, int item, int num)
 /*
  * Remove a slot if it is empty
  */
-static void store_item_optimize(int item)
+static void store_item_optimize(struct store_type *store, int item)
 {
 	int j;
 	object_type *o_ptr;
 
 	/* Get the object */
-	o_ptr = &st_ptr->stock[item];
+	o_ptr = &store->stock[item];
 
 	/* Must exist */
 	if (!o_ptr->k_idx) return;
@@ -1120,16 +1120,16 @@ static void store_item_optimize(int item)
 	if (o_ptr->number) return;
 
 	/* One less object */
-	st_ptr->stock_num--;
+	store->stock_num--;
 
 	/* Slide everyone */
-	for (j = item; j < st_ptr->stock_num; j++)
+	for (j = item; j < store->stock_num; j++)
 	{
-		st_ptr->stock[j] = st_ptr->stock[j + 1];
+		store->stock[j] = store->stock[j + 1];
 	}
 
 	/* Nuke the final slot */
-	object_wipe(&st_ptr->stock[j]);
+	object_wipe(&store->stock[j]);
 }
 
 
@@ -1207,7 +1207,7 @@ static void store_delete(void)
 
 	/* Actually destroy (part of) the object */
 	store_item_increase(st_ptr, what, -num);
-	store_item_optimize(what);
+	store_item_optimize(st_ptr, what);
 }
 
 
@@ -2638,7 +2638,7 @@ static void store_purchase(void)
 
 				/* Remove the bought objects from the store */
 				store_item_increase(st_ptr, item, -amt);
-				store_item_optimize(item);
+				store_item_optimize(st_ptr, item);
 
 				/* Store is empty */
 				if (st_ptr->stock_num == 0)
@@ -2729,7 +2729,7 @@ static void store_purchase(void)
 
 		/* Remove the items from the home */
 		store_item_increase(st_ptr, item, -amt);
-		store_item_optimize(item);
+		store_item_optimize(st_ptr, item);
 
 		/* The object is gone */
 		if (st_ptr->stock_num != n)
@@ -3706,7 +3706,7 @@ void store_maint(int which)
 			{
 				/* Destroy the object */
 				store_item_increase(st_ptr, j, 0 - o_ptr->number);
-				store_item_optimize(j);
+				store_item_optimize(st_ptr, j);
 			}
 		}
 	}
