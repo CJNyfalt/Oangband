@@ -1134,45 +1134,6 @@ static void store_item_optimize(struct store_type *store, int item)
 
 
 /*
- * This function will keep 'crap' out of the black market.
- * Crap is defined as any object that is "available" elsewhere
- * Based on a suggestion by "Lee Vogt" <lvogt@cig.mcel.mot.com>
- */
-static bool black_market_crap(object_type *o_ptr)
-{
-	int i, j;
-
-	/* Ego items are never crap */
-	if (o_ptr->name2) return (FALSE);
-
-	/* Good items are never crap */
-	if (o_ptr->to_a > 0) return (FALSE);
-	if (o_ptr->to_h > 0) return (FALSE);
-	if (o_ptr->to_d > 0) return (FALSE);
-
-	/* Check the other "normal" stores */
-	for (i = 0; i < MAX_STORES; i++)
-	{
-		/* Ignore the Home and the Black Market itself. */
-		if (i == STORE_HOME) continue;
-		if (i == STORE_BLACKM) continue;
-
-		/* Check every object in the store */
-		for (j = 0; j < store[i].stock_num; j++)
-		{
-			object_type *j_ptr = &store[i].stock[j];
-
-			/* Duplicate object "type", assume crappy */
-			if (o_ptr->k_idx == j_ptr->k_idx) return (TRUE);
-		}
-	}
-
-	/* Assume okay */
-	return (FALSE);
-}
-
-
-/*
  * Attempt to delete (some of) a random object from the store
  * Hack -- we attempt to "maintain" piles of items when possible.
  */
@@ -1211,6 +1172,47 @@ static void store_delete(void)
 }
 
 
+
+/*
+ * This function will keep 'crap' out of the black market.
+ * Crap is defined as any object that is "available" elsewhere
+ * Based on a suggestion by "Lee Vogt" <lvogt@cig.mcel.mot.com>
+ */
+static bool black_market_crap(object_type *o_ptr)
+{
+	int i, j;
+
+	/* Ego items are never crap */
+	if (o_ptr->name2) return (FALSE);
+
+	/* Good items are never crap */
+	if (o_ptr->to_a > 0) return (FALSE);
+	if (o_ptr->to_h > 0) return (FALSE);
+	if (o_ptr->to_d > 0) return (FALSE);
+
+	/* Check the other "normal" stores */
+	for (i = 0; i < MAX_STORES; i++)
+	{
+		/* Ignore the Home and the Black Market itself. */
+		if (i == STORE_HOME) continue;
+		if (i == STORE_BLACKM) continue;
+
+		/* Check every object in the store */
+		for (j = 0; j < store[i].stock_num; j++)
+		{
+			object_type *j_ptr = &store[i].stock[j];
+
+			/* Duplicate object "type", assume crappy */
+			if (o_ptr->k_idx == j_ptr->k_idx) return (TRUE);
+		}
+	}
+
+	/* Assume okay */
+	return (FALSE);
+}
+
+
+
 /*
  * Creates a random object and gives it to a store
  * This algorithm needs to be rethought.  A lot.
@@ -1222,7 +1224,7 @@ static void store_delete(void)
  *
  * Should we check for "permission" to have the given object?
  */
-static void store_create(void)
+static void store_create_random(struct store_type *store)
 {
 	int k_idx, tries, level;
 
@@ -1230,7 +1232,7 @@ static void store_create(void)
 	object_type object_type_body;
 
 	/* Paranoia -- no room left */
-	if (st_ptr->stock_num >= st_ptr->stock_size) return;
+	if (store->stock_num >= store->stock_size) return;
 
 
 	/* Hack -- consider up to four items */
@@ -1255,7 +1257,7 @@ static void store_create(void)
 		else
 		{
 			/* Hack -- Pick an object kind to sell */
-			k_idx = st_ptr->table[randint0(st_ptr->table_num)];
+			k_idx = store->table[randint0(store->table_num)];
 
 			/* Hack -- fake level for apply_magic() */
 			level = rand_range(1, STORE_OBJ_LEVEL);
@@ -1304,11 +1306,11 @@ static void store_create(void)
 		}
 
 
-		/* Mass produce and/or Apply discount */
+		/* Mass produce and/or apply discount */
 		mass_produce(i_ptr);
 
-		/* Attempt to carry the (known) object */
-		(void)store_carry(st_ptr, i_ptr);
+		/* Attempt to carry the object */
+		(void)store_carry(store, i_ptr);
 
 		/* Definitely done */
 		break;
@@ -3747,7 +3749,7 @@ void store_maint(int which)
 	if (j >= st_ptr->stock_size) j = st_ptr->stock_size - 1;
 
 	/* Acquire some new items */
-	while (st_ptr->stock_num < j) store_create();
+	while (st_ptr->stock_num < j) store_create_random(st_ptr);
 
 
 	/* Hack -- Restore the rating */
