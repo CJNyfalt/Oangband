@@ -998,7 +998,7 @@ static int home_carry(object_type *o_ptr)
  *
  * In all cases, return the slot (or -1) where the object was placed
  */
-static int store_carry(object_type *o_ptr)
+static int store_carry(struct store_type *store, object_type *o_ptr)
 {
 	int i, slot;
 	s32b value, j_value;
@@ -1018,10 +1018,10 @@ static int store_carry(object_type *o_ptr)
 	o_ptr->note = 0;
 
 	/* Check each existing object (try to combine) */
-	for (slot = 0; slot < st_ptr->stock_num; slot++)
+	for (slot = 0; slot < store->stock_num; slot++)
 	{
 		/* Get the existing object */
-		j_ptr = &st_ptr->stock[slot];
+		j_ptr = &store->stock[slot];
 
 		/* Can the existing items be incremented? */
 		if (store_object_similar(j_ptr, o_ptr))
@@ -1035,14 +1035,15 @@ static int store_carry(object_type *o_ptr)
 	}
 
 	/* No space? */
-	if (st_ptr->stock_num >= st_ptr->stock_size) return (-1);
-
+	if (store->stock_num >= store->stock_size) {
+		return (-1);
+	}
 
 	/* Check existing slots to see if we must "slide" */
-	for (slot = 0; slot < st_ptr->stock_num; slot++)
+	for (slot = 0; slot < store->stock_num; slot++)
 	{
 		/* Get that object */
-		j_ptr = &st_ptr->stock[slot];
+		j_ptr = &store->stock[slot];
 
 		/* Objects sort by decreasing type */
 		if (o_ptr->tval > j_ptr->tval) break;
@@ -1061,17 +1062,17 @@ static int store_carry(object_type *o_ptr)
 	}
 
 	/* Slide the others up */
-	for (i = st_ptr->stock_num; i > slot; i--)
+	for (i = store->stock_num; i > slot; i--)
 	{
 		/* Hack -- slide the objects */
-		object_copy(&st_ptr->stock[i], &st_ptr->stock[i-1]);
+		object_copy(&store->stock[i], &store->stock[i-1]);
 	}
 
 	/* More stuff now */
-	st_ptr->stock_num++;
+	store->stock_num++;
 
 	/* Hack -- Insert the new object */
-	object_copy(&st_ptr->stock[slot], o_ptr);
+	object_copy(&store->stock[slot], o_ptr);
 
 	/* Return the location */
 	return (slot);
@@ -1082,13 +1083,13 @@ static int store_carry(object_type *o_ptr)
  * Increase, by a given amount, the number of a certain item
  * in a certain store.  This can result in zero items.
  */
-static void store_item_increase(int item, int num)
+static void store_item_increase(struct store_type *store, int item, int num)
 {
 	int cnt;
 	object_type *o_ptr;
 
 	/* Get the object */
-	o_ptr = &st_ptr->stock[item];
+	o_ptr = &store->stock[item];
 
 	/* Verify the number */
 	cnt = o_ptr->number + num;
@@ -1205,7 +1206,7 @@ static void store_delete(void)
 	}
 
 	/* Actually destroy (part of) the object */
-	store_item_increase(what, -num);
+	store_item_increase(st_ptr, what, -num);
 	store_item_optimize(what);
 }
 
@@ -1307,7 +1308,7 @@ static void store_create(void)
 		mass_produce(i_ptr);
 
 		/* Attempt to carry the (known) object */
-		(void)store_carry(i_ptr);
+		(void)store_carry(st_ptr, i_ptr);
 
 		/* Definitely done */
 		break;
@@ -2636,7 +2637,7 @@ static void store_purchase(void)
 				n = st_ptr->stock_num;
 
 				/* Remove the bought objects from the store */
-				store_item_increase(item, -amt);
+				store_item_increase(st_ptr, item, -amt);
 				store_item_optimize(item);
 
 				/* Store is empty */
@@ -2727,7 +2728,7 @@ static void store_purchase(void)
 		n = st_ptr->stock_num;
 
 		/* Remove the items from the home */
-		store_item_increase(item, -amt);
+		store_item_increase(st_ptr, item, -amt);
 		store_item_optimize(item);
 
 		/* The object is gone */
@@ -2962,7 +2963,7 @@ static void store_sell(void)
 #endif
 
 			/* The store gets that (known) object */
-			item_pos = store_carry(i_ptr);
+			item_pos = store_carry(st_ptr, i_ptr);
 
 			/* Update the display */
 			if (item_pos >= 0)
@@ -3704,7 +3705,7 @@ void store_maint(int which)
 			if (black_market_crap(o_ptr))
 			{
 				/* Destroy the object */
-				store_item_increase(j, 0 - o_ptr->number);
+				store_item_increase(st_ptr, j, 0 - o_ptr->number);
 				store_item_optimize(j);
 			}
 		}
