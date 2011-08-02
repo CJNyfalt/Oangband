@@ -1236,6 +1236,19 @@ static bool black_market_crap(object_type *o_ptr)
 
 
 /*
+ * Get a choice from the store allocation table, in tables.c
+ */
+static int store_get_choice(struct store_type *store)
+{
+	/* Choose a random entry from the store's table */
+	int r = randint0(store->table_num);
+
+	/* Return it */
+	return store->table[r];
+}
+
+
+/*
  * Creates a random object and gives it to a store
  * This algorithm needs to be rethought.  A lot.
  * Currently, "normal" stores use a pre-built array.
@@ -1279,11 +1292,13 @@ static void store_create_random(struct store_type *store)
 		else
 		{
 			/* Hack -- Pick an object kind to sell */
-			k_idx = store->table[randint0(store->table_num)];
+			k_idx = store_get_choice(store);
 
 			/* Hack -- fake level for apply_magic() */
 			level = rand_range(1, STORE_OBJ_LEVEL);
 		}
+
+		/*** Generate the item ***/
 
 		/* Get local object */
 		i_ptr = &object_type_body;
