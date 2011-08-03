@@ -1420,79 +1420,77 @@ void store_maint(int which)
 {
 	int j;
 
+	unsigned int stock;
 	int old_rating = rating;
 
 	/* Activate that store */
-	st_ptr = &stores[which];
+	store_type *store = &stores[which];
 
 	/* Ignore home */
-	if (which == STORE_HOME) return;
+	if (store->sidx == STORE_HOME)
+		return;
 
 	/* Save the store index */
 	store_num = which;
 
 	/* Activate the owner */
-	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
+	ot_ptr = &b_info[(store_num * MAX_B_IDX) + store->owner];
 
 
 	/* Store keeper forgives the player */
-	st_ptr->insult_cur = 0;
+	store->insult_cur = 0;
 
-	/* Mega-Hack -- prune the black market */
-	if (store_num == STORE_BLACKM)
+	/* Prune the black market */
+	if (store->sidx == STORE_BLACKM)
 	{
 		/* Destroy crappy black market items */
-		for (j = st_ptr->stock_num - 1; j >= 0; j--)
+		for (j = store->stock_num - 1; j >= 0; j--)
 		{
-			object_type *o_ptr = &st_ptr->stock[j];
+			object_type *o_ptr = &store->stock[j];
 
 			/* Destroy crappy items */
 			if (black_market_crap(o_ptr))
 			{
 				/* Destroy the object */
-				store_item_increase(st_ptr, j, 0 - o_ptr->number);
-				store_item_optimize(st_ptr, j);
+				store_item_increase(store, j, 0 - o_ptr->number);
+				store_item_optimize(store, j);
 			}
 		}
 	}
 
-
-	/* Choose the number of slots to keep */
-	j = st_ptr->stock_num;
+	/*** "Sell" various items */
 
 	/* Sell a few items */
-	j = j - randint1(STORE_TURNOVER);
+	stock = store->stock_num;
+	stock -= randint1(STORE_TURNOVER);
 
-	/* Never keep more than "STORE_MAX_KEEP" slots */
-	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
-
-	/* Always "keep" at least "STORE_MIN_KEEP" items */
-	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
+	/* Keep stock between specified min and max slots */
+	if (stock > STORE_MAX_KEEP) stock = STORE_MAX_KEEP;
+	if (stock < STORE_MIN_KEEP) stock = STORE_MIN_KEEP;
 
 	/* Hack -- prevent "underflow" */
-	if (j < 0) j = 0;
+	if (stock < 0) stock = 0;
 
 	/* Destroy objects until only "j" slots are left */
-	while (st_ptr->stock_num > j) store_delete_random(st_ptr);
+	while (store->stock_num > stock) store_delete_random(store);
 
 
-	/* Choose the number of slots to fill */
-	j = st_ptr->stock_num;
+	/*** "Buy in" various items */
 
-	/* Buy some more items */
-	j = j + randint1(STORE_TURNOVER);
+	/* Buy a few items */
+	stock = store->stock_num;
+	stock += randint1(STORE_TURNOVER);
 
-	/* Never keep more than "STORE_MAX_KEEP" slots */
-	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
-
-	/* Always "keep" at least "STORE_MIN_KEEP" items */
-	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
+	/* Keep stock between specified min and max slots */
+	if (stock > STORE_MAX_KEEP) stock = STORE_MAX_KEEP;
+	if (stock < STORE_MIN_KEEP) stock = STORE_MIN_KEEP;
 
 	/* Hack -- prevent "overflow" */
-	if (j >= st_ptr->stock_size) j = st_ptr->stock_size - 1;
+	if (stock >= store->stock_size) stock = store->stock_size - 1;
 
 	/* Acquire some new items */
-	while (st_ptr->stock_num < j) store_create_random(st_ptr);
+	while (store->stock_num < stock)
+		store_create_random(store);
 
 
 	/* Hack -- Restore the rating */
