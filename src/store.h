@@ -64,6 +64,7 @@ struct store_type
 {
 	byte owner;				/* Owner index */
 	byte extra;				/* Unused for now */
+	unsigned int sidx;
 
 	s16b insult_cur;		/* Insult counter */
 

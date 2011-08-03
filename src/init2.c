@@ -4235,6 +4235,9 @@ static errr init_other(void)
 		/* Access the store */
 		store_type *st_ptr = &store[i];
 
+		/* Save id */
+		st_ptr->sidx = i;
+
 		/* Assume full stock */
 		st_ptr->stock_size = STORE_INVEN_MAX;
 
@@ -4242,7 +4245,7 @@ static errr init_other(void)
 		st_ptr->stock = C_ZNEW(st_ptr->stock_size, object_type);
 
 		/* No table for the black market or home */
-		if ((i == 6) || (i == 7)) continue;
+		if ((i == STORE_BLACKM) || (i == STORE_HOME)) continue;
 
 		/* Assume full table */
 		st_ptr->table_size = STORE_CHOICES;
