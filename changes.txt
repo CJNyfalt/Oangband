@@ -11,6 +11,7 @@ that require light.
 - Fixed unlight bug, now grants +3 stealth in light and +6 in darkness
 as it is supposed to.
 - Unlight now grants +2 infra-vision range.
+- Fixed bug where armory instead of general store had low purse.
 
 User interface
 ==============

@@ -606,7 +606,7 @@ static void mass_produce(object_type *o_ptr)
 		case TV_POTION:
 		case TV_SCROLL:
 		{
-			if ((store_num == 6) && (randint1(2) == 1))
+			if ((store_num == STORE_BLACKM) && (randint1(2) == 1))
 			{
 				if (cost < 400L) size += mass_roll(15,3);
 			}
@@ -666,7 +666,7 @@ static void mass_produce(object_type *o_ptr)
 		case TV_WAND:
 		case TV_STAFF:
 		{
-			if ((store_num == 6) && (randint1(3) == 1))
+			if ((store_num == STORE_BLACKM) && (randint1(3) == 1))
 			{
 				if (cost < 1601L) size += mass_roll(1, 5);
 				else if (cost < 3201L) size += mass_roll(1, 3);
@@ -687,8 +687,8 @@ static void mass_produce(object_type *o_ptr)
 	 */
 
 	/* Hack -- determine the maximum possible purse available at any one store. */
-	if (store_num == 1) max_purse = 450;
-	if (store_num == 4) max_purse = 15000;
+	if (store_num == STORE_GENERAL) max_purse = 450;
+	if (store_num == STORE_ALCHEMY) max_purse = 15000;
 	else max_purse = 30000;
 
 	/* This to prevent integer math ruining accuracy. */
@@ -860,7 +860,7 @@ static bool store_check_num(struct store_type *store, object_type *o_ptr)
 	if (store->stock_num < store->stock_size) return TRUE;
 
 	/* The "home" acts like the player */
-	if (store_num == STORE_HOME)
+	if (store->sidx == STORE_HOME)
 	{
 		/* Check all the objects */
 		for (i = 0; i < store->stock_num; i++)
@@ -1080,8 +1080,8 @@ static int store_carry(struct store_type *store, object_type *o_ptr)
 
 
 /*
- * Increase, by a given amount, the number of a certain item
- * in a certain store.  This can result in zero items.
+ * Increase, by a 'num', the number of an item 'item' in store 'st'.
+ * This can result in zero items.
  */
 static void store_item_increase(struct store_type *store, int item, int num)
 {
@@ -1095,10 +1095,9 @@ static void store_item_increase(struct store_type *store, int item, int num)
 	cnt = o_ptr->number + num;
 	if (cnt > 255) cnt = 255;
 	else if (cnt < 0) cnt = 0;
-	num = cnt - o_ptr->number;
 
 	/* Save the new number */
-	o_ptr->number += num;
+	o_ptr->number = cnt;
 }
 
 
@@ -1131,6 +1130,7 @@ static void store_item_optimize(struct store_type *store, int item)
 	/* Nuke the final slot */
 	object_wipe(&store->stock[j]);
 }
+
 
 
 /*
@@ -1274,7 +1274,7 @@ static void store_create_random(struct store_type *store)
 	for (tries = 0; tries < 4; tries++)
 	{
 		/* Black Market */
-		if (store_num == STORE_BLACKM)
+		if (store->sidx == STORE_BLACKM)
 		{
 			/* Pick a level for object/magic.  Now depends partly
 			 * on player level.
@@ -1323,7 +1323,7 @@ static void store_create_random(struct store_type *store)
 		if (i_ptr->tval == TV_CHEST) continue;
 
 		/* Prune the black market */
-		if (store_num == STORE_BLACKM)
+		if (store->sidx == STORE_BLACKM)
 		{
 			/* Hack -- No "crappy" items */
 			if (black_market_crap(i_ptr)) continue;
