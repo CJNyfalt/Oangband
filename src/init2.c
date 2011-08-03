@@ -4227,13 +4227,13 @@ static errr init_other(void)
 	/*** Prepare the stores ***/
 
 	/* Allocate the stores */
-	store = C_ZNEW(MAX_STORES, store_type);
+	stores = C_ZNEW(MAX_STORES, store_type);
 
 	/* Fill in each store */
 	for (i = 0; i < MAX_STORES; i++)
 	{
 		/* Access the store */
-		store_type *st_ptr = &store[i];
+		store_type *st_ptr = &stores[i];
 
 		/* Save id */
 		st_ptr->sidx = i;

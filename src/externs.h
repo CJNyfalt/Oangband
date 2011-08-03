@@ -206,7 +206,7 @@ extern monster_type *m_list;
 extern monster_lore *l_list;
 extern effect_type *x_list;
 extern quest *q_list;
-extern store_type *store;
+extern store_type *stores;
 extern object_type *inventory;
 extern object_type *quiver;
 extern s16b alloc_kind_size;

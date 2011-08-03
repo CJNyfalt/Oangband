@@ -386,7 +386,7 @@ quest *q_list;
 /*
  * Array[MAX_STORES] of stores
  */
-store_type *store;
+store_type *stores;
 
 /*
  * Array[INVEN_TOTAL] of objects in the player's inventory

@@ -408,7 +408,7 @@ static errr wr_savefile(void)
 	wr_u16b(tmp16u);
 
 	/* Dump the stores */
-	for (i = 0; i < tmp16u; i++) wr_store(&store[i]);
+	for (i = 0; i < tmp16u; i++) wr_store(&stores[i]);
 
 
 	/* Player is not dead, write the dungeon */
@@ -1581,7 +1581,7 @@ static bool wr_savefile_new(void)
 	wr_u16b(tmp16u);
 
 	/* Dump the stores */
-	for (i = 0; i < tmp16u; i++) wr_store(&store[i]);
+	for (i = 0; i < tmp16u; i++) wr_store(&stores[i]);
 
 
 	/* Player is not dead, write the dungeon */

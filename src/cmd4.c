@@ -2892,7 +2892,7 @@ static int collect_artifacts(int grp_cur, int object_idx[])
 	int i, object_cnt = 0;
 	bool *okay;
 
-	store_type *st_ptr = &store[STORE_HOME];
+	store_type *st_ptr = &stores[STORE_HOME];
 
 	/* make a list of artifacts not found */
 	/* Allocate the "object_idx" array */

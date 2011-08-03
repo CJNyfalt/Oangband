@@ -334,7 +334,7 @@ static void death_knowledge(void)
 
 	object_type *o_ptr;
 
-	store_type *st_ptr = &store[STORE_HOME];
+	store_type *st_ptr = &stores[STORE_HOME];
 
 
 	/* Hack -- Know everything in the inven/equip */
@@ -432,7 +432,7 @@ static void show_info(void)
 
 	object_type *o_ptr;
 
-	store_type *st_ptr = &store[STORE_HOME];
+	store_type *st_ptr = &stores[STORE_HOME];
 
 	screen_save();
 

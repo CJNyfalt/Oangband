@@ -560,15 +560,17 @@ static s32b price_item(object_type *o_ptr, int greed, bool flip)
 
 
 /*
- * Special "mass production" computation
+ * Special "mass production" computation.
  */
-static int mass_roll(int num, int max)
+static int mass_roll(int times, int max)
 {
 	int i, t = 0;
-	for (i = 0; i < num; i++)
-	{
-		t += ((max > 1) ? randint0(max) : 1);
-	}
+
+	assert(max > 1);
+
+	for (i = 0; i < times; i++)
+		t += randint0(max);
+
 	return (t);
 }
 
@@ -1212,7 +1214,7 @@ static bool black_market_crap(object_type *o_ptr)
 	if (o_ptr->to_h > 0) return (FALSE);
 	if (o_ptr->to_d > 0) return (FALSE);
 
-	/* Check the other "normal" stores */
+	/* Check the other stores */
 	for (i = 0; i < MAX_STORES; i++)
 	{
 		/* Ignore the Home and the Black Market itself. */
@@ -1220,9 +1222,9 @@ static bool black_market_crap(object_type *o_ptr)
 		if (i == STORE_BLACKM) continue;
 
 		/* Check every object in the store */
-		for (j = 0; j < store[i].stock_num; j++)
+		for (j = 0; j < stores[i].stock_num; j++)
 		{
-			object_type *j_ptr = &store[i].stock[j];
+			object_type *j_ptr = &stores[i].stock[j];
 
 			/* Duplicate object "type", assume crappy */
 			if (o_ptr->k_idx == j_ptr->k_idx) return (TRUE);
@@ -1420,14 +1422,14 @@ void store_maint(int which)
 
 	int old_rating = rating;
 
+	/* Activate that store */
+	st_ptr = &stores[which];
+
 	/* Ignore home */
 	if (which == STORE_HOME) return;
 
 	/* Save the store index */
 	store_num = which;
-
-	/* Activate that store */
-	st_ptr = &store[store_num];
 
 	/* Activate the owner */
 	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
@@ -1510,7 +1512,7 @@ void store_init(int which)
 	store_num = which;
 
 	/* Activate that store */
-	st_ptr = &store[store_num];
+	st_ptr = &stores[store_num];
 
 
 	/* Pick an owner */
@@ -1554,7 +1556,7 @@ void store_shuffle(int which)
 	store_num = which;
 
 	/* Activate that store */
-	st_ptr = &store[store_num];
+	st_ptr = &stores[store_num];
 
 	/* Pick a new owner */
 	for (j = st_ptr->owner; j == st_ptr->owner; )
@@ -1787,7 +1789,7 @@ void display_home_inventory_remote(void)
 {
 	store_top = 0;
 	store_num = STORE_HOME;
-	st_ptr = &store[store_num];
+	st_ptr = &stores[store_num];
 
 	/* Clear screen */
 	Term_clear();
@@ -3624,7 +3626,7 @@ void do_cmd_store(void)
 	which = (cave_feat[py][px] - FEAT_SHOP_HEAD);
 
 	/* Hack -- Check the "locked doors" */
-	if (store[which].store_open >= turn)
+	if (stores[which].store_open >= turn)
 	{
 		msg_print("The doors are locked.");
 		return;
@@ -3653,7 +3655,7 @@ void do_cmd_store(void)
 	store_num = which;
 
 	/* Save the store and owner pointers */
-	st_ptr = &store[store_num];
+	st_ptr = &stores[store_num];
 	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
 
 	/* Start at the beginning */

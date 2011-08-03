@@ -2139,7 +2139,7 @@ errr file_character(const char * name, bool full)
 
 	FILE *fff = NULL;
 
-	store_type *st_ptr = &store[STORE_HOME];
+	store_type *st_ptr = &stores[STORE_HOME];
 
 	char o_name[120];
 

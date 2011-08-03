@@ -1466,7 +1466,7 @@ static void rd_lore(int r_idx)
  */
 static errr rd_store(int n)
 {
-	store_type *st_ptr = &store[n];
+	store_type *st_ptr = &stores[n];
 
 	int j;
 
