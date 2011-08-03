@@ -1411,6 +1411,187 @@ static void updatebargain(s32b price, s32b minprice)
 }
 
 
+/*
+ * Maintain the inventory at the stores.
+ */
+void store_maint(int which)
+{
+	int j;
+
+	int old_rating = rating;
+
+	/* Ignore home */
+	if (which == STORE_HOME) return;
+
+	/* Save the store index */
+	store_num = which;
+
+	/* Activate that store */
+	st_ptr = &store[store_num];
+
+	/* Activate the owner */
+	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
+
+
+	/* Store keeper forgives the player */
+	st_ptr->insult_cur = 0;
+
+	/* Mega-Hack -- prune the black market */
+	if (store_num == STORE_BLACKM)
+	{
+		/* Destroy crappy black market items */
+		for (j = st_ptr->stock_num - 1; j >= 0; j--)
+		{
+			object_type *o_ptr = &st_ptr->stock[j];
+
+			/* Destroy crappy items */
+			if (black_market_crap(o_ptr))
+			{
+				/* Destroy the object */
+				store_item_increase(st_ptr, j, 0 - o_ptr->number);
+				store_item_optimize(st_ptr, j);
+			}
+		}
+	}
+
+
+	/* Choose the number of slots to keep */
+	j = st_ptr->stock_num;
+
+	/* Sell a few items */
+	j = j - randint1(STORE_TURNOVER);
+
+	/* Never keep more than "STORE_MAX_KEEP" slots */
+	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
+
+	/* Always "keep" at least "STORE_MIN_KEEP" items */
+	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
+
+	/* Hack -- prevent "underflow" */
+	if (j < 0) j = 0;
+
+	/* Destroy objects until only "j" slots are left */
+	while (st_ptr->stock_num > j) store_delete_random(st_ptr);
+
+
+	/* Choose the number of slots to fill */
+	j = st_ptr->stock_num;
+
+	/* Buy some more items */
+	j = j + randint1(STORE_TURNOVER);
+
+	/* Never keep more than "STORE_MAX_KEEP" slots */
+	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
+
+	/* Always "keep" at least "STORE_MIN_KEEP" items */
+	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
+
+	/* Hack -- prevent "overflow" */
+	if (j >= st_ptr->stock_size) j = st_ptr->stock_size - 1;
+
+	/* Acquire some new items */
+	while (st_ptr->stock_num < j) store_create_random(st_ptr);
+
+
+	/* Hack -- Restore the rating */
+	rating = old_rating;
+}
+
+
+/*
+ * Initialize the stores
+ */
+void store_init(int which)
+{
+	int k;
+
+
+	/* Save the store index */
+	store_num = which;
+
+	/* Activate that store */
+	st_ptr = &store[store_num];
+
+
+	/* Pick an owner */
+	st_ptr->owner = (byte)randint0(MAX_B_IDX);
+
+	/* Activate the new owner */
+	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
+
+
+	/* Initialize the store */
+	st_ptr->store_open = 0;
+	st_ptr->insult_cur = 0;
+	st_ptr->good_buy = 0;
+	st_ptr->bad_buy = 0;
+
+	/* Nothing in stock */
+	st_ptr->stock_num = 0;
+
+	/* Clear any old items */
+	for (k = 0; k < st_ptr->stock_size; k++)
+	{
+		object_wipe(&st_ptr->stock[k]);
+	}
+}
+
+
+
+/*
+ * Shuffle one of the stores.
+ */
+void store_shuffle(int which)
+{
+	int i, j;
+
+
+	/* Ignore home */
+	if (which == STORE_HOME) return;
+
+
+	/* Save the store index */
+	store_num = which;
+
+	/* Activate that store */
+	st_ptr = &store[store_num];
+
+	/* Pick a new owner */
+	for (j = st_ptr->owner; j == st_ptr->owner; )
+	{
+		st_ptr->owner = (byte)randint0(MAX_B_IDX);
+	}
+
+	/* Activate the new owner */
+	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
+
+	/* Reset the owner data */
+	st_ptr->insult_cur = 0;
+	st_ptr->store_open = 0;
+	st_ptr->good_buy = 0;
+	st_ptr->bad_buy = 0;
+
+
+	/* Hack -- discount all the items */
+	for (i = 0; i < st_ptr->stock_num; i++)
+	{
+		object_type *o_ptr;
+
+		/* Get the object */
+		o_ptr = &st_ptr->stock[i];
+
+		/* Sell all old items for "half price" */
+		o_ptr->discount = 50;
+
+		/* Clear the "fixed price" flag */
+		o_ptr->ident &= ~(IDENT_FIXED);
+
+		/* Inscribe the object as "on sale" */
+		o_ptr->note = quark_add("on sale");
+	}
+}
+
+/*** Display code ***/
 
 /*
  * Redisplay a single store entry
@@ -3652,183 +3833,4 @@ void do_cmd_store(void)
 }
 
 
-
-/*
- * Shuffle one of the stores.
- */
-void store_shuffle(int which)
-{
-	int i, j;
-
-
-	/* Ignore home */
-	if (which == STORE_HOME) return;
-
-
-	/* Save the store index */
-	store_num = which;
-
-	/* Activate that store */
-	st_ptr = &store[store_num];
-
-	/* Pick a new owner */
-	for (j = st_ptr->owner; j == st_ptr->owner; )
-	{
-		st_ptr->owner = (byte)randint0(MAX_B_IDX);
-	}
-
-	/* Activate the new owner */
-	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
-
-	/* Reset the owner data */
-	st_ptr->insult_cur = 0;
-	st_ptr->store_open = 0;
-	st_ptr->good_buy = 0;
-	st_ptr->bad_buy = 0;
-
-
-	/* Hack -- discount all the items */
-	for (i = 0; i < st_ptr->stock_num; i++)
-	{
-		object_type *o_ptr;
-
-		/* Get the object */
-		o_ptr = &st_ptr->stock[i];
-
-		/* Sell all old items for "half price" */
-		o_ptr->discount = 50;
-
-		/* Clear the "fixed price" flag */
-		o_ptr->ident &= ~(IDENT_FIXED);
-
-		/* Inscribe the object as "on sale" */
-		o_ptr->note = quark_add("on sale");
-	}
-}
-
-
-/*
- * Maintain the inventory at the stores.
- */
-void store_maint(int which)
-{
-	int j;
-
-	int old_rating = rating;
-
-	/* Ignore home */
-	if (which == STORE_HOME) return;
-
-	/* Save the store index */
-	store_num = which;
-
-	/* Activate that store */
-	st_ptr = &store[store_num];
-
-	/* Activate the owner */
-	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
-
-
-	/* Store keeper forgives the player */
-	st_ptr->insult_cur = 0;
-
-	/* Mega-Hack -- prune the black market */
-	if (store_num == STORE_BLACKM)
-	{
-		/* Destroy crappy black market items */
-		for (j = st_ptr->stock_num - 1; j >= 0; j--)
-		{
-			object_type *o_ptr = &st_ptr->stock[j];
-
-			/* Destroy crappy items */
-			if (black_market_crap(o_ptr))
-			{
-				/* Destroy the object */
-				store_item_increase(st_ptr, j, 0 - o_ptr->number);
-				store_item_optimize(st_ptr, j);
-			}
-		}
-	}
-
-
-	/* Choose the number of slots to keep */
-	j = st_ptr->stock_num;
-
-	/* Sell a few items */
-	j = j - randint1(STORE_TURNOVER);
-
-	/* Never keep more than "STORE_MAX_KEEP" slots */
-	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
-
-	/* Always "keep" at least "STORE_MIN_KEEP" items */
-	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
-
-	/* Hack -- prevent "underflow" */
-	if (j < 0) j = 0;
-
-	/* Destroy objects until only "j" slots are left */
-	while (st_ptr->stock_num > j) store_delete_random(st_ptr);
-
-
-	/* Choose the number of slots to fill */
-	j = st_ptr->stock_num;
-
-	/* Buy some more items */
-	j = j + randint1(STORE_TURNOVER);
-
-	/* Never keep more than "STORE_MAX_KEEP" slots */
-	if (j > STORE_MAX_KEEP) j = STORE_MAX_KEEP;
-
-	/* Always "keep" at least "STORE_MIN_KEEP" items */
-	if (j < STORE_MIN_KEEP) j = STORE_MIN_KEEP;
-
-	/* Hack -- prevent "overflow" */
-	if (j >= st_ptr->stock_size) j = st_ptr->stock_size - 1;
-
-	/* Acquire some new items */
-	while (st_ptr->stock_num < j) store_create_random(st_ptr);
-
-
-	/* Hack -- Restore the rating */
-	rating = old_rating;
-}
-
-
-/*
- * Initialize the stores
- */
-void store_init(int which)
-{
-	int k;
-
-
-	/* Save the store index */
-	store_num = which;
-
-	/* Activate that store */
-	st_ptr = &store[store_num];
-
-
-	/* Pick an owner */
-	st_ptr->owner = (byte)randint0(MAX_B_IDX);
-
-	/* Activate the new owner */
-	ot_ptr = &b_info[(store_num * MAX_B_IDX) + st_ptr->owner];
-
-
-	/* Initialize the store */
-	st_ptr->store_open = 0;
-	st_ptr->insult_cur = 0;
-	st_ptr->good_buy = 0;
-	st_ptr->bad_buy = 0;
-
-	/* Nothing in stock */
-	st_ptr->stock_num = 0;
-
-	/* Clear any old items */
-	for (k = 0; k < st_ptr->stock_size; k++)
-	{
-		object_wipe(&st_ptr->stock[k]);
-	}
-}
 
