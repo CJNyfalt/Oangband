@@ -1381,39 +1381,6 @@ static bool noneedtobargain(s32b minprice)
 
 
 /*
- * Update the bargain info
- */
-static void updatebargain(s32b price, s32b minprice)
-{
-	/* Hack -- auto-haggle */
-	if (auto_haggle) return;
-
-	/* Cheap items are "boring" */
-	if (minprice < 10L) return;
-
-	/* Count the successful haggles */
-	if (price == minprice)
-	{
-		/* Just count the good haggles */
-		if (st_ptr->good_buy < MAX_SHORT)
-		{
-			st_ptr->good_buy++;
-		}
-	}
-
-	/* Count the failed haggles */
-	else
-	{
-		/* Just count the bad haggles */
-		if (st_ptr->bad_buy < MAX_SHORT)
-		{
-			st_ptr->bad_buy++;
-		}
-	}
-}
-
-
-/*
  * Maintain the inventory at the stores.
  */
 void store_maint(int which)
@@ -1715,7 +1682,7 @@ static void display_entry(int item)
 		}
 
 		/* Display a "taxed" cost */
-		else if (auto_haggle)
+		else
 		{
 			/* Extract the "minimum" price */
 			x = price_item(o_ptr, ot_ptr->min_inflate, FALSE);
@@ -1727,17 +1694,6 @@ static void display_entry(int item)
 			if ((o_ptr->tval == TV_WAND) && (o_ptr->number > 1)) sprintf(out_val, "%9ld avg", (long)x);
 			else sprintf(out_val, "%9ld  ", (long)x);
 
-			put_str(out_val, y, 67);
-		}
-
-		/* Display a "haggle" cost */
-		else
-		{
-			/* Extrect the "maximum" price */
-			x = price_item(o_ptr, ot_ptr->max_inflate, FALSE);
-
-			/* Actually draw the price (not fixed) */
-			sprintf(out_val, "%9ld  ", (long)x);
 			put_str(out_val, y, 67);
 		}
 	}
@@ -2301,46 +2257,42 @@ static bool purchase_haggle(object_type *o_ptr, s32b *price)
 	/* Determine if haggling is necessary */
 	noneed = noneedtobargain(final_ask);
 
-	/* No need to haggle */
-	if (auto_haggle || noneed || (o_ptr->ident & (IDENT_FIXED)))
+	/* Already haggled */
+	if (o_ptr->ident & (IDENT_FIXED))
 	{
-		/* Already haggled */
-		if (o_ptr->ident & (IDENT_FIXED))
-		{
-			/* Message summary */
-			msg_print("You instantly agree upon the price.");
-			message_flush();
-		}
-
-		/* No need to haggle */
-		else if (noneed)
-		{
-			/* Message summary */
-			msg_print("You eventually agree upon the price.");
-			message_flush();
-		}
-
-		/* Auto-haggle */
-		else
-		{
-			/* Message summary */
-			msg_print("You quickly agree upon the price.");
-			message_flush();
-
-			/* Ignore haggling */
-			ignore = TRUE;
-
-			/* Apply sales tax */
-			final_ask += (final_ask / 10);
-		}
-
-		/* Jump to final price */
-		cur_ask = final_ask;
-
-		/* Go to final offer */
-		pmt = "Final Offer";
-		final = TRUE;
+		/* Message summary */
+		msg_print("You instantly agree upon the price.");
+		message_flush();
 	}
+
+	/* No need to haggle */
+	else if (noneed)
+	{
+		/* Message summary */
+		msg_print("You eventually agree upon the price.");
+		message_flush();
+	}
+
+	/* Auto-haggle */
+	else
+	{
+		/* Message summary */
+		msg_print("You quickly agree upon the price.");
+		message_flush();
+
+		/* Ignore haggling */
+		ignore = TRUE;
+
+		/* Apply sales tax */
+		final_ask += (final_ask / 10);
+	}
+
+	/* Jump to final price */
+	cur_ask = final_ask;
+
+	/* Go to final offer */
+	pmt = "Final Offer";
+	final = TRUE;
 
 
 	/* Haggle for the whole pile */
@@ -2460,13 +2412,6 @@ static bool purchase_haggle(object_type *o_ptr, s32b *price)
 	/* Cancel */
 	if (cancel) return (TRUE);
 
-	/* Update haggling info */
-	if (!ignore)
-	{
-		/* Update haggling info */
-		updatebargain(*price, final_ask);
-	}
-
 	/* Do not cancel */
 	return (FALSE);
 }
@@ -2514,52 +2459,48 @@ static bool sell_haggle(object_type *o_ptr, s32b *price)
 	/* Get the owner's payout limit */
 	purse = (s32b)(ot_ptr->max_cost);
 
-	/* No need to haggle */
-	if (noneed || auto_haggle || (final_ask >= purse))
+	/* No reason to haggle */
+	if (final_ask >= purse)
 	{
-		/* No reason to haggle */
-		if (final_ask >= purse)
-		{
-			/* Message */
-			msg_print("You instantly agree upon the price.");
-			message_flush();
+		/* Message */
+		msg_print("You instantly agree upon the price.");
+		message_flush();
 
-			/* Ignore haggling */
-			ignore = TRUE;
+		/* Ignore haggling */
+		ignore = TRUE;
 
-			/* Offer full purse */
-			final_ask = purse;
-		}
-
-		/* No need to haggle */
-		else if (noneed)
-		{
-			/* Message */
-			msg_print("You eventually agree upon the price.");
-			message_flush();
-		}
-
-		/* No haggle option */
-		else
-		{
-			/* Message summary */
-			msg_print("You quickly agree upon the price.");
-			message_flush();
-
-			/* Ignore haggling */
-			ignore = TRUE;
-
-			/* Apply Sales Tax */
-			final_ask -= final_ask / 10;
-		}
-
-		/* Final price */
-		cur_ask = final_ask;
-
-		/* Final offer */
-		final = TRUE;
-		pmt = "Final Offer";
+		/* Offer full purse */
+		final_ask = purse;
 	}
+
+	/* No need to haggle */
+	else if (noneed)
+	{
+		/* Message */
+		msg_print("You eventually agree upon the price.");
+		message_flush();
+	}
+
+	/* No haggle option */
+	else
+	{
+		/* Message summary */
+		msg_print("You quickly agree upon the price.");
+		message_flush();
+
+		/* Ignore haggling */
+		ignore = TRUE;
+
+		/* Apply Sales Tax */
+		final_ask -= final_ask / 10;
+	}
+
+	/* Final price */
+	cur_ask = final_ask;
+
+	/* Final offer */
+	final = TRUE;
+	pmt = "Final Offer";
 
 	/* Haggle for the whole pile */
 	cur_ask *= o_ptr->number;
@@ -2673,13 +2614,6 @@ static bool sell_haggle(object_type *o_ptr, s32b *price)
 
 	/* Cancel */
 	if (cancel) return (TRUE);
-
-	/* Update haggling info */
-	if (!ignore)
-	{
-		/* Update haggling info */
-		updatebargain(*price, final_ask);
-	}
 
 	/* Do not cancel */
 	return (FALSE);

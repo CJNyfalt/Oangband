@@ -3054,7 +3054,7 @@
 #define OPT_ring_bell				30
 #define OPT_verify_destroy_junk		31
 
-#define OPT_auto_haggle				32
+/* xxx */
 #define OPT_auto_scum				33
 #define OPT_easy_open				34
 #define OPT_easy_disarm 			35
@@ -3163,7 +3163,7 @@
 #define ring_bell				op_ptr->opt[OPT_ring_bell]
 #define verify_destroy_junk		op_ptr->opt[OPT_verify_destroy_junk]
 
-#define auto_haggle				op_ptr->opt[OPT_auto_haggle]
+/* xxx */
 #define auto_scum				op_ptr->opt[OPT_auto_scum]
 #define easy_open				op_ptr->opt[OPT_easy_open]  /* TNB */
 #define easy_disarm				op_ptr->opt[OPT_easy_disarm]  /* TNB */

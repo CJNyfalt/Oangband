@@ -12,6 +12,7 @@ that require light.
 as it is supposed to.
 - Unlight now grants +2 infra-vision range.
 - Fixed bug where armory instead of general store had low purse.
+- Removed haggling, always auto-haggle.
 
 User interface
 ==============

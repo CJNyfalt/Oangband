@@ -1963,7 +1963,7 @@ const char * option_text[OPT_MAX] =
 	"verify_special",			/* OPT_verify_special */
 	"ring_bell",				/* OPT_ring_bell */
 	"verify_destroy_junk",		/* OPT_verify_destroy_junk */
-	"auto_haggle",				/* OPT_auto_haggle */
+	NULL,
 	"auto_scum",				/* OPT_auto_scum */
 	"easy_open",				/* OPT_easy_open   -TNB- */
 	"easy_disarm",				/* OPT_easy_disarm   -TNB- */
@@ -2115,7 +2115,7 @@ const char * option_desc[OPT_MAX] =
 	"Verify use of special commands",			/* OPT_verify_special */
 	"Audible bell (on errors, etc)",			/* OPT_ring_bell */
 	"Verify destruction of worthless objects",	/* OPT_verify_destroy_junk */
-	"Auto-haggle in stores",					/* OPT_auto_haggle */
+	NULL,
 	"Auto-scum for good levels",				/* OPT_auto_scum */
 	"Open and close doors automatically",		/* OPT_easy_open  -TBN- */
 	"Disarm traps automatically",				/* OPT_easy_disarm   -TNB- */
@@ -2267,7 +2267,7 @@ bool option_norm[OPT_MAX] =
 	TRUE,		/* OPT_verify_special */
 	TRUE,		/* OPT_ring_bell */
 	TRUE,		/* OPT_verify_destroy_junk */
-	TRUE,		/* OPT_auto_haggle */
+	FALSE,
 	FALSE,		/* OPT_auto_scum */
 	TRUE,		/* OPT_easy_open */
 	FALSE,		/* OPT_easy_disarm */
@@ -2437,7 +2437,7 @@ byte option_page[OPT_PAGE_MAX][OPT_PAGE_PER] =
 	/*** Game-Play ***/
 
 	{
-		OPT_auto_haggle,
+		255,
 		OPT_auto_scum,
 		OPT_easy_open,
 		OPT_easy_disarm,
